@@ -37,7 +37,14 @@ dev_requirements = [
     "wheel>=0.34.2",
 ]
 
-requirements = []
+requirements = [
+    'aicsimageprocessing==0.7.1',
+    'aicssegmentation',
+    'aicsmlsegment',
+    'PyYAML',
+    'aicsimageio==0.6.4',
+    'scikit-image==0.15.0',
+]
 
 extra_requirements = {
     "setup": setup_requirements,
