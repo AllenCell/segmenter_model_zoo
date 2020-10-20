@@ -10,6 +10,7 @@ with open("README.md") as readme_file:
 
 setup_requirements = [
     "pytest-runner>=5.2",
+    "pandas",
 ]
 
 test_requirements = [
@@ -37,7 +38,11 @@ dev_requirements = [
     "wheel>=0.34.2",
 ]
 
-requirements = []
+requirements = [
+    "quilt3",
+    "torchvision==0.7.0",
+    "torch==1.6.0"
+]
 
 extra_requirements = {
     "setup": setup_requirements,

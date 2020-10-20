@@ -1,0 +1,6 @@
+{
+    "python.pythonPath": "C:\\Users\\aics-\\anaconda3\\envs\\model_zoo\\python.exe",
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": true
+}

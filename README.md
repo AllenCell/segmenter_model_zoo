@@ -31,6 +31,9 @@ For full package documentation please visit [aics-int.github.io/segmenter_model_
 See [CONTRIBUTING.md](CONTRIBUTING.md) for information related to developing the code.
 
 ## The Four Commands You Need To Know
+
+0. `conda install pytorch==1.6.0 torchvision==0.7.0 cudatoolkit=10.2 -c pytorch` depending on cuda version (we use 10.2)
+
 1. `pip install -e .[dev]`
 
     This will install your package in editable mode with all the required development
