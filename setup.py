@@ -10,6 +10,7 @@ with open("README.md") as readme_file:
 
 setup_requirements = [
     "pytest-runner>=5.2",
+    "pandas",
 ]
 
 test_requirements = [
@@ -44,6 +45,9 @@ requirements = [
     'PyYAML',
     'aicsimageio==0.6.4',
     'scikit-image==0.15.0',
+    "quilt3",
+    "torchvision==0.7.0",
+    "torch==1.6.0"
 ]
 
 extra_requirements = {
