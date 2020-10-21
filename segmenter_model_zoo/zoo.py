@@ -2,6 +2,9 @@ import os
 import sys
 import logging
 import numpy as np
+from typing import List, Union
+from pathlib import Path
+import importlib
 
 import torch
 from torch.autograd import Variable
@@ -36,19 +39,19 @@ MODEL_DEF_MAPPING = {
 }
 
 CHECKPOINT_PATH_MAPPING = {
-    'DNA_mask_production_alpha': {
+    'DNA_mask_production': {
         'model_type': 'unet_xy_zoom',
         'norm': 12,
         'path': 'quilt',
         'default_cutoff': 0.4
     },
-    'DNA_seed_production_alpha': {
+    'DNA_seed_production': {
         'model_type': 'unet_xy_zoom',
         'norm': 12,
         'path': 'quilt',
         'default_cutoff': 0.9
     },
-    'CellMask_edge_production_alpha': {
+    'CellMask_edge_production': {
         'model_type': 'unet_xy_zoom',
         'norm': 13,
         'path': 'quilt',
@@ -66,13 +69,13 @@ CHECKPOINT_PATH_MAPPING = {
         'path': 'quilt',
         'default_cutoff': 0.5
     },
-    'LMNB1_fill_production_alpha': {
+    'LMNB1_fill_production': {
         'model_type': 'unet_xy_zoom',
         'norm': 15,
         'path': 'quilt',
         'default_cutoff': 0.5
     },
-    'LMNB1_core_production_alpha': {
+    'LMNB1_core_production': {
         'model_type': 'unet_xy_zoom',
         'norm': 15,
         'path': 'quilt',
@@ -99,17 +102,17 @@ CHECKPOINT_PATH_MAPPING = {
 SUPER_MODEL_MAPPING = {
     'DNA_MEM_instance_production_alpha': {
         'models': [
-            'DNA_mask_production_alpha',
-            'CellMask_edge_production_alpha',
-            'DNA_seed_production_alpha'
+            'DNA_mask_production',
+            'CellMask_edge_production',
+            'DNA_seed_production'
         ],
         'instruction': '2 x Z x Y x X (dna | mem), or file path and index list'
     },
     'DNA_MEM_instance_LF_integration': {
         'models': [
-            'DNA_mask_production_alpha',
-            'CellMask_edge_production_alpha',
-            'DNA_seed_production_alpha',
+            'DNA_mask_production',
+            'CellMask_edge_production',
+            'DNA_seed_production',
             'LF_DNA_mask',
             'LF_mem_edge'
         ],
@@ -117,9 +120,9 @@ SUPER_MODEL_MAPPING = {
     },
     'DNA_MEM_instance_LF_integration_two_camera': {
         'models': [
-            'DNA_mask_production_alpha',
-            'CellMask_edge_production_alpha',
-            'DNA_seed_production_alpha',
+            'DNA_mask_production',
+            'CellMask_edge_production',
+            'DNA_seed_production',
             'LF_DNA_mask_two_camera',
             'LF_mem_edge_two_camera'
         ],
@@ -127,21 +130,18 @@ SUPER_MODEL_MAPPING = {
     'LMNB1_morphological_production_alpha': {
         'models': [
             'LMNB1_all_production',
-            'LMNB1_fill_production_alpha',
-            'LMNB1_core_production_alpha',
-            'CellMask_edge_production_alpha'
+            'LMNB1_fill_production',
+            'LMNB1_core_production',
+            'CellMask_edge_production'
         ],
         'instruction': '2 x Z x Y x X (lamin | mem) or file path and index list'},
     'LMNB1_fill_instance_100x_hipsc': {
         'models': [
-            'LMNB1_fill_production_alpha',
-            'LMNB1_core_production_alpha'
+            'LMNB1_fill_production',
+            'LMNB1_core_production'
         ],
         'instruction': '1 x Z x Y x X (lamin) or file path and index list'
     },
-    'structure_H2B_production': {
-        'models': ['H2B_production_alpha'],
-        'instruction': '1 x Z x Y x X (h2b) or file path and index list'},
     'structure_AAVS1_production': {
         'models': ['CAAX_production'],
         'instruction': '1 x Z x Y x X (h2b) or file path and index list'},
@@ -389,97 +389,64 @@ class SuperModel:
 
         print(SUPER_MODEL_MAPPING[model_name]['instruction'])
 
-    def apply_on_single_zstack(self, input_img=None, filename=None, inputCh=None):
+    def apply_on_single_zstack(
+        self,
+        input_img: np.ndarray = None,
+        filename: Union(str, Path) = None,
+        inputCh: List = [0]
+    ) -> Union[np.ndarray, List]:
+        """
+        Appply a super model on one image
+
+        Parameters:
+        --- 
+        input_img: np.ndarray
+            the image to be segmented, if it is not None, filename and inputCh 
+            will not be used. Otherwise, use filename and inputCh to read image
+
+        filename: Union(str, Path)
+            when input_img is None, use filename to load image
+
+        inputCh: List
+            when input_img is None, take specific channels from the image loaded
+            from filename
+
+        Return: Union[np.ndarray, List]
+        """
 
         # check data
         if input_img is None:
-            assert os.path.exists(filename)
-            assert inputCh is not None 
+            assert os.path.exists(filename), f"{filename} does not exist"
+            assert inputCh is not None, "input channel must be provided"
 
             reader = AICSImage(filename)
-            input_img = reader.data.astype(np.float32)
-            if input_img.shape[0]==1:
-                input_img = np.squeeze(input_img,axis=0)
-            elif input_img.shape[1]==1:
-                input_img = np.squeeze(input_img,axis=1)
-            else:
-                print('error in data dimension')
-                print(input_img.shape)
-                quit()
+            input_img = reader.get_image_data("CZYX", S=0, T=0, C=inputCh)
 
-            if input_img.shape[1]<input_img.shape[0]:
-                input_img = np.transpose(input_img,(1,0,2,3))
-            
-            input_img = input_img[inputCh,:,:,:]
-        else:
-            input_img = input_img.astype(np.float32)
-            # make sure the image has a dummy channel
-            #if not (len(input_img.shape)==4 and input_img.shape[0]==1):
-            #    input_img = np.expand_dims(input_img, axis=0)
+        # make sure it is float32
+        input_img = input_img.astype(np.float32)
 
-        out = None
-        if self.model_name == 'DNA_MEM_instance_production_alpha':
-            from .DNA_MEM_instance_production_alpha import SegModule
-            out_1, out_2, seed_out = SegModule(input_img, self.models)
-            return out_1, out_2, seed_out
-        elif self.model_name == 'LMNB1_morphological_production_alpha':
-            from .LMNB1_morphological_production_alpha import SegModule
-            return SegModule(input_img, self.models)
-        elif self.model_name == 'LMNB1_morphological_RnD':
-            from .LMNB1_morphological_production_alpha import SegModule
-            seg, seg_name = SegModule(input_img, self.models, output_type='RnD')
-            #seg, seg_name, pred, pred_name = SegModule(input_img, self.models, return_prediction=True)
-            return seg, seg_name
-        elif self.model_name == 'LMNB1_morphological_with_labelfree':
-            from .LMNB1_morphological_with_labelfree import SegModule
-            seg, seg_name = SegModule(input_img, self.models)
-            return seg, seg_name
-        elif self.model_name == 'LMNB1_fill_instance_100x_hipsc':
-            from .LMNB1_fill_instance_100x_hipsc import SegModule
-            seg, seg_name = SegModule(input_img, self.models, return_prediction=False)
-            return seg, seg_name
-        elif self.model_name == 'H2B_instance_hipsc_ZSD_40x':
-            return None      
-        elif self.model_name == 'Nucleus_instance_hipsc_880' or self.model_name == 'Nucleus_instance_hipsc_ZSD' or self.model_name == 'Nucleus_instance_cardio_ZSD' or self.model_name =='Nucleus_instance_cardio_880':
-            from .Nucleus_instance_test import SegModule
-            out = SegModule(input_img, self.models, model_name=self.model_name)
-            return out
-        elif self.model_name == 'DNA_instance_from_labelfree_alpha':
-            from .DNA_instance_lf import SegModule
-            out = SegModule(input_img, self.models, model_name=self.model_name)
-            return out
-        elif self.model_name == 'LF_DNA_instance_alpha':
-            from .LabelFree_DNA_instance import SegModule
-            out = SegModule(input_img, self.models)
-            return out
-        elif self.model_name == 'DNA_MEM_instance_LF_integration' or self.model_name == 'DNA_MEM_instance_LF_integration_two_camera':
-            from .DNA_MEM_instance_plus_LF import SegModule
-            out = SegModule(input_img, self.models, two_camera=False)
-            return out
-        elif self.model_name == 'DNA_MEM_instance_CAAX_with_BF':
-            from .DNA_MEM_instance_caax_with_BF import SegModule
-            out = SegModule(input_img, self.models, two_camera=False)
-            return out
-        elif self.model_name == 'DNA_instance_LF_integration_two_camera':
-            from .DNA_instance_plus_LF import SegModule
-            out_1, out_2 = SegModule(input_img, self.models, two_camera=True)
-            return out_1, out_2
-        elif self.model_name == 'structure_H2B_production':
-            from .structure_H2B_100x_hipsc import SegModule
-            return SegModule(input_img, self.models)
-        elif self.model_name == 'structure_AAVS1_production':
-            from .structure_AAVS1_100x_hipsc import SegModule
-            return SegModule(input_img, self.models) 
+        # load the model wrapper
+        module_name = "segmenter_model_zoo.model_wrapper." + self.model_name
+        wrapper_module = importlib.import_module(module_name)
+        SegModule = getattr(wrapper_module, "SegModule")
+
+        return SegModule(
+            input_img,
+            self.models,
+            return_prediction=False,
+            output_type='RnD',
+            two_camera=False
+        )
 
 
 def list_all_super_models():
     import sys 
-    if len(sys.argv)==2:
+    if len(sys.argv) == 2:
         print(SUPER_MODEL_MAPPING[sys.argv[1]]['instruction'])
-    elif len(sys.argv)==1:
+    elif len(sys.argv) == 1:
         for key, value in SUPER_MODEL_MAPPING.items() :
             print(key)
-            #print(value['instruction'])
+            # print(value['instruction'])
     else:
         print('error function')
         quit()

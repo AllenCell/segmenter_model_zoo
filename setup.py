@@ -39,12 +39,9 @@ dev_requirements = [
 ]
 
 requirements = [
-    'aicsimageprocessing==0.7.1',
-    'aicssegmentation',
-    'aicsmlsegment',
     'PyYAML',
-    'aicsimageio==0.6.4',
-    'scikit-image==0.15.0',
+    'aicsimageio>3.3.0',
+    'scikit-image',
     "quilt3",
     "torchvision==0.7.0",
     "torch==1.6.0"
