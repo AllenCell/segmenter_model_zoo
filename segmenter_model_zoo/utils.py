@@ -1,16 +1,54 @@
 import numpy as np
-import logging
-import sys
-from aicsimageio import AICSImage
-from aicsimageprocessing import resize
+# import sys
+from pathlib import Path
+from typing import Union
+# from aicsimageio import AICSImage
+# from aicsimageprocessing import resize
 import os
-from scipy import ndimage as ndi
-from scipy import stats
-import argparse
 from glob import glob
-
-import yaml
+from aicsimageio.writers import OmeTiffWriter
 import re
+
+
+def save_as_uint(
+    img: np.ndarray,
+    save_path: Union[str, Path],
+    core_fn: str,
+    tag: str = "segmentation"
+):
+    """
+    save the segmentation to disk
+
+    Parameters
+    ---
+    img: np.ndarray
+        the image to save
+
+    save_path: Union[str, Path]
+        the path to save the image
+
+    core_fn: str
+        saved filename will be {core_fn}_{tag}.tiff 
+
+    tag: str
+        the tag to be added to the end of output filename
+        default is "segmentation"
+    """
+
+    # find the minimal bit
+    if img.max() < 255:
+        img = img.astype(np.uint8)
+    else:
+        img = img.astype(np.uint16)
+
+    # save the file
+    save_path = Path(save_path).expanduser().resolve(strict=True)
+    if not save_path.exists():
+        save_path.mkdir(parents=True)
+
+    with OmeTiffWriter(save_path / f"{core_fn}_{tag}.tiff") as writer:
+        writer.save(img)
+
 
 def load_filenames(data_config):
 

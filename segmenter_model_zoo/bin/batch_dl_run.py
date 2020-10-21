@@ -6,27 +6,28 @@ users' virtualenv when the parent module is installed using pip.
 import argparse
 import logging
 import sys
-import os
 import traceback
-import pathlib
-
-import numpy as np
+from pathlib import Path, PurePosixPath
+from typing import List
+from tqdm import tqdm
 import yaml
-from aicsimageio import AICSImage, omeTifWriter
-from model_zoo_3d_segmentation.zoo import SegModel, SuperModel
-from model_zoo_3d_segmentation.utils import load_filenames
-#from aicsmlsegment.utils import load_config
+import numpy as np
+
+from segmenter_model_zoo.zoo import SuperModel
+from segmenter_model_zoo.utils import load_filenames, save_as_uint
 
 ###############################################################################
 
 log = logging.getLogger()
 # Note: basicConfig should only be called in bin scripts (CLIs).
 # https://docs.python.org/3/library/logging.html#logging.basicConfig
-# "This function does nothing if the root logger already has handlers configured for it."
-# As such, it should only be called once, and at the highest level (the CLIs in this case).
-# It should NEVER be called in library code!
-logging.basicConfig(level=logging.INFO,
-                    format='[%(asctime)s - %(name)s - %(lineno)3d][%(levelname)s] %(message)s')
+# "This function does nothing if the root logger already has handlers configured for 
+# it." As such, it should only be called once, and at the highest level (the CLIs in 
+# this case). It should NEVER be called in library code!
+logging.basicConfig(
+    level=logging.INFO,
+    format='[%(asctime)s - %(name)s - %(lineno)3d][%(levelname)s] %(message)s'
+)
 
 ###############################################################################
 
@@ -39,155 +40,90 @@ class Args(argparse.Namespace):
         self.__parse()
 
     def __parse(self):
-        p = argparse.ArgumentParser(prog='run dl segmentation',
-                                    description='the entry point for running dl segmentation')
-        p.add_argument('--config', required=True, help='the path to the configuration file')
-        p.add_argument('-d', '--debug', action='store_true', dest='debug', help=argparse.SUPPRESS)
+        p = argparse.ArgumentParser(
+            prog='run dl segmentation',
+            description='the entry point for running segmentation using ML model zoo'
+        )
+        p.add_argument(
+            '--config', 
+            required=True,
+            help='the path to the configuration file'
+        )
+        p.add_argument(
+            '-d', 
+            '--debug', 
+            action='store_true',
+            dest='debug',
+            help=argparse.SUPPRESS
+        )
+        p.add_argument(
+            '--overwrite',
+            action='store_true',
+            help='whether to overwrite existing results'
+        )
+        p.add_argument(
+            '--search_tag',
+            type=str,
+            help='a string used to match filename when checking existence'
+        )
         p.parse_args(namespace=self)
+
 
 class Seg3DStacks(object):
 
-    def __init__(self, args):
-        self.model = SuperModel(args['model'],args)
-        self.config = args
+    def __init__(self, config, args):
+        self.model = SuperModel(config["model"], config)
+        self.overwrite = args.overwrite
+        self.tag = args.search_tag
+        self.debug = args.debug
+        self.output_path = config["output_path"]
+        self.input_channel = config["input_channel"]
 
-    def execute(self, filenames):
+    def execute(self, filenames: List):
+        # print out all filenames, if debug
+        if self.debug:
+            print(filenames)
 
-        if not os.path.exists(self.config['output_path']):
-            os.mkdir(self.config['output_path'])
-            
-        ##########################################################################
-        for fi, fn in enumerate(filenames):
-            print(fn)
-            if self.config['model'] == 'LMNB1_morphological_production_alpha':
-                seg = self.model.apply_on_single_zstack(filename=fn,inputCh=self.config['input_channel'])
-                seg = seg.astype(np.uint8)
-                seg[seg>0] = 255
-                
-                out_fn = self.config['output_path']+ os.sep + pathlib.PurePosixPath(fn).stem + '_struct_segmentation.tiff'
-                writer = omeTifWriter.OmeTifWriter(out_fn)
-                writer.save(seg)
+        save_path = Path(self.output_path)
+        for fi, fn in tqdm(enumerate(filenames)):
+            fn_core = PurePosixPath(fn).stem
+            if not self.overwrite:
+                if self.tag is None:
+                    # check if similar segmentation exists
+                    existing_results = list(save_path.glob(fn_core + '*.tiff'))
+                    if len(existing_results) > 0:
+                        print("the following files already exists, please check.")
+                        print(existing_results)
+                        continue
+                else:
+                    # do exact match
+                    check_name = save_path / f"{fn_core}_{self.search_tag}.tiff"
+                    if check_name.exists():
+                        print(f"{check_name} exists, skipping")
+                        continue
 
-            elif self.config['model'] == 'LMNB1_morphological_RnD':
-                seg, seg_name = self.model.apply_on_single_zstack(filename=fn,inputCh=self.config['input_channel'])
-                for li, seg_n in enumerate(seg_name):
-                    out_fn = self.config['output_path']+ os.sep + pathlib.PurePosixPath(fn).stem + seg_n + 'segmentation.tiff'
-                    writer = omeTifWriter.OmeTifWriter(out_fn)
-                    writer.save(seg[li].astype(np.uint8))
+            # run segmentation
+            seg = self.model.apply_on_single_zstack(
+                filename=fn,
+                inputCh=self.input_channel
+            )
 
-            elif self.config['model'] == 'LMNB1_morphological_with_labelfree':
-                seg, seg_name = self.model.apply_on_single_zstack(filename=fn,inputCh=self.config['input_channel'])
-                
-                for li, seg_n in enumerate(seg_name):
-                    out_fn = self.config['output_path']+ os.sep + pathlib.PurePosixPath(fn).stem + seg_n + 'segmentation.tiff'
-                    writer = omeTifWriter.OmeTifWriter(out_fn)
-                    writer.save(seg[li].astype(np.uint8))
-
-            elif self.config['model'] == 'LMNB1_fill_instance_100x_hipsc':
-
-                #print(self.config['output_path']+ os.sep + pathlib.PurePosixPath(fn).stem + '_fill_segmentation.tiff')
-                if os.path.exists(self.config['output_path']+ os.sep + pathlib.PurePosixPath(fn).stem + '_fill_segmentation.tiff'):
-                    continue
-
-                seg, seg_name = self.model.apply_on_single_zstack(filename=fn,inputCh=self.config['input_channel'])
-                
-                for li, seg_n in enumerate(seg_name):
-                    out_fn = self.config['output_path']+ os.sep + pathlib.PurePosixPath(fn).stem + seg_n + 'segmentation.tiff'
-                    writer = omeTifWriter.OmeTifWriter(out_fn)
-                    writer.save(seg[li].astype(np.uint16))
-
-            elif self.config['model'] == 'DNA_MEM_instance_production_alpha':
-                seg_mem, seg_dna, seed_label = self.model.apply_on_single_zstack(filename=fn,inputCh=self.config['input_channel'])
-                out_mem = self.config['output_path']+ os.sep + pathlib.PurePosixPath(fn).stem + '_mem_segmentation.tiff'
-                writer = omeTifWriter.OmeTifWriter(out_mem)
-                writer.save(seg_mem.astype(np.uint8))
-
-                out_dna = self.config['output_path']+ os.sep + pathlib.PurePosixPath(fn).stem + '_dna_segmentation.tiff'
-                writer = omeTifWriter.OmeTifWriter(out_dna)
-                writer.save(seg_dna.astype(np.uint8))
-
-                out_seed = self.config['output_path']+ os.sep + pathlib.PurePosixPath(fn).stem + '_seed.tiff'
-                writer = omeTifWriter.OmeTifWriter(out_seed)
-                writer.save(seed_label.astype(np.uint8))
-            elif self.config['model'] == 'LF_DNA_instance_alpha':
-                seg_dna = self.model.apply_on_single_zstack(filename=fn,inputCh=self.config['input_channel'])
-
-                out_dna = self.config['output_path']+ os.sep + pathlib.PurePosixPath(fn).stem + '_dna_segmentation.tiff'
-                writer = omeTifWriter.OmeTifWriter(out_dna)
-                writer.save(seg_dna.astype(np.uint8))
-
-            elif self.config['model'] =='DNA_MEM_instance_LF_integration' or self.config['model'] == 'DNA_MEM_instance_LF_integration_two_camera':
-                out_fn = self.config['output_path']+ os.sep + pathlib.PurePosixPath(fn).stem + '_segmentation.tiff'
-                if os.path.exists(out_fn):
-                    print(f'skipping {fn}, results already exist')
-                    continue
-                seg_combined = self.model.apply_on_single_zstack(filename=fn,inputCh=self.config['input_channel'])
-                if seg_combined is None:
-                    print(f'skipping {fn}, due to failed segmentation')
-                    continue
-                
-                writer = omeTifWriter.OmeTifWriter(out_fn, overwrite_file=True)
-                writer.save(seg_combined)
-
-            elif self.config['model'] =='DNA_MEM_instance_CAAX_with_BF':
-                out_fn = self.config['output_path']+ os.sep + pathlib.PurePosixPath(fn).stem + '_segmentation.tiff'
-                if os.path.exists(out_fn):
-                    print(f'skipping {fn}, results already exist')
-                    continue
-                seg_combined = self.model.apply_on_single_zstack(filename=fn,inputCh=self.config['input_channel'])
-                if seg_combined is None:
-                    print(f'skipping {fn}, due to failed segmentation')
-                    continue
-                
-                writer = omeTifWriter.OmeTifWriter(out_fn, overwrite_file=True)
-                writer.save(seg_combined)
-
-            elif self.config['model'] == 'structure_H2B_production':
-                seg = self.model.apply_on_single_zstack(filename=fn, inputCh=self.config['input_channel'])
-                seg = seg.astype(np.uint8)
-                seg[seg>0] = 255
-                
-                out_fn = self.config['output_path']+ os.sep + pathlib.PurePosixPath(fn).stem + '_struct_segmentation.tiff'
-                writer = omeTifWriter.OmeTifWriter(out_fn)
-                writer.save(seg)
-
-            elif self.config['model'] == 'structure_AAVS1_production':
-                seg = self.model.apply_on_single_zstack(filename=fn, inputCh=self.config['input_channel'])
-                seg = seg.astype(np.uint8)
-                seg[seg>0] = 255
-                
-                out_fn = self.config['output_path']+ os.sep + pathlib.PurePosixPath(fn).stem + '_struct_segmentation.tiff'
-                writer = omeTifWriter.OmeTifWriter(out_fn)
-                writer.save(seg)
-
-            elif self.config['model'] == 'DNA_instance_LF_integration_two_camera':
-                out_mem = self.config['output_path']+ os.sep + pathlib.PurePosixPath(fn).stem + '_mem_segmentation.tiff'
-                out_dna = self.config['output_path']+ os.sep + pathlib.PurePosixPath(fn).stem + '_dna_segmentation.tiff'
-
-                if os.path.exists(out_mem) and os.path.exists(out_dna):
-                    print(f'skipping {fn}, results already exist')
-                    continue
-                
-                seg_mem, seg_dna = self.model.apply_on_single_zstack(filename=fn,inputCh=self.config['input_channel'])
-                
-                writer = omeTifWriter.OmeTifWriter(out_mem, overwrite_file=True)
-                writer.save(seg_mem.astype(np.uint8))
-                
-                writer = omeTifWriter.OmeTifWriter(out_dna, overwrite_file=True)
-                writer.save(seg_dna.astype(np.uint8))
-            else:
-                out_fn = self.config['output_path']+ os.sep + pathlib.PurePosixPath(fn).stem + '_segmentation.tiff'
-                if os.path.exists(out_fn):
-                    print(f'skipping {fn}, results already exist')
-                    continue
-
-                seg = self.model.apply_on_single_zstack(filename=fn,inputCh=self.config['input_channel'])
-                
-                writer = omeTifWriter.OmeTifWriter(out_fn)
-                writer.save(seg.astype(np.uint8))
+            ##############################################
+            # check return type.
+            # two options: np.ndarray | List
+            #   - case 1: np.ndarray (simply one segmentation)
+            #   - case 2: List (two sub-lists: seg and seg_name)
+            ##############################################
+            if isinstance(seg, np.ndarray):
+                save_as_uint(seg, save_path, fn_core, self.overwrite)
+            elif isinstance(seg, List):
+                seg_output = zip(seg[0], seg[1])
+                for seg_img, seg_tag in seg_output:
+                    save_as_uint(seg_img, save_path, fn_core, seg_tag, self.overwrite)
 
         print('all files are done')
 ###############################################################################
+
 
 def main():
     try:
@@ -201,11 +137,10 @@ def main():
         # Do your work here - preferably in a class or function,
         # passing in your args. E.g.
         if timelapse_flag:
-            print('not support yet')
-            quit()
-            #exe = Seg3DTimelapse(args)
+            print('timelapse is not supported yet')
+            sys.exit(0)
         else:
-            exe = Seg3DStacks(config)
+            exe = Seg3DStacks(config, args)
         exe.execute(all_files)
 
     except Exception as e:
