@@ -74,7 +74,7 @@ setup(
     description="scripts and API for running Deep Learning models from segmenter",
     entry_points={
         "console_scripts": [
-            "my_example=segmenter_model_zoo.bin.my_example:main"
+            "run_model_zoo=segmenter_model_zoo.bin.batch_dl_run:main"
         ],
     },
     install_requires=requirements,

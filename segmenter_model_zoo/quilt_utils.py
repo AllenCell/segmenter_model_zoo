@@ -5,7 +5,6 @@ import os
 import quilt3
 from pathlib import Path
 from typing import List, Union
-import pandas as pd
 
 
 class QuiltModelZoo():
@@ -13,7 +12,8 @@ class QuiltModelZoo():
         """connect to model zoo on quilt3"""
 
         # connect to quilt
-        self.pkg = quilt3.Package.browse("aics/segmenter_model_zoo", registry="s3://allencell")
+        self.pkg = quilt3.Package.browse("aics/segmenter_model_zoo",
+                                         registry="s3://allencell")
         self.meta = self.pkg['metadata.csv']()
 
     def peak_all_models(self) -> List:
@@ -22,7 +22,11 @@ class QuiltModelZoo():
         print(models)
         return models
 
-    def download_model(self, model_name: str, save_path: Union(str, Path) = './zoo/model.pth'):
+    def download_model(
+        self,
+        model_name: str,
+        save_path: Union(str, Path) = './zoo/model.pth'
+    ):
         """
         download the model "model_name" to "out_path"
 
@@ -34,16 +38,18 @@ class QuiltModelZoo():
             the path to save the model, default is './zoo/model.pth'
         """
         # check if the model name is valide
-        assert model_name in self.meta.name, f"requested model {model_name} does not exist"
+        assert model_name in self.meta.name, \
+            f"requested model {model_name} does not exist"
 
         # check if save_path already has the model
-        save_dir = os.path.dirname(save_dir)
+        save_dir = os.path.dirname(save_path)
         if not os.path.exists(save_dir):
             os.mkdir(save_dir)
         else:
-            assert os.path.exists(save_path), f"the save_path {save_path} is already used"
+            assert os.path.exists(save_path), \
+                f"the save_path {save_path} is already used"
 
         # fetch the model file
-        model_id = self.meta[self.meta['name']==model_name]['models'].iloc[0]
+        model_id = self.meta[self.meta['name'] == model_name]['models'].iloc[0]
         model_path = model_id.split('/')
         self.pkg[model_path[0]][model_path[1]].fetch(save_path)
