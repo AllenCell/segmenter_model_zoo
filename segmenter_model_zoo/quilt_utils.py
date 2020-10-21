@@ -40,7 +40,7 @@ class QuiltModelZoo():
         # check if the model name is valide
         assert model_name in self.meta.name, \
             f"requested model {model_name} does not exist"
-
+        # TODO: fix, using pathlib
         # check if save_path already has the model
         save_dir = os.path.dirname(save_path)
         if not os.path.exists(save_dir):
