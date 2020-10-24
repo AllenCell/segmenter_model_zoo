@@ -6,13 +6,13 @@ from skimage.morphology import ball, dilation, disk, binary_closing
 from skimage.morphology import remove_small_objects
 from skimage.measure import label
 from skimage.segmentation import relabel_sequential, find_boundaries 
-from tifffile import imsave
 from aicsmlsegment.utils import background_sub, simple_norm
 import itk
 from collections import Counter
 
 from cell_detector import detect
 from segmenter_model_zoo.quilt_utils import QuiltModelZoo
+from segmenter_model_zoo.utils import getLargestCC
 
 mem_pre_cut_th = 0.2 + 0.25  # 0.2  # 0.02
 seed_bw_th = 0.75  # 0.90
@@ -94,17 +94,6 @@ def prune_cell_pairs(multi_pair, current_best_pair):
     return idx_to_remove
 
 
-def getLargestCC(labels, is_label=True):
-
-    if is_label:
-        largestCC = labels == np.argmax(np.bincount(labels.flat)[1:]) + 1
-    else:
-        sub_labels = label(labels > 0, connectivity=3, return_num=False)
-        largestCC = sub_labels == np.argmax(np.bincount(sub_labels.flat)[1:]) + 1
-
-    return largestCC
-
-
 def SegModule(
     img=None,
     model_list=None,
@@ -150,14 +139,14 @@ def SegModule(
     dna_img[dna_img > 60000] = dna_img.min()
     dna_img = background_sub(dna_img, 50)
     dna_img = simple_norm(dna_img, 2.5, 10)
-    imsave('dna_norm.tiff', dna_img)
+    # imsave('dna_norm.tiff', dna_img)
 
     # extra cellmask channel
     mem_img = img[1, :, :, :].copy()
     mem_img[mem_img > 60000] = mem_img.min()
     mem_img = background_sub(mem_img, 50)
     mem_img = simple_norm(mem_img, 2, 11)
-    imsave('cell_norm.tiff', mem_img)
+    # imsave('cell_norm.tiff', mem_img)
 
     print('image normalization is done')
     print('applying all DL models ... ...')
@@ -173,7 +162,7 @@ def SegModule(
         cutoff=-1
     )
     dna_mask_bw = dna_mask_pred > dna_mask_bw_th
-    imsave('pred_dna.tiff', dna_mask_pred)
+    # imsave('pred_dna.tiff', dna_mask_pred)
 
     # model 2: cell edge
     mem_pred = model_list[1].apply_on_single_zstack(
@@ -181,7 +170,8 @@ def SegModule(
         already_normalized=True,
         cutoff=-1
     )
-    imsave('pred_cell.tiff', mem_pred)
+    # imsave('pred_cell.tiff', mem_pred)
+
     # model 3: dna_seed
     seed_pred = model_list[2].apply_on_single_zstack(
         dna_img,
@@ -189,7 +179,7 @@ def SegModule(
         cutoff=-1
     )
     seed_bw = seed_pred > seed_bw_th
-    imsave('pred_seed.tiff', seed_pred)
+    # imsave('pred_seed.tiff', seed_pred)
 
     # model 4: dna from bf
     if two_camera:
@@ -203,7 +193,7 @@ def SegModule(
             use_tta=True
         )
     dna_bf_bw = dna_bf_pred > dna_bf_cutoff
-    imsave('lf_dna.tiff', dna_mask_pred)
+    # imsave('lf_dna.tiff', dna_mask_pred)
 
     # model 5: mem from bf
     if two_camera:
@@ -216,7 +206,7 @@ def SegModule(
             input_img=img[2, :, :, :],
             use_tta=True
         )
-    imsave('lf_mem.tiff', mem_bf_pred)
+    # imsave('lf_mem.tiff', mem_bf_pred)
     print('predictions are done.')
 
     ###########################################################
@@ -400,6 +390,9 @@ def SegModule(
 
     print('stack bottom has been properly updated.')
 
+    ################################################################
+    # part 8: QC by size
+    ################################################################
     # remove small cells due to failure / noise
     for ii in np.unique(cell_seg[cell_seg > 0]):
         this_one_cell = cell_seg == ii

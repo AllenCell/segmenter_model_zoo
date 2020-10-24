@@ -2,7 +2,7 @@
 This sample script will get deployed in the bin directory of the
 users' virtualenv when the parent module is installed using pip.
 """
-
+import os
 import argparse
 import logging
 import sys
@@ -86,11 +86,11 @@ class Seg3DStacks(object):
 
         save_path = Path(self.output_path)
         for fi, fn in tqdm(enumerate(filenames)):
-            fn_core = PurePosixPath(fn).stem
+            fn_core = PurePosixPath(os.path.basename(fn)).stem
             if not self.overwrite:
                 if self.tag is None:
                     # check if similar segmentation exists
-                    existing_results = list(save_path.glob(fn_core + '*.tiff'))
+                    existing_results = list(save_path.glob(fn_core + '*.'))
                     if len(existing_results) > 0:
                         print("the following files already exists, please check.")
                         print(existing_results)

@@ -2,10 +2,9 @@ import numpy as np
 # import sys
 from pathlib import Path
 from typing import Union
-# from aicsimageio import AICSImage
-# from aicsimageprocessing import resize
 import os
 from glob import glob
+from skimage.measure import label
 from aicsimageio.writers import OmeTiffWriter
 import re
 
@@ -14,7 +13,8 @@ def save_as_uint(
     img: np.ndarray,
     save_path: Union[str, Path],
     core_fn: str,
-    tag: str = "segmentation"
+    tag: str = "segmentation",
+    overwrite: bool = False
 ):
     """
     save the segmentation to disk
@@ -46,8 +46,21 @@ def save_as_uint(
     if not save_path.exists():
         save_path.mkdir(parents=True)
 
-    with OmeTiffWriter(save_path / f"{core_fn}_{tag}.tiff") as writer:
+    with OmeTiffWriter(save_path / f"{core_fn}_{tag}.tiff", overwrite_file=overwrite) as writer:
         writer.save(img)
+
+
+def getLargestCC(labels, is_label=True):
+    """
+    return the largest connect component from a label image or a binary image
+    """
+    if is_label:
+        largestCC = labels == np.argmax(np.bincount(labels.flat)[1:]) + 1
+    else:
+        sub_labels = label(labels > 0, connectivity=3, return_num=False)
+        largestCC = sub_labels == np.argmax(np.bincount(sub_labels.flat)[1:]) + 1
+
+    return largestCC
 
 
 def load_filenames(data_config):

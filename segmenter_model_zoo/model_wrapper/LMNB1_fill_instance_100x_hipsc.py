@@ -11,10 +11,6 @@ from skimage.measure import label
 from skimage.segmentation import find_boundaries, clear_border
 from aicsmlsegment.utils import background_sub, simple_norm
 from aicsimageio import AICSImage, omeTifWriter
-from aicsimageprocessing import resize
-
-import time
-
 
 mitosis_cutoff = 0.5 # 0.3
 core_cutoff = 0.5

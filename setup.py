@@ -41,6 +41,7 @@ dev_requirements = [
 requirements = [
     'PyYAML',
     'aicsimageio>3.3.0',
+    'aicsmlsegment>0.0.5'
     'scikit-image',
     "quilt3",
     "torchvision==0.7.0",

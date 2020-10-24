@@ -5,7 +5,6 @@ from skimage.filters import threshold_otsu
 from scipy.ndimage.morphology import distance_transform_edt
 from scipy.ndimage.morphology import binary_fill_holes
 from aicsmlsegment.utils import background_sub, simple_norm
-from aicsimageprocessing import resize
 
 min_size_dna = 100000 #10000
 max_size_dna = 1800000 #500000
@@ -20,10 +19,6 @@ def SegModule(input_img, models, return_prediction=False):
 
     # normalization
     img = simple_norm(input_img[0,:,:,:], 2.5, 10)
-
-    # rescale by default
-    #img = resize(img, (1, 0.5, 0.5), method='cubic')
-    #img = ( img - img.min() ) / (img.max() - img.min() + 1e-8)
 
     # get mask segmentation
     bw1 = models[0].apply_on_single_zstack(img, already_normalized=True) 

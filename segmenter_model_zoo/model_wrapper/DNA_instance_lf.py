@@ -5,7 +5,6 @@ from skimage.filters import threshold_otsu
 from scipy.ndimage.morphology import distance_transform_edt
 from scipy.ndimage.morphology import binary_fill_holes
 from aicsmlsegment.utils import background_sub
-from aicsimageprocessing import resize
 from skimage.io import imsave
 
 def SegModule(input_img, models, model_name, return_prediction=False):
@@ -21,10 +20,6 @@ def SegModule(input_img, models, model_name, return_prediction=False):
 
     # normalization
     img = background_sub(input_img[0,:,:,:],50)
-
-    # rescale by default
-    #img = resize(img, (1, 0.5, 0.5), method='cubic')
-    #img = ( img - img.min() ) / (img.max() - img.min() + 1e-8)
 
     # get mask segmentation
     bw1 = models[0].apply_on_single_zstack(img, already_normalized=True) 

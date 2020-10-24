@@ -9,11 +9,10 @@ import importlib
 import torch
 from torch.autograd import Variable
 from aicsmlsegment.utils import input_normalization
-from aicsimageprocessing import resize
+from scipy.ndimage import zoom
 from aicsimageio import AICSImage
 
-from fnet.models import load_model as load_model_lf
-from fnet.cli.predict import parse_model
+from segmenter_model_zoo.quilt_utils import validate_model
 
 ###############################################################################
 
@@ -100,7 +99,7 @@ CHECKPOINT_PATH_MAPPING = {
 }
 
 SUPER_MODEL_MAPPING = {
-    'DNA_MEM_instance_production_alpha': {
+    'DNA_MEM_instance_basic': {
         'models': [
             'DNA_mask_production',
             'CellMask_edge_production',
@@ -184,8 +183,21 @@ class SegModel:
             raise IOError(f"Checkpoint '{checkpoint_name}' does not exist")
 
         if checkpoint_name[:2] == 'LF':  # labelfree model
-            model_def = parse_model(CHECKPOINT_PATH_MAPPING[checkpoint_name]['path'])
-            model = load_model(model_def['path'], no_optim=True)
+            from fnet.models import load_model as load_model_lf
+            from fnet.cli.predict import parse_model
+
+            if CHECKPOINT_PATH_MAPPING[checkpoint_name]['path'] == 'quilt':
+                model_path = validate_model(
+                    checkpoint_name,
+                    model_param["local_path"]
+                )
+            else:
+                print("Non-quilt model path is not implemented yet.")
+                # TODO: allow hard-coded model zoo for easy local run
+                # model_path = CHECKPOINT_PATH_MAPPING[mname]['path']
+
+            model_def = parse_model(model_path)
+            model = load_model_lf(model_def['path'], no_optim=True)
             self.model = model
 
         else:
@@ -236,8 +248,18 @@ class SegModel:
             self.model = model
 
             # load the trained model
-            # device = torch.device("cuda:0" if torch.cuda.is_available() else 'cpu')
-            state = torch.load(CHECKPOINT_PATH_MAPPING[checkpoint_name]['path'], map_location=torch.device('cpu'))
+            if CHECKPOINT_PATH_MAPPING[checkpoint_name]['path'] == 'quilt':
+                model_path = validate_model(
+                    checkpoint_name,
+                    model_param["local_path"]
+                )
+            else:
+                print("Non-quilt model path is not implemented yet.")
+                # TODO: allow hard-coded model zoo for easy local run
+                # model_path = CHECKPOINT_PATH_MAPPING[mname]['path']
+
+            state = torch.load(model_path,
+                               map_location=torch.device('cpu'))
             if 'model_state_dict' in state:
                 self.model.load_state_dict(state['model_state_dict'])
             else:
@@ -246,10 +268,10 @@ class SegModel:
             self.normalization = CHECKPOINT_PATH_MAPPING[checkpoint_name]['norm']
 
         self.cutoff = CHECKPOINT_PATH_MAPPING[checkpoint_name]['default_cutoff']
-        print('model load succeeds!')
+        print(f"model {checkpoint_name} is successfully loaded")
 
     def load_default_cutoof(self, checkpoint_name, model_param={}):
-        #TODO: merge into load_train
+        # TODO: merge into load_train
         self.cutoff = CHECKPOINT_PATH_MAPPING[checkpoint_name]['default_cutoff']
 
     def get_cutoff(self):
@@ -259,11 +281,19 @@ class SegModel:
         for key, value in CHECKPOINT_PATH_MAPPING.items() :
             print(key)
 
-    def apply_on_single_zstack(self, input_img=None, filename=None, inputCh=None, normalization=None, already_normalized=False, cutoff=None, inference_param={}):
+    def apply_on_single_zstack(
+        self,
+        input_img=None,
+        filename=None,
+        inputCh=None,
+        normalization=None,
+        already_normalized=False,
+        cutoff=None,
+        inference_param={}
+    ):
 
         torch.backends.cudnn.enabled = True
         torch.backends.cudnn.benchmark = True
-        #torch.backends.cudnn.deterministic = False
 
         # check data
         if input_img is None:
@@ -279,42 +309,47 @@ class SegModel:
                 input_img = np.expand_dims(input_img, axis=0)
 
         if not already_normalized:
-            args_norm = lambda:None
+            # TODO: this can be implemented in a more elegant way after improving
+            # aicsmlsegment API.
+            args_norm = lambda: None  # noqa: E731
             if normalization is not None:
                 args_norm.Normalization = normalization
             else:
                 args_norm.Normalization = self.normalization
-            
+
             input_img = input_normalization(input_img, args_norm)
 
         if 'ResizeRatio' in inference_param:
             ResizeRatio = inference_param['size_out']
-            input_img = resize(input_img, (1, ResizeRatio[0], ResizeRatio[1], ResizeRatio[2]), method='cubic')
-            for ch_idx in range(input_img.shape[0]):
-                struct_img = input_img[ch_idx,:,:,:]
-                struct_img = (struct_img - struct_img.min())/(struct_img.max() - struct_img.min())
-                input_img[ch_idx,:,:,:] = struct_img
+            input_img = zoom(
+                input_img,
+                (1, ResizeRatio[0], ResizeRatio[1], ResizeRatio[2]),
+                order=1
+            )
         else: 
             ResizeRatio = [1.0, 1.0, 1.0]
 
-        # 
         model = self.model
         model.eval()
 
         # do padding on input
-        padding = [(x-y)//2 for x,y in zip(self.size_in, self.size_out)]
-        #img_pad = np.pad(input_img, ((0,0),(padding[0],padding[0]),(padding[1],padding[1]),(padding[2],padding[2])), 'constant')
-        img_pad0 = np.pad(input_img, ((0,0),(0,0),(padding[1],padding[1]),(padding[2],padding[2])), 'symmetric')#'constant')
-        img_pad = np.pad(img_pad0, ((0,0),(padding[0],padding[0]),(0,0),(0,0)), 'constant')
+        padding = [(x - y) // 2 for x, y in zip(self.size_in, self.size_out)]
+        img_pad0 = np.pad(input_img, (
+            (0, 0), (0, 0), (padding[1], padding[1]), (padding[2], padding[2])
+        ), 'symmetric')
+        img_pad = np.pad(img_pad0, (
+            (0, 0), (padding[0], padding[0]), (0, 0), (0, 0)
+        ), 'constant')
 
-        # we only support single output image in model zoo (other outputs are only supported in full segmenter prediction)
-        assert len(self.OutputCh) ==2
+        # we only support single output image in model zoo 
+        # other outputs are only supported in full segmenter prediction so far
+        assert len(self.OutputCh) == 2
         output_img = np.zeros(input_img.shape)
 
         # loop through the image patch by patch
-        num_step_z = int(np.ceil(input_img.shape[1]/self.size_out[0]))
-        num_step_y = int(np.ceil(input_img.shape[2]/self.size_out[1]))
-        num_step_x = int(np.ceil(input_img.shape[3]/self.size_out[2]))
+        num_step_z = int(np.ceil(input_img.shape[1] / self.size_out[0]))
+        num_step_y = int(np.ceil(input_img.shape[2] / self.size_out[1]))
+        num_step_x = int(np.ceil(input_img.shape[3] / self.size_out[2]))
         with torch.no_grad():
             for ix in range(num_step_x):
                 if ix < num_step_x - 1:
@@ -334,39 +369,59 @@ class SegModel:
                         else:
                             za = input_img.shape[1] - self.size_out[0]
 
-                        input_patch = img_pad[ : ,za:(za+self.size_in[0]) ,ya:(ya+self.size_in[1]) ,xa:(xa+self.size_in[2])]
+                        input_patch = img_pad[
+                            :, 
+                            za:(za + self.size_in[0]),
+                            ya:(ya + self.size_in[1]),
+                            xa:(xa + self.size_in[2])
+                        ]
                         input_img_tensor = torch.from_numpy(input_patch)
                         tmp_out = model(Variable(input_img_tensor.cuda()).unsqueeze(0))
-                        assert len(self.OutputCh)//2 <= len(tmp_out), print('the parameter OutputCh is not compatible with the number of output tensors')
+                        assert len(self.OutputCh) // 2 <= len(tmp_out), \
+                            "the parameter OutputCh not compatible with output tensors"
 
                         label = tmp_out[self.OutputCh[0]]
                         prob = self.softmax(label)
                         out_flat_tensor = prob.cpu().data
-                        out_tensor = out_flat_tensor.view(self.size_out[0], self.size_out[1], self.size_out[2], self.nclass[0])
+                        out_tensor = out_flat_tensor.view(
+                            self.size_out[0],
+                            self.size_out[1],
+                            self.size_out[2],
+                            self.nclass[0]
+                        )
                         out_nda = out_tensor.numpy()
-                        output_img[0,za:(za+self.size_out[0]), ya:(ya+self.size_out[1]), xa:(xa+self.size_out[2])] = out_nda[:,:,:,self.OutputCh[1]]
+                        output_img[
+                            0,
+                            za:(za + self.size_out[0]),
+                            ya:(ya + self.size_out[1]),
+                            xa:(xa + self.size_out[2])
+                        ] = out_nda[:, :, :, self.OutputCh[1]]
 
         torch.cuda.empty_cache()
 
         if cutoff is None:
             # load default cutoff
             cutoff = self.cutoff 
-        
-        if cutoff>0:
-            output_img = output_img>cutoff
+
+        if cutoff > 0:
+            output_img = output_img > cutoff
             output_img = output_img.astype(np.uint8)
-            output_img[output_img>0]=255
+            output_img[output_img > 0] = 255
         else:
-            output_img = (output_img - output_img.min()) / (output_img.max()-output_img.min())
+            output_img = (output_img - output_img.min()) / \
+                (output_img.max() - output_img.min())
             output_img = output_img.astype(np.float32)
 
-        return output_img[0,:,:,:]
+        return output_img[0, :, :, :]
 
 
 class SuperModel:
 
     def __init__(self, model_name, model_param={}):
 
+        assert "local_path" in model_param, "local_path is required"
+        # TODO: allow hard-coded model path to skip local_path
+        model_local_path = model_param["local_path"]
         if not (model_name in SUPER_MODEL_MAPPING):
             raise IOError(f"model name '{model_name}' does not exist")
 
@@ -376,7 +431,16 @@ class SuperModel:
 
         for mi, mname in enumerate(self.model_list):
             if mname[:2] == 'LF':
-                model_def = parse_model(CHECKPOINT_PATH_MAPPING[mname]['path'])
+                from fnet.models import load_model as load_model_lf
+                from fnet.cli.predict import parse_model
+
+                if CHECKPOINT_PATH_MAPPING[mname]['path'] == 'quilt':
+                    model_path = validate_model(mname, model_local_path)
+                else:
+                    print("Non-quilt model path is not implemented yet.")
+                    # TODO: allow hard-coded model zoo for easy local run
+                    # model_path = CHECKPOINT_PATH_MAPPING[mname]['path']
+                model_def = parse_model(model_path)
                 m = load_model_lf(model_def['path'], no_optim=True)
                 m.to_gpu(0)
             else:
@@ -386,13 +450,14 @@ class SuperModel:
                 m.to_gpu('cuda:0')
 
             self.models.append(m)
+        self.models.append(model_local_path)
 
         print(SUPER_MODEL_MAPPING[model_name]['instruction'])
 
     def apply_on_single_zstack(
         self,
         input_img: np.ndarray = None,
-        filename: Union(str, Path) = None,
+        filename: Union[str, Path] = None,
         inputCh: List = [0]
     ) -> Union[np.ndarray, List]:
         """
