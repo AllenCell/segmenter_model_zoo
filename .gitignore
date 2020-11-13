@@ -8,6 +8,8 @@ __pycache__/
 
 playbooks/
 
+.vscode/
+
 # Distribution / packaging
 .Python
 env/

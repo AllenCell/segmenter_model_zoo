@@ -177,7 +177,7 @@ class SegModel:
             quit()
         self.model = self.model.to(gpu_id)
 
-    def load_train(self, checkpoint_name, model_param={}):
+    def load_train(self, checkpoint_name, model_param={"local_path": "./"}):
 
         if not (checkpoint_name in CHECKPOINT_PATH_MAPPING):
             raise IOError(f"Checkpoint '{checkpoint_name}' does not exist")
