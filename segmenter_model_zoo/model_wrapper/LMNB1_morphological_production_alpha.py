@@ -1,13 +1,9 @@
 import sys
-from tifffile import imsave
-from shutil import copyfile
-from scipy import stats
-from scipy.ndimage.morphology import distance_transform_edt, binary_fill_holes
+from scipy.ndimage.morphology import binary_fill_holes
 from scipy.ndimage import gaussian_filter
-import glob
 import itk
 import numpy as np
-from skimage.morphology import watershed, remove_small_objects
+from skimage.morphology import remove_small_objects
 from skimage.measure import label
 from skimage.segmentation import find_boundaries
 from aicsmlsegment.utils import background_sub, simple_norm

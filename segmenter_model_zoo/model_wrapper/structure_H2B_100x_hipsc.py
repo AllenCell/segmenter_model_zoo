@@ -1,5 +1,3 @@
-from scipy.ndimage.morphology import binary_fill_holes
-import numpy as np
 from skimage.morphology import remove_small_objects
 from aicsmlsegment.utils import background_sub, simple_norm
 from aicsimageio import AICSImage
