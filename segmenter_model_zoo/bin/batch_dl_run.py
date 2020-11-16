@@ -21,19 +21,18 @@ from segmenter_model_zoo.utils import load_filenames, save_as_uint
 log = logging.getLogger()
 # Note: basicConfig should only be called in bin scripts (CLIs).
 # https://docs.python.org/3/library/logging.html#logging.basicConfig
-# "This function does nothing if the root logger already has handlers configured for 
-# it." As such, it should only be called once, and at the highest level (the CLIs in 
+# "This function does nothing if the root logger already has handlers configured for
+# it." As such, it should only be called once, and at the highest level (the CLIs in
 # this case). It should NEVER be called in library code!
 logging.basicConfig(
     level=logging.INFO,
-    format='[%(asctime)s - %(name)s - %(lineno)3d][%(levelname)s] %(message)s'
+    format="[%(asctime)s - %(name)s - %(lineno)3d][%(levelname)s] %(message)s",
 )
 
 ###############################################################################
 
 
 class Args(argparse.Namespace):
-
     def __init__(self):
         # Arguments that could be passed in through the command line
         self.debug = False
@@ -41,36 +40,29 @@ class Args(argparse.Namespace):
 
     def __parse(self):
         p = argparse.ArgumentParser(
-            prog='run dl segmentation',
-            description='the entry point for running segmentation using ML model zoo'
+            prog="run dl segmentation",
+            description="the entry point for running segmentation using ML model zoo",
         )
         p.add_argument(
-            '--config', 
-            required=True,
-            help='the path to the configuration file'
+            "--config", required=True, help="the path to the configuration file"
         )
         p.add_argument(
-            '-d', 
-            '--debug', 
-            action='store_true',
-            dest='debug',
-            help=argparse.SUPPRESS
+            "-d", "--debug", action="store_true", dest="debug", help=argparse.SUPPRESS
         )
         p.add_argument(
-            '--overwrite',
-            action='store_true',
-            help='whether to overwrite existing results'
+            "--overwrite",
+            action="store_true",
+            help="whether to overwrite existing results",
         )
         p.add_argument(
-            '--search_tag',
+            "--search_tag",
             type=str,
-            help='a string used to match filename when checking existence'
+            help="a string used to match filename when checking existence",
         )
         p.parse_args(namespace=self)
 
 
 class Seg3DStacks(object):
-
     def __init__(self, config, args):
         self.model = SuperModel(config["model"], config)
         self.overwrite = args.overwrite
@@ -90,7 +82,7 @@ class Seg3DStacks(object):
             if not self.overwrite:
                 if self.tag is None:
                     # check if similar segmentation exists
-                    existing_results = list(save_path.glob(fn_core + '*.'))
+                    existing_results = list(save_path.glob(fn_core + "*."))
                     if len(existing_results) > 0:
                         print("the following files already exists, please check.")
                         print(existing_results)
@@ -104,8 +96,7 @@ class Seg3DStacks(object):
 
             # run segmentation
             seg = self.model.apply_on_single_zstack(
-                filename=fn,
-                inputCh=self.input_channel
+                filename=fn, inputCh=self.input_channel
             )
 
             ##############################################
@@ -121,7 +112,9 @@ class Seg3DStacks(object):
                 for seg_img, seg_tag in seg_output:
                     save_as_uint(seg_img, save_path, fn_core, seg_tag, self.overwrite)
 
-        print('all files are done')
+        print("all files are done")
+
+
 ###############################################################################
 
 
@@ -130,14 +123,14 @@ def main():
         args = Args()
         dbg = args.debug
         print(args.config)
-        config = yaml.load(open(args.config, 'r'))
-        all_files, timelapse_flag = load_filenames(config['Data'])
+        config = yaml.load(open(args.config, "r"))
+        all_files, timelapse_flag = load_filenames(config["Data"])
         print(all_files)
 
         # Do your work here - preferably in a class or function,
         # passing in your args. E.g.
         if timelapse_flag:
-            print('timelapse is not supported yet')
+            print("timelapse is not supported yet")
             sys.exit(0)
         else:
             exe = Seg3DStacks(config, args)
@@ -156,5 +149,5 @@ def main():
 ###############################################################################
 # Allow caller to directly run this module (usually in development scenarios)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

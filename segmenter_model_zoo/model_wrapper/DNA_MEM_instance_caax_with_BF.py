@@ -6,69 +6,87 @@ from os import listdir
 from aicsimageio import AICSImage, omeTifWriter
 import math
 from scipy.ndimage.morphology import binary_fill_holes, distance_transform_edt
-from skimage.morphology import ball, dilation, erosion, disk, binary_closing, skeletonize, skeletonize_3d, watershed, remove_small_objects
+from skimage.morphology import (
+    ball,
+    dilation,
+    erosion,
+    disk,
+    binary_closing,
+    skeletonize,
+    skeletonize_3d,
+    watershed,
+    remove_small_objects,
+)
 from skimage.measure import regionprops, label
 from os.path import isfile, join, exists, basename
 from scipy import stats
 from scipy import ndimage as ndi
 from skimage.color import label2rgb
 from skimage.segmentation import relabel_sequential, find_boundaries
-import random 
-import pandas as pd 
+import random
+import pandas as pd
 from tifffile import imsave
-from shutil import copyfile 
+from shutil import copyfile
 from scipy import stats
 from scipy.ndimage.morphology import distance_transform_edt, binary_fill_holes
-import glob 
+import glob
 from aicsmlsegment.utils import background_sub, simple_norm
 from aicsimageio import AICSImage
 import itk
-#from collections import Counter
-#import pdb
+
+# from collections import Counter
+# import pdb
 
 # from cell_detector import detect
 
-mem_pre_cut_th = 0.2 # 0.2  # + 0.25
-min_seed_size = 6000 #9000 # 3800
+mem_pre_cut_th = 0.2  # 0.2  # + 0.25
+min_seed_size = 6000  # 9000 # 3800
 
 dna_bf_cutoff = 1.05
 
-flat_se = np.zeros((5,5,5),dtype=np.uint8)
-flat_se[2,:,:]=1
+flat_se = np.zeros((5, 5, 5), dtype=np.uint8)
+flat_se[2, :, :] = 1
 
 
 def getLargestCC(labels, is_label=True):
 
     if is_label:
-        largestCC = labels == np.argmax(np.bincount(labels.flat)[1:])+1
+        largestCC = labels == np.argmax(np.bincount(labels.flat)[1:]) + 1
     else:
-        sub_labels = label(labels>0, connectivity=3, return_num=False)
-        largestCC = sub_labels == np.argmax(np.bincount(sub_labels.flat)[1:])+1
+        sub_labels = label(labels > 0, connectivity=3, return_num=False)
+        largestCC = sub_labels == np.argmax(np.bincount(sub_labels.flat)[1:]) + 1
 
     return largestCC
 
 
-def SegModule(img=None, model_list=None, prune_border=False, filename=None, index=None, return_prediction=False, two_camera=False):
+def SegModule(
+    img=None,
+    model_list=None,
+    prune_border=False,
+    filename=None,
+    index=None,
+    return_prediction=False,
+    two_camera=False,
+):
 
-    #if two_camera:
+    # if two_camera:
     #    mem_bf_cut = 1.9 ### only use lf pred for membrane top and bottom (the seperation in two camera could be wrong)
     #    dna_bf_cutoff = 1.45 ### decrease cutoff after turn tta off
-    #else:
+    # else:
     #    mem_bf_cut = 0.25
     #    dna_bf_cutoff = 1.5
-    
-    
+
     # model order: dna_mask, cellmask, dna_seed
 
     if img is None:
-        # load the image 
+        # load the image
         reader = AICSImage(filename)
-        img = reader.data[0,index,:,:,:]
-    
+        img = reader.data[0, index, :, :, :]
+
     # make sure the image has 4 dimensions
-    #assert len(img.shape)==4 and img.shape[0]==3
-    if not (len(img.shape)==4 and img.shape[0]==2 and img.shape[1]>=32):
-        print('bad data, dimension crashed')
+    # assert len(img.shape)==4 and img.shape[0]==3
+    if not (len(img.shape) == 4 and img.shape[0] == 2 and img.shape[1] >= 32):
+        print("bad data, dimension crashed")
         if return_prediction:
             return None, [dna_mask_pred, mem_pred, seed_pred]
         else:
@@ -82,37 +100,43 @@ def SegModule(img=None, model_list=None, prune_border=False, filename=None, inde
     # first = caax; second = bf
 
     # extra cellmask channel
-    mem_img = img[0,:,:,:].copy()
-    mem_img[mem_img>60000] = mem_img.min()
-    mem_img = background_sub(mem_img,50)
+    mem_img = img[0, :, :, :].copy()
+    mem_img[mem_img > 60000] = mem_img.min()
+    mem_img = background_sub(mem_img, 50)
     mem_img = simple_norm(mem_img, 2, 11)
 
-    print('image normalization is done')
-    print('applying all DL models ... ...')
+    print("image normalization is done")
+    print("applying all DL models ... ...")
 
     ###########################################################
     # part 2: run predictions
     ###########################################################
 
     # model 1: cell edge
-    mem_pred = model_list[0].apply_on_single_zstack(mem_img, already_normalized=True, cutoff=-1)
+    mem_pred = model_list[0].apply_on_single_zstack(
+        mem_img, already_normalized=True, cutoff=-1
+    )
 
     # model 2: dna from bf
     if two_camera:
-        dna_bf_pred = model_list[1].apply_on_single_zstack(input_img = img[1,:,:,:], use_tta=False)
+        dna_bf_pred = model_list[1].apply_on_single_zstack(
+            input_img=img[1, :, :, :], use_tta=False
+        )
     else:
-        dna_bf_pred = model_list[1].apply_on_single_zstack(input_img = img[1,:,:,:], use_tta=True)
-    
+        dna_bf_pred = model_list[1].apply_on_single_zstack(
+            input_img=img[1, :, :, :], use_tta=True
+        )
+
     dna_bf_bw = dna_bf_pred > dna_bf_cutoff
 
-    print('predictions are done.')
+    print("predictions are done.")
 
-    #rr= random.randint(1000,9000)
+    # rr= random.randint(1000,9000)
 
     ###########################################################
     # part 3: merge bf based prediction into dye based prediction
     ###########################################################
-    '''
+    """
     # adjust mem_pred by bf
     mem_bf_trust = np.zeros_like(mem_pred)
     mem_bf_trust[mem_bf_pred>mem_bf_cut]=1
@@ -132,20 +156,20 @@ def SegModule(img=None, model_list=None, prune_border=False, filename=None, inde
     mem_bf_trust_3 = mem_bf_trust_3.astype(np.uint8)
     mem_bf_trust_3[mem_bf_trust_3>0]=1
     mem_pred = mem_pred + mem_bf_trust_3*0.1
-    '''
+    """
 
     # prepare separation boundary
-    tmp_mem = mem_pred>mem_pre_cut_th
+    tmp_mem = mem_pred > mem_pre_cut_th
     for zz in range(tmp_mem.shape[0]):
-        if np.any(tmp_mem[zz,:,:]):
-            tmp_mem[zz,:,:] = dilation(tmp_mem[zz,:,:], selem=disk(1))
+        if np.any(tmp_mem[zz, :, :]):
+            tmp_mem[zz, :, :] = dilation(tmp_mem[zz, :, :], selem=disk(1))
 
-    # cut seed 
+    # cut seed
     seed_bw = dna_bf_bw.copy()
-    seed_bw[tmp_mem>0]=0
-    #seed_bw[mem_bf_pred>mem_bf_cut_extra_for_seed]=0 
+    seed_bw[tmp_mem > 0] = 0
+    # seed_bw[mem_bf_pred>mem_bf_cut_extra_for_seed]=0
     # # sometimes the boundary signal is week, we need extra strong cut
-    # # but, this may falsely cut a lot more. So, the correct way is not 
+    # # but, this may falsely cut a lot more. So, the correct way is not
     # # to apply extra cut. Instead, we should improvement the mem lf model
 
     #############################################################
@@ -161,20 +185,20 @@ def SegModule(img=None, model_list=None, prune_border=False, filename=None, inde
     # save the seeds that are touching boundary
     boundary_mask = np.zeros_like(seed_bw)
     boundary_mask[:, :4, :] = 1
-    boundary_mask[:,-4:, :] = 1
+    boundary_mask[:, -4:, :] = 1
     boundary_mask[:, :, :4] = 1
-    boundary_mask[:, :,-4:] = 1
+    boundary_mask[:, :, -4:] = 1
 
     bd_seed_on_hold = np.zeros_like(seed_bw)
-    bd_idx = list(np.unique(seed_label[boundary_mask>0]))
+    bd_idx = list(np.unique(seed_label[boundary_mask > 0]))
     for index, cid in enumerate(bd_idx):
-        if cid>0:
-            bd_seed_on_hold[seed_label==cid]=1
+        if cid > 0:
+            bd_seed_on_hold[seed_label == cid] = 1
 
     seed_bw = remove_small_objects(seed_bw, min_size=min_seed_size, connectivity=1)
 
     # finalize seed (add back the seeds on hold)
-    seed_bw[bd_seed_on_hold>0]=1
+    seed_bw[bd_seed_on_hold > 0] = 1
 
     ###########################################################
     # part 4: prepare for watershed image
@@ -182,79 +206,88 @@ def SegModule(img=None, model_list=None, prune_border=False, filename=None, inde
 
     # find the stack bottom
     stack_bottom = 0
-    for zz in np.arange(3,tmp_mem.shape[0]//2):
-        if np.count_nonzero(tmp_mem[zz,:,:]>0)>0.5*tmp_mem.shape[1]*tmp_mem.shape[2]:
+    for zz in np.arange(3, tmp_mem.shape[0] // 2):
+        if (
+            np.count_nonzero(tmp_mem[zz, :, :] > 0)
+            > 0.5 * tmp_mem.shape[1] * tmp_mem.shape[2]
+        ):
             stack_bottom = zz
             break
 
     # find the stack top
-    stack_top = mem_pred.shape[0]-1
-    for zz in np.arange(mem_pred.shape[0]-1, mem_pred.shape[0]//2+1, -1):
-        if np.count_nonzero(tmp_mem[zz,:,:]>0)>64:
-            stack_top = zz 
+    stack_top = mem_pred.shape[0] - 1
+    for zz in np.arange(mem_pred.shape[0] - 1, mem_pred.shape[0] // 2 + 1, -1):
+        if np.count_nonzero(tmp_mem[zz, :, :] > 0) > 64:
+            stack_top = zz
             break
 
     # prune mem_pred
-    if stack_bottom==0:
-        mem_pred[0,:,:]=0.0000001
+    if stack_bottom == 0:
+        mem_pred[0, :, :] = 0.0000001
     else:
-        mem_pred[:stack_bottom,:,:]=0.0000001
-    mem_pred[stack_top:,:,:]=0.0000001
+        mem_pred[:stack_bottom, :, :] = 0.0000001
+    mem_pred[stack_top:, :, :] = 0.0000001
 
     #############################################################
     # part 5: prepare for watershed seed
     #############################################################
     seed_label, seed_num = label(seed_bw, return_num=True, connectivity=1)
-        
-    if stack_bottom==0:
-        seed_label[0,:,:] = seed_num+1
+
+    if stack_bottom == 0:
+        seed_label[0, :, :] = seed_num + 1
     else:
-        seed_label[:stack_bottom,:,:] = seed_num+1
-    seed_label[stack_top:,:,:] = seed_num+2
+        seed_label[:stack_bottom, :, :] = seed_num + 1
+    seed_label[stack_top:, :, :] = seed_num + 2
 
     ################################################################
     # part 6: get cell instance segmentation
     ################################################################
-    #cell_seg = watershed(mem_pred, seed_label, watershed_line=True)
+    # cell_seg = watershed(mem_pred, seed_label, watershed_line=True)
     raw0 = mem_pred.astype(np.float32)
     raw_itk = itk.GetImageFromArray(raw0)
-    seed_itk= itk.GetImageFromArray(seed_label.astype(np.int16))
-    seg_itk = itk.morphological_watershed_from_markers_image_filter(raw_itk, marker_image=seed_itk, fully_connected=True, mark_watershed_line=False)
+    seed_itk = itk.GetImageFromArray(seed_label.astype(np.int16))
+    seg_itk = itk.morphological_watershed_from_markers_image_filter(
+        raw_itk, marker_image=seed_itk, fully_connected=True, mark_watershed_line=False
+    )
     cell_seg = itk.GetArrayFromImage(seg_itk)
 
-    cell_seg[cell_seg==seed_num+1]=0
-    cell_seg[cell_seg==seed_num+2]=0
+    cell_seg[cell_seg == seed_num + 1] = 0
+    cell_seg[cell_seg == seed_num + 2] = 0
 
-    print('watershed based cell segmentation is done.')
+    print("watershed based cell segmentation is done.")
 
     ################################################################
     # part 7: refine cell segmentation near bottom
     ################################################################
     # estimate colony coverage size
     colony_coverage = np.amax(tmp_mem.astype(np.uint8), axis=0)
-    colony_coverage_size = np.count_nonzero(colony_coverage.flat>0)
-    #print([colony_coverage_size, colony_coverage.shape[0]*colony_coverage.shape[1]])
-    
-    step_down_z = stack_bottom-1
-    for zz in np.arange(stack_bottom-1, cell_seg.shape[0]//2):
-        if np.count_nonzero(cell_seg[zz,:,:]>0) > 0.8*colony_coverage_size:
+    colony_coverage_size = np.count_nonzero(colony_coverage.flat > 0)
+    # print([colony_coverage_size, colony_coverage.shape[0]*colony_coverage.shape[1]])
+
+    step_down_z = stack_bottom - 1
+    for zz in np.arange(stack_bottom - 1, cell_seg.shape[0] // 2):
+        if np.count_nonzero(cell_seg[zz, :, :] > 0) > 0.8 * colony_coverage_size:
             step_down_z = zz
-            break 
+            break
 
     for zz in np.arange(stack_bottom, step_down_z, 1):
-        cell_seg[zz,:,:] = cell_seg[step_down_z,:,:]
+        cell_seg[zz, :, :] = cell_seg[step_down_z, :, :]
 
-    print('stack bottom has been properly updated.')
+    print("stack bottom has been properly updated.")
 
     #### remove small cells due to failure / noise
-    for ii in np.unique(cell_seg[cell_seg>0]):
-        this_one_cell = cell_seg==ii
+    for ii in np.unique(cell_seg[cell_seg > 0]):
+        this_one_cell = cell_seg == ii
         this_dna = dna_bf_bw.copy()
-        this_dna[this_one_cell==0]=0
-        if np.count_nonzero(this_one_cell>0)< 70000 or np.count_nonzero(this_dna>0)< 1000 or np.count_nonzero(getLargestCC(this_dna, is_label=False))< 10000: # small "cell" or "dna"
-            cell_seg[this_one_cell>0]=0
+        this_dna[this_one_cell == 0] = 0
+        if (
+            np.count_nonzero(this_one_cell > 0) < 70000
+            or np.count_nonzero(this_dna > 0) < 1000
+            or np.count_nonzero(getLargestCC(this_dna, is_label=False)) < 10000
+        ):  # small "cell" or "dna"
+            cell_seg[this_one_cell > 0] = 0
 
-    '''
+    """
     # false clip check (mem channel)
     z_range_mem = np.where(np.any(cell_seg, axis=(1,2)))
     z_range_mem = z_range_mem[0]
@@ -264,51 +297,55 @@ def SegModule(img=None, model_list=None, prune_border=False, filename=None, inde
             return None, [dna_mask_pred, mem_pred, seed_pred]
         else:
             return None
-    '''
-
+    """
 
     # relabel the index in case altered when dumping the bottom
-    cell_seg, _tmp , _tmp2 = relabel_sequential(cell_seg.astype(np.uint8))
+    cell_seg, _tmp, _tmp2 = relabel_sequential(cell_seg.astype(np.uint8))
 
-    print('size based QC is done')
-
+    print("size based QC is done")
 
     # fix top by 1 more up
     # this is wrong, may cause drift (leading to false dna cut) in the middle part of the cell
-    #cell_seg = dilation(cell_seg, selem=selem_top)
-    #imsave('test_cell_seg_after_fix_top_'+str(rr)+'.tiff', cell_seg)
+    # cell_seg = dilation(cell_seg, selem=selem_top)
+    # imsave('test_cell_seg_after_fix_top_'+str(rr)+'.tiff', cell_seg)
 
     ################################################################
     # get dna instance segmentation
     ################################################################
     # make sure dna is not out of membrane
-    dna_bf_bw[cell_seg==0]=0
+    dna_bf_bw[cell_seg == 0] = 0
 
     # propagate the cell index to dna
     dna_mask_label = np.zeros_like(cell_seg)
-    dna_mask_label[dna_bf_bw>0] = 1
+    dna_mask_label[dna_bf_bw > 0] = 1
     dna_mask_label = dna_mask_label * cell_seg
 
     # false clip check (dna channel)
-    z_range_dna = np.where(np.any(dna_mask_label, axis=(1,2)))
+    z_range_dna = np.where(np.any(dna_mask_label, axis=(1, 2)))
     z_range_dna = z_range_dna[0]
-    if len(z_range_dna)==0 or z_range_dna[0] == 0 or z_range_dna[-1] == dna_mask_label.shape[0] - 1:
-        print('exit because false clip or bad floaty is detected in dna channel')
+    if (
+        len(z_range_dna) == 0
+        or z_range_dna[0] == 0
+        or z_range_dna[-1] == dna_mask_label.shape[0] - 1
+    ):
+        print("exit because false clip or bad floaty is detected in dna channel")
         if return_prediction:
             return None, [dna_mask_pred, mem_pred, seed_pred]
         else:
             return None
-        #sys.exit(0)
+        # sys.exit(0)
 
-    if dna_mask_label.max()<3:  # if only a few cells left, just throw it away
-        print('exit because only very few cells are segmented, maybe a failed image, please check')
+    if dna_mask_label.max() < 3:  # if only a few cells left, just throw it away
+        print(
+            "exit because only very few cells are segmented, maybe a failed image, please check"
+        )
         if return_prediction:
             return None, [dna_mask_pred, mem_pred, seed_pred]
         else:
             return None
-        #sys.exit(0)
+        # sys.exit(0)
 
-    '''
+    """
     print('refining dna masks ... ...')
 
     # get the index touching border
@@ -542,14 +579,14 @@ def SegModule(img=None, model_list=None, prune_border=False, filename=None, inde
 
         seg_mem_contour[single_mem_contour>0] = cid
         seg_dna_contour[single_dna_contour>0] = cid
-    '''
+    """
 
-
-    combined_seg = np.stack([dna_mask_label.astype(np.uint8), \
-            cell_seg.astype(np.uint8)], axis=1)
+    combined_seg = np.stack(
+        [dna_mask_label.astype(np.uint8), cell_seg.astype(np.uint8)], axis=1
+    )
     return combined_seg
 
-    '''
+    """
     ################################################################
     # remove all border-touching cells
     ################################################################
@@ -621,4 +658,4 @@ def SegModule(img=None, model_list=None, prune_border=False, filename=None, inde
     #    return cell_seg, dna_mask_label, [dna_mask_pred, mem_pred, seed_pred]
     #else:
     #    return cell_seg, dna_mask_label
-    '''
+    """

@@ -1,9 +1,9 @@
 from tifffile import imsave
-from shutil import copyfile 
+from shutil import copyfile
 from scipy import stats
 from scipy.ndimage.morphology import distance_transform_edt, binary_fill_holes
 from scipy.ndimage import gaussian_filter
-import glob 
+import glob
 import itk
 import numpy as np
 from skimage.morphology import watershed, remove_small_objects
@@ -12,7 +12,7 @@ from skimage.segmentation import find_boundaries
 from aicsmlsegment.utils import background_sub, simple_norm
 from aicsimageio import AICSImage
 
-mitosis_cutoff = 0.5 # 0.3
+mitosis_cutoff = 0.5  # 0.3
 core_cutoff = 0.5
 fill_est_cutoff = 0.5
 celledge_cutoff = 0.95
@@ -21,88 +21,114 @@ min_core = 1600
 mem_bf_cut = 0.25
 
 
-def SegModule(img=None, model_list=None, filename=None, index=None, return_prediction=False):
+def SegModule(
+    img=None, model_list=None, filename=None, index=None, return_prediction=False
+):
 
     # model order: mitosis, fill, core, mem_edge
     if img is None:
-        # load the image 
+        # load the image
         reader = AICSImage(filename)
-        img = reader.data[0,index,:,:,:]
+        img = reader.data[0, index, :, :, :]
 
     # make sure the image has 4 dimensions
-    assert len(img.shape)==4 and img.shape[0]==2 
+    assert len(img.shape) == 4 and img.shape[0] == 2
 
-    # extract lamin channel 
-    lamin_img = img[0,:,:,:]
-    lamin_img[lamin_img>4000] = lamin_img.min()
-    lamin_img = background_sub(lamin_img,50)
+    # extract lamin channel
+    lamin_img = img[0, :, :, :]
+    lamin_img[lamin_img > 4000] = lamin_img.min()
+    lamin_img = background_sub(lamin_img, 50)
 
     # extra brightfield channel
-    bf_img = img[1,:,:,:]
+    bf_img = img[1, :, :, :]
 
     # model 1: mitosis
-    mitosis_pred = model_list[0].apply_on_single_zstack(lamin_img, already_normalized=True, cutoff=-1)
-    mitosis_smooth = gaussian_filter(mitosis_pred, sigma=1, mode='nearest', truncate=3)
+    mitosis_pred = model_list[0].apply_on_single_zstack(
+        lamin_img, already_normalized=True, cutoff=-1
+    )
+    mitosis_smooth = gaussian_filter(mitosis_pred, sigma=1, mode="nearest", truncate=3)
 
     # model 2: fill
-    fill_pred = model_list[1].apply_on_single_zstack(lamin_img, already_normalized=True, cutoff=-1)
+    fill_pred = model_list[1].apply_on_single_zstack(
+        lamin_img, already_normalized=True, cutoff=-1
+    )
     fill_estimation = fill_pred > fill_est_cutoff
 
     # model 3: core
-    core_pred = model_list[2].apply_on_single_zstack(lamin_img, already_normalized=True, cutoff=-1)
-    core_bw = core_pred>core_cutoff
+    core_pred = model_list[2].apply_on_single_zstack(
+        lamin_img, already_normalized=True, cutoff=-1
+    )
+    core_bw = core_pred > core_cutoff
     core_bw = remove_small_objects(core_bw, min_size=min_core)
 
     # model 4: cell mask to further prune the mask
-    mem_bf_pred = model_list[3].apply_on_single_zstack(input_img = bf_img, use_tta=False)
+    mem_bf_pred = model_list[3].apply_on_single_zstack(input_img=bf_img, use_tta=False)
     cellmask_bw = mem_bf_pred > mem_bf_cut
 
     # prepare for watershed
-    mitosis_smooth[cellmask_bw>0]=0.005
+    mitosis_smooth[cellmask_bw > 0] = 0.005
 
     # do watershed
     seed, seed_num = label(core_bw, return_num=True)
-    seed[cellmask_bw>0]=seed_num+1
+    seed[cellmask_bw > 0] = seed_num + 1
 
     raw_itk = itk.GetImageFromArray(mitosis_smooth)
-    seed_itk= itk.GetImageFromArray(seed.astype(np.int16))
-    seg_itk = itk.morphological_watershed_from_markers_image_filter(raw_itk, marker_image=seed_itk, fully_connected=True, mark_watershed_line=False)
+    seed_itk = itk.GetImageFromArray(seed.astype(np.int16))
+    seg_itk = itk.morphological_watershed_from_markers_image_filter(
+        raw_itk, marker_image=seed_itk, fully_connected=True, mark_watershed_line=False
+    )
     filled = itk.GetArrayFromImage(seg_itk)
 
-    #filled = watershed(mitosis_smooth, seed, watershed_line=False)
-    
-    filled[filled>seed_num]=0
+    # filled = watershed(mitosis_smooth, seed, watershed_line=False)
 
-    fill_ref = np.logical_or(fill_estimation, binary_fill_holes(mitosis_pred>mitosis_cutoff))
-    #imsave('test_new_fill_'+str(rr)+'.tiff', filled.astype(np.uint8))
-    #imsave('test_fill_ref_'+str(rr)+'.tiff', fill_ref.astype(np.uint8))
+    filled[filled > seed_num] = 0
+
+    fill_ref = np.logical_or(
+        fill_estimation, binary_fill_holes(mitosis_pred > mitosis_cutoff)
+    )
+    # imsave('test_new_fill_'+str(rr)+'.tiff', filled.astype(np.uint8))
+    # imsave('test_fill_ref_'+str(rr)+'.tiff', fill_ref.astype(np.uint8))
 
     # remove "failed" cells (certain mitotic stage is not fillable, or is filled badly)
     for ci in range(seed_num):
-        single_fill = filled==ci+1
-        if np.count_nonzero(np.logical_and(single_fill,fill_estimation==0))>5000000:
-            filled[single_fill>0]=0
+        single_fill = filled == ci + 1
+        if (
+            np.count_nonzero(np.logical_and(single_fill, fill_estimation == 0))
+            > 5000000
+        ):
+            filled[single_fill > 0] = 0
             continue
 
         overlap_area = np.logical_and(single_fill, fill_ref)
-        overlap_ratio = np.count_nonzero(overlap_area) / (1e-8+ np.count_nonzero(single_fill))
-        if overlap_ratio<min_overlap:
-            filled[single_fill>0]=0
+        overlap_ratio = np.count_nonzero(overlap_area) / (
+            1e-8 + np.count_nonzero(single_fill)
+        )
+        if overlap_ratio < min_overlap:
+            filled[single_fill > 0] = 0
 
     # get two versions of segmentation
-    shell = find_boundaries(filled, mode='outer')
-    merged = np.logical_or(shell>0, mitosis_smooth>mitosis_cutoff)
+    shell = find_boundaries(filled, mode="outer")
+    merged = np.logical_or(shell > 0, mitosis_smooth > mitosis_cutoff)
 
     # return results
     merged = merged.astype(np.uint8)
-    merged[merged>0]=255
-    merged[0,:,:]=0
-    merged[-1,:,:]=0
+    merged[merged > 0] = 255
+    merged[0, :, :] = 0
+    merged[-1, :, :] = 0
 
     shell = shell.astype(np.uint8)
-    shell[shell>0]=255
+    shell[shell > 0] = 255
 
     if return_prediction:
-        return [merged, filled.astype(np.uint8), shell], ['_structure_','_fill_','_shell_'], [mitosis_pred, fill_pred, core_pred, cellmask_pred], ['_all_','_fill_','_core_','_edge_']
+        return (
+            [merged, filled.astype(np.uint8), shell],
+            ["_structure_", "_fill_", "_shell_"],
+            [mitosis_pred, fill_pred, core_pred, cellmask_pred],
+            ["_all_", "_fill_", "_core_", "_edge_"],
+        )
     else:
-        return [merged, filled.astype(np.uint8), shell], ['_structure_','_fill_','_shell_']
+        return [merged, filled.astype(np.uint8), shell], [
+            "_structure_",
+            "_fill_",
+            "_shell_",
+        ]
