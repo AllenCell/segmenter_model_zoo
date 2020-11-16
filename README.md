@@ -32,6 +32,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for information related to developing the
 
 ## The Four Commands You Need To Know
 
+If you are installing on Windows (we tested on Windows 10), make sure Windows C++ build tool is installed.
+
 0. `conda install pytorch==1.6.0 torchvision==0.7.0 cudatoolkit=10.2 -c pytorch` depending on cuda version (we use 10.2)
 
 1. `pip install -e .[dev]`

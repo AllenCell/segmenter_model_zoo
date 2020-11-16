@@ -39,9 +39,11 @@ dev_requirements = [
 ]
 
 requirements = [
+    'PyYAML',
+    'aicsimageio>3.3.0',
+    'aicsmlsegment>0.0.5'
+    'scikit-image',
     "quilt3",
-    "torchvision==0.7.0",
-    "torch==1.6.0"
 ]
 
 extra_requirements = {
@@ -68,7 +70,7 @@ setup(
     description="scripts and API for running Deep Learning models from segmenter",
     entry_points={
         "console_scripts": [
-            "my_example=segmenter_model_zoo.bin.my_example:main"
+            "run_model_zoo=segmenter_model_zoo.bin.batch_dl_run:main"
         ],
     },
     install_requires=requirements,
