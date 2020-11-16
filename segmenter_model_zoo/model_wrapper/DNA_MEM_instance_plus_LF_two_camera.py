@@ -1,45 +1,26 @@
-import pandas as pd
-import numpy as np
-import sys
 import os
-from os import listdir
-from aicsimageio import AICSImage, omeTifWriter
-import math
-from scipy.ndimage.morphology import binary_fill_holes, distance_transform_edt
-from skimage.morphology import (
-    ball,
-    dilation,
-    erosion,
-    disk,
-    binary_closing,
-    skeletonize,
-    skeletonize_3d,
-    watershed,
-    remove_small_objects,
-)
-from skimage.measure import regionprops, label
-from os.path import isfile, join, exists, basename
-from scipy import stats
-from scipy import ndimage as ndi
-from skimage.color import label2rgb
-from skimage.segmentation import relabel_sequential, find_boundaries
-import random
-import pandas as pd
-from tifffile import imsave
-from shutil import copyfile
-from scipy import stats
-from scipy.ndimage.morphology import distance_transform_edt, binary_fill_holes
-import glob
-from aicsmlsegment.utils import background_sub, simple_norm
+import numpy as np
 from aicsimageio import AICSImage
+from scipy.ndimage.morphology import binary_fill_holes
+from skimage.morphology import ball, dilation, disk, binary_closing
+from skimage.morphology import remove_small_objects
+from skimage.measure import label
+from skimage.segmentation import relabel_sequential, find_boundaries
+from aicsmlsegment.utils import background_sub, simple_norm
 import itk
+from collections import Counter
 
 from cell_detector import detect
+from segmenter_model_zoo.quilt_utils import QuiltModelZoo
+from segmenter_model_zoo.utils import getLargestCC
 
 mem_pre_cut_th = 0.2 + 0.25  # 0.2  # 0.02
 seed_bw_th = 0.75  # 0.90
 dna_mask_bw_th = 0.5  # 0.7
 min_seed_size = 6000  # 9000 # 3800
+
+pair_box_score_cutoff = 0.75
+pair_inclusion_ratio_cutoff = 0.65
 
 mem_bf_cut = 0.25
 dna_bf_cutoff = 1.5
@@ -56,8 +37,7 @@ def bb_intersection_over_union(boxA, boxB):
     yB = min(boxA[2], boxB[2])
     # compute the area of intersection rectangle
     interArea = max(0, xB - xA + 1) * max(0, yB - yA + 1)
-    # compute the area of both the prediction and ground-truth
-    # rectangles
+    # compute the area of both the prediction and ground-truth rectangles
     boxAArea = (boxA[2] - boxA[0] + 1) * (boxA[3] - boxA[1] + 1)
     boxBArea = (boxB[2] - boxB[0] + 1) * (boxB[3] - boxB[1] + 1)
     # compute the intersection over union by taking the intersection
@@ -78,7 +58,7 @@ def find_strongest_associate(main_score, aux_score):
 
 
 def exist_double_assignment(cell_pairs):
-    nodes = set(x for l in cell_pairs for x in l)
+    nodes = set(x for ll in cell_pairs for x in ll)
     num_node = len(nodes)
     num_pair = len(cell_pairs)
 
@@ -86,7 +66,7 @@ def exist_double_assignment(cell_pairs):
 
 
 def find_multi_assignment(cell_pairs):
-    nodes = [x for l in cell_pairs for x in l]
+    nodes = [x for ll in cell_pairs for x in ll]
     node_count = Counter(nodes)
     simple_pair = []
     multi_pair = []
@@ -114,17 +94,6 @@ def prune_cell_pairs(multi_pair, current_best_pair):
     return idx_to_remove
 
 
-def getLargestCC(labels, is_label=True):
-
-    if is_label:
-        largestCC = labels == np.argmax(np.bincount(labels.flat)[1:]) + 1
-    else:
-        sub_labels = label(labels > 0, connectivity=3, return_num=False)
-        largestCC = sub_labels == np.argmax(np.bincount(sub_labels.flat)[1:]) + 1
-
-    return largestCC
-
-
 def SegModule(
     img=None,
     model_list=None,
@@ -136,34 +105,48 @@ def SegModule(
 ):
 
     # if two_camera:
-    #    mem_bf_cut = 1.9 ### only use lf pred for membrane top and bottom (the seperation in two camera could be wrong)
+    #    mem_bf_cut = 1.9 ### only use lf pred for membrane top and bottom
+    # (the seperation in two camera could be wrong)
     #    dna_bf_cutoff = 1.45 ### decrease cutoff after turn tta off
     # else:
     #    mem_bf_cut = 0.25
     #    dna_bf_cutoff = 1.5
-
-    # model order: dna_mask, dna_seed
+    # model order: dna_mask, cellmask, dna_seed
 
     if img is None:
         # load the image
         reader = AICSImage(filename)
         img = reader.data[0, index, :, :, :]
 
-    # make sure the image has 4 dimensions, with 2 different channels
-    assert len(img.shape) == 4 and img.shape[0] == 2
+    # make sure the image has 4 dimensions
+    # assert len(img.shape)==4 and img.shape[0]==3
+    if not (len(img.shape) == 4 and img.shape[0] == 3 and img.shape[1] >= 32):
+        print("bad data, dimension crashed")
+        if return_prediction:
+            return None, None
+        else:
+            return None
 
     ###########################################################
     # part 1: prepare data
     ###########################################################
 
     # input channel order:
-    # first = dna; third = bf
+    # first = dna; second = cell mask; third = bf
 
     # extract dna channel
     dna_img = img[0, :, :, :].copy()
     dna_img[dna_img > 60000] = dna_img.min()
     dna_img = background_sub(dna_img, 50)
     dna_img = simple_norm(dna_img, 2.5, 10)
+    # imsave('dna_norm.tiff', dna_img)
+
+    # extra cellmask channel
+    mem_img = img[1, :, :, :].copy()
+    mem_img[mem_img > 60000] = mem_img.min()
+    mem_img = background_sub(mem_img, 50)
+    mem_img = simple_norm(mem_img, 2, 11)
+    # imsave('cell_norm.tiff', mem_img)
 
     print("image normalization is done")
     print("applying all DL models ... ...")
@@ -177,50 +160,68 @@ def SegModule(
         dna_img, already_normalized=True, cutoff=-1
     )
     dna_mask_bw = dna_mask_pred > dna_mask_bw_th
+    # imsave('pred_dna.tiff', dna_mask_pred)
 
-    # model 2: dna_seed
-    seed_pred = model_list[1].apply_on_single_zstack(
+    # model 2: cell edge
+    mem_pred = model_list[1].apply_on_single_zstack(
+        mem_img, already_normalized=True, cutoff=-1
+    )
+    # imsave('pred_cell.tiff', mem_pred)
+
+    # model 3: dna_seed
+    seed_pred = model_list[2].apply_on_single_zstack(
         dna_img, already_normalized=True, cutoff=-1
     )
     seed_bw = seed_pred > seed_bw_th
+    # imsave('pred_seed.tiff', seed_pred)
 
-    # model 3: mem from bf
+    # model 4: dna from bf
     if two_camera:
-        mem_bf_pred = model_list[2].apply_on_single_zstack(
+        dna_bf_pred = model_list[3].apply_on_single_zstack(
             input_img=img[2, :, :, :], use_tta=False
         )
     else:
-        mem_bf_pred = model_list[2].apply_on_single_zstack(
+        dna_bf_pred = model_list[3].apply_on_single_zstack(
             input_img=img[2, :, :, :], use_tta=True
         )
+    dna_bf_bw = dna_bf_pred > dna_bf_cutoff
+    # imsave('lf_dna.tiff', dna_mask_pred)
 
+    # model 5: mem from bf
+    if two_camera:
+        mem_bf_pred = model_list[4].apply_on_single_zstack(
+            input_img=img[2, :, :, :], use_tta=False
+        )
+    else:
+        mem_bf_pred = model_list[4].apply_on_single_zstack(
+            input_img=img[2, :, :, :], use_tta=True
+        )
+    # imsave('lf_mem.tiff', mem_bf_pred)
     print("predictions are done.")
-
-    rr = random.randint(1000, 9000)
 
     ###########################################################
     # part 3: merge bf based prediction into dye based prediction
     ###########################################################
 
     # adjust mem_pred by bf
-    mem_bf_trust = np.zeros_like(dna_mask_pred)
+    mem_bf_trust = np.zeros_like(mem_pred)
     mem_bf_trust[mem_bf_pred > mem_bf_cut] = 1
-    mem_pred = mem_bf_trust * 0.25
+    mem_pred = mem_pred + mem_bf_trust * 0.1
 
     mem_bf_trust_1 = dilation(mem_bf_trust > 0, selem=flat_se)
     mem_bf_trust_1 = mem_bf_trust_1.astype(np.uint8)
     mem_bf_trust_1[mem_bf_trust_1 > 0] = 1
-    mem_pred = mem_pred + mem_bf_trust_1 * 0.25
+    mem_pred = mem_pred + mem_bf_trust_1 * 0.1
 
     mem_bf_trust_2 = dilation(mem_bf_trust_1 > 0, selem=flat_se)
     mem_bf_trust_2 = mem_bf_trust_2.astype(np.uint8)
     mem_bf_trust_2[mem_bf_trust_2 > 0] = 1
-    mem_pred = mem_pred + mem_bf_trust_2 * 0.25
+    mem_pred = mem_pred + mem_bf_trust_2 * 0.1
 
     mem_bf_trust_3 = dilation(mem_bf_trust_2 > 0, selem=flat_se)
     mem_bf_trust_3 = mem_bf_trust_3.astype(np.uint8)
     mem_bf_trust_3[mem_bf_trust_3 > 0] = 1
-    mem_pred = mem_pred + mem_bf_trust_3 * 0.25
+    mem_pred = mem_pred + mem_bf_trust_3 * 0.1
 
     # prepare separation boundary
     tmp_mem = mem_pred > mem_pre_cut_th
@@ -230,17 +231,6 @@ def SegModule(
 
     # cut seed
     seed_bw[tmp_mem > 0] = 0
-    # seed_bw[mem_bf_pred>mem_bf_cut_extra_for_seed]=0
-    # # sometimes the boundary signal is week, we need extra strong cut
-    # # but, this may falsely cut a lot more. So, the correct way is not
-    # # to apply extra cut. Instead, we should improvement the mem lf model
-
-    imsave("test_seed_after_cut_" + str(rr) + ".tiff", seed_bw.astype(np.uint8))
-    imsave("test_lf_mem_" + str(rr) + ".tiff", mem_bf_pred.astype(np.float32))
-    imsave("test_mem_" + str(rr) + ".tiff", mem_pred.astype(np.float32))
-    imsave("test_dna_" + str(rr) + ".tiff", dna_mask_pred.astype(np.float32))
-
-    sys.exit(0)
 
     #############################################################
     # prune the seeds first
@@ -269,8 +259,6 @@ def SegModule(
 
     # finalize seed (add back the seeds on hold)
     seed_bw[bd_seed_on_hold > 0] = 1
-
-    # imsave('test_seed_after_prune_'+str(rr)+'.tiff', seed_bw.astype(np.uint8))
 
     ##################################################
     # adjust seed and dna mask
@@ -311,14 +299,10 @@ def SegModule(
         single_extra = dna_bf_label == (ii + 1)
         if np.count_nonzero(np.logical_and(single_extra, seed_bw)) < 50:
             seed_bw[single_extra > 0] = 1
-            dna_mask_bw[
-                single_extra > 0
-            ] = 1  # if this seed is missing, assumes the signle of this dna is problematic
+            # if this seed is missing, assumes the signle of this dna is problematic
+            dna_mask_bw[single_extra > 0] = 1
         elif np.count_nonzero(np.logical_and(single_extra, dna_mask_bw)) < 50:
             dna_mask_bw[single_extra > 0] = 1
-
-    # imsave('test_seed_after_merge_lf_'+str(rr)+'.tiff', seed_bw.astype(np.uint8))
-    # imsave('test_dna_after_merge_lf_'+str(rr)+'.tiff', dna_mask_bw.astype(np.uint8))
 
     ###########################################################
     # part 4: prepare for watershed image
@@ -352,7 +336,6 @@ def SegModule(
     # part 5: prepare for watershed seed
     #############################################################
     seed_label, seed_num = label(seed_bw, return_num=True, connectivity=1)
-
     if stack_bottom == 0:
         seed_label[0, :, :] = seed_num + 1
     else:
@@ -376,15 +359,12 @@ def SegModule(
 
     print("watershed based cell segmentation is done.")
 
-    # imsave('test_cell_watershed_'+str(rr)+'.tiff', cell_seg.astype(np.uint8))
-
     ################################################################
     # part 7: refine cell segmentation near bottom
     ################################################################
     # estimate colony coverage size
     colony_coverage = np.amax(tmp_mem.astype(np.uint8), axis=0)
     colony_coverage_size = np.count_nonzero(colony_coverage.flat > 0)
-    # print([colony_coverage_size, colony_coverage.shape[0]*colony_coverage.shape[1]])
 
     step_down_z = stack_bottom - 1
     for zz in np.arange(stack_bottom - 1, cell_seg.shape[0] // 2):
@@ -397,33 +377,41 @@ def SegModule(
 
     print("stack bottom has been properly updated.")
 
-    #### remove small cells due to failure / noise
+    ################################################################
+    # part 8: QC by size
+    ################################################################
+    # remove small cells due to failure / noise
     for ii in np.unique(cell_seg[cell_seg > 0]):
         this_one_cell = cell_seg == ii
         this_dna = dna_mask_bw.copy()
         this_dna[this_one_cell == 0] = 0
+        # small "cell" or "dna"
         if (
             np.count_nonzero(this_one_cell > 0) < 70000
+            or np.count_nonzero(this_dna > 0) < 1000
             or np.count_nonzero(getLargestCC(this_dna, is_label=False)) < 10000
-        ):  # small "cell" or "dna"
+        ):
             cell_seg[this_one_cell > 0] = 0
 
     # false clip check (mem channel)
+    # i.e. the segmentation should not appear in first of last z-slice
     z_range_mem = np.where(np.any(cell_seg, axis=(1, 2)))
     z_range_mem = z_range_mem[0]
-    if z_range_mem[0] == 0 or z_range_mem[-1] == cell_seg.shape[0] - 1:
+    if (
+        len(z_range_mem) == 0
+        or z_range_mem[0] == 0
+        or z_range_mem[-1] == cell_seg.shape[0] - 1
+    ):
         print("exit because false clip or bad floaty is detected in mem channel")
-        sys.exit(0)
+        if return_prediction:
+            return None, [dna_mask_pred, mem_pred, seed_pred]
+        else:
+            return None
 
     # relabel the index in case altered when dumping the bottom
     cell_seg, _tmp, _tmp2 = relabel_sequential(cell_seg.astype(np.uint8))
 
     print("size based QC is done")
-
-    # fix top by 1 more up
-    # this is wrong, may cause drift (leading to false dna cut) in the middle part of the cell
-    # cell_seg = dilation(cell_seg, selem=selem_top)
-    # imsave('test_cell_seg_after_fix_top_'+str(rr)+'.tiff', cell_seg)
 
     ################################################################
     # get dna instance segmentation
@@ -436,18 +424,28 @@ def SegModule(
     dna_mask_label[dna_mask_bw > 0] = 1
     dna_mask_label = dna_mask_label * cell_seg
 
+    ###################################
     # false clip check (dna channel)
+    # i.e., the segmentation should not appear in first of last z-slice
     z_range_dna = np.where(np.any(dna_mask_label, axis=(1, 2)))
     z_range_dna = z_range_dna[0]
-    if z_range_dna[0] == 0 or z_range_dna[-1] == dna_mask_label.shape[0] - 1:
+    if (
+        len(z_range_dna) == 0
+        or z_range_dna[0] == 0
+        or z_range_dna[-1] == dna_mask_label.shape[0] - 1
+    ):
         print("exit because false clip or bad floaty is detected in dna channel")
-        sys.exit(0)
+        if return_prediction:
+            return None, [dna_mask_pred, mem_pred, seed_pred]
+        else:
+            return None
 
-    if dna_mask_label.max() < 4:  # if only a few cells left, just throw it away
-        print(
-            "exit because only very few cells are segmented, maybe a failed image, please check"
-        )
-        sys.exit(0)
+    if dna_mask_label.max() < 3:  # if only a few cells left, just throw it away
+        print("exit because only very few cells are segmented, maybe a bad image")
+        if return_prediction:
+            return None, [dna_mask_pred, mem_pred, seed_pred]
+        else:
+            return None
 
     print("refining dna masks ... ...")
 
@@ -461,10 +459,15 @@ def SegModule(
             # no need to refine, because this will be ignored in the real analysis
             continue
 
-        assert np.any(
-            dna_mask_label == (cell_idx + 1)
-        )  # empty dna should have been removed
+        # empty dna should have been removed
+        if not np.any(dna_mask_label == (cell_idx + 1)):
+            print("bug, empty dna is found, but should not")
+            if return_prediction:
+                return None, [dna_mask_pred, mem_pred, seed_pred]
+            else:
+                return None
 
+        # extract the largest component from the dna segmentation within this cell
         single_dna = dna_mask_label == (cell_idx + 1)
         single_dna_label, num_obj = label(single_dna, return_num=True, connectivity=3)
         if num_obj == 1:
@@ -472,18 +475,32 @@ def SegModule(
         elif num_obj > 1:
             largest_label = getLargestCC(single_dna_label)
         else:
-            print("bug occurs ...")
-            sys.exit(0)
-        ratio_check = np.count_nonzero(seed_label == (cell_idx + 1)) / np.count_nonzero(
-            largest_label
-        )
+            print("bug occurs in processing the pair ... ")
+            if return_prediction:
+                return None, [dna_mask_pred, mem_pred, seed_pred]
+            else:
+                return None
+
+        # ######################################################################
+        # choose different pruning method based on morphology
+        #   - option 1: not melt (interphase or early/late mitosis)
+        #               keep the largest connected component after
+        #               filling holes and removing small objects
+        #   - option 2: if melted (mitosis)
+        #               only clean up small objects near the cutting boundary
+        #               with neighbor cells (very like a not-precise cut)
+        # to decide which one to use, we compare the ratio between the dna mask
+        # and dna seed within this cell, because dna seed will be much smaller
+        # than dna mask if a mitotic cell has not started to "melt"
+        # ######################################################################
+        mask_size_in_this_cell = np.count_nonzero(largest_label)
+        seed_size_in_this_cell = np.count_nonzero(seed_label == (cell_idx + 1))
+        ratio_check = seed_size_in_this_cell / mask_size_in_this_cell
         if ratio_check < 0.75:  # interphase
             # prune dna mask
             for zz in range(single_dna.shape[0]):
                 if np.any(single_dna[zz, :, :]):
                     single_dna[zz, :, :] = binary_fill_holes(single_dna[zz, :, :])
-                    # dna_holes = single_dna[zz,:,:]==0
-                    # dna_holes = remove_small_objects(dna_holes, min_size=400)
                     single_dna[zz, :, :] = remove_small_objects(
                         single_dna[zz, :, :], min_size=100
                     )
@@ -499,32 +516,29 @@ def SegModule(
                     if np.count_nonzero(single_dna_label == dna_bd_idx) < 600:
                         dna_mask_label[single_dna_label == dna_bd_idx] = 0
 
-    """
-    if prune_border:
-        ################################################################
-        # remove all border-touching cells
-        ################################################################
-        bd_idx = list(np.unique(cell_seg[boundary_mask>0]))
-        for index, cid in enumerate(bd_idx):
-            if cid>0:
-                cell_seg[cell_seg==cid]=0
-                dna_mask_label[dna_mask_label==cid]=0
-    """
-
     print("refinement is done.")
     print("checking for cell pairs ... ...")
 
-    ################################################################
-    ################# do cell pair detection #######################
-    ################################################################
+    # ###############################################################
+    # ################ do cell pair detection #######################
+    # ###############################################################
 
+    # first, load the trained object detection model
+    _tmp_dir = str(model_list[-1])
+    _local_tmp = _tmp_dir + os.sep + "_tmp_cell_pair_detection_model.pth"
+    _local_config_tmp = _tmp_dir + os.sep + "_tmp_cell_pair_detection_config.yaml"
+    if not os.path.exists(_local_tmp):
+        model_helper = QuiltModelZoo()
+        model_helper.download_model("cell_pair_det_prod", _local_tmp)
+        model_helper.download_model("cell_pair_det_prod_config", _local_config_tmp)
+
+    # load the model
     pair_model = detect.import_model(
-        weight="/allen/aics/assay-dev/users/Hyeonwoo/code/develop/trained_models/faster-rcnn/pair_detector/model_final.pth",
-        output="/allen/aics/assay-dev/users/Jianxu",
-        config_file="/allen/aics/assay-dev/users/Hyeonwoo/code/develop/trained_models/faster-rcnn/pair_detector/aics_detection_train.yaml",
+        weight=_local_tmp, output=_tmp_dir, config_file=_local_config_tmp
     )
-
     print("detection model is loaded")
+
+    # run prediction
     rois_array = detect.predict(
         pair_model,
         filename=None,
@@ -533,51 +547,72 @@ def SegModule(
         shape="czyx",
         normalization=True,
         save_path=None,
-        config_file="/allen/aics/assay-dev/users/Hyeonwoo/code/develop/trained_models/faster-rcnn/pair_detector/aics_detection_train.yaml",
+        config_file=_local_config_tmp,
     )
 
+    # check if any potential pairs
     if len(rois_array) > 0:
-        # update variable name (the code was mostly copied from other scripts)
-        mem_seg_whole = cell_seg
-        nuc_seg_whole = dna_mask_label
 
+        # extract the coordinates and confidence score of each box
         roi_list = rois_array[0]
         roi_score = rois_array[1].tolist()
 
-        nuc_mip = np.amax(nuc_seg_whole, axis=0)
+        # get nuc labels in max-proj
+        nuc_mip = np.amax(dna_mask_label, axis=0)
+
+        # step 1: go through all bounding boxes and extract possible pairs
         cell_pairs = []
         cell_pairs_score = []
         cell_pairs_aux_score = []
-
         for roi2d_index, roi2d in enumerate(roi_list):
 
+            # crop out the nuc seg within the box and get ID of candidate cells
+            # there may be more than 2 IDs
             nuc_crop = nuc_mip[roi2d[1] : roi2d[3], roi2d[0] : roi2d[2]]
             pair_candis = np.unique(nuc_crop[nuc_crop > 0])
+
+            # get confidence score of this box
             this_score = roi_score[roi2d_index]
 
+            # step 1.0: skip bounding box with extremely low score
+            if this_score < pair_box_score_cutoff:
+                continue
+
+            # step 1.1: get all possile combinations
             pair_candi_valid = []
             for pair_i, cell_index in enumerate(pair_candis):
-                single_cell = nuc_seg_whole == cell_index
+                single_cell = dna_mask_label == cell_index
                 single_cell_mip = np.amax(single_cell, axis=0)
                 single_cell_mip_crop = single_cell_mip[
                     roi2d[1] : roi2d[3], roi2d[0] : roi2d[2]
                 ]
-                # if one cell has over 60% out of the boundary box, this pair associated with this cell is not valid
-                if (
-                    np.count_nonzero(single_cell_mip_crop > 0)
-                    / np.count_nonzero(single_cell_mip > 0)
-                    > 0.4
-                ):
+                # if one cell has over 60% out of the boundary box, the pair
+                # associated with this cell is not valid, otherwise keep it
+                # as candidates
+                area_within_box = np.count_nonzero(single_cell_mip_crop > 0)
+                area_of_whole_cell = np.count_nonzero(single_cell_mip > 0)
+                if area_within_box / area_of_whole_cell > 0.4:
                     pair_candi_valid.append(cell_index)
 
+            # step 1.2: evaluate the validity of each candidate combination
+            cell_pairs_in_one_box = []
+            cell_pairs_aux_score_in_one_box = []
             roi2d_size = (roi2d[3] - roi2d[1]) * (roi2d[2] - roi2d[0])
             for ii in np.arange(0, len(pair_candi_valid) - 1):
-                for jj in np.arange(1, len(pair_candi_valid)):
+                for jj in np.arange(ii + 1, len(pair_candi_valid)):
                     if [pair_candi_valid[ii], pair_candi_valid[jj]] in cell_pairs:
                         continue
+
+                    # step 1.2.1:
+                    # for each pair, extract their mask inside the box (denoted by B1)
+                    # and compute the bounding box of the cropped mask, denoted by B2
+                    # then, compare the size of B1 and B2.
+                    # Because, we expect the bounding box returned by detector (ie, B1)
+                    # should be a tight box around the true pair, the ratio of B2/B1
+                    # should not be too small. Otherwise, remove this potential pair
                     single_pair = np.logical_or(
-                        nuc_seg_whole == pair_candi_valid[jj],
-                        nuc_seg_whole == pair_candi_valid[ii],
+                        dna_mask_label == pair_candi_valid[jj],
+                        dna_mask_label == pair_candi_valid[ii],
                     )
                     single_pair_mip = np.amax(single_pair, axis=0)
 
@@ -586,53 +621,90 @@ def SegModule(
                     ]
                     y_range = np.where(np.any(single_pair_mip_crop, axis=(0)))
                     x_range = np.where(np.any(single_pair_mip_crop, axis=(1)))
-                    # print([pair_candi_valid[jj],pair_candi_valid[ii]])
-                    inclusion_ratio = (
-                        (y_range[0][-1] - y_range[0][0])
-                        * (x_range[0][-1] - x_range[0][0])
-                        / roi2d_size
+                    box_B2 = (y_range[0][-1] - y_range[0][0]) * (
+                        x_range[0][-1] - x_range[0][0]
                     )
-                    # print(inclusion_ratio)
-                    if inclusion_ratio < 0.65:
+                    inclusion_ratio = box_B2 / roi2d_size
+                    if inclusion_ratio < pair_inclusion_ratio_cutoff:
                         continue
 
-                    # y_range_no_crop = np.where(np.any(single_pair_mip, axis=(0)))
-                    # x_range_no_crop = np.where(np.any(single_pair_mip, axis=(1)))
-
-                    sz1 = np.count_nonzero(nuc_seg_whole == pair_candi_valid[jj])
-                    sz2 = np.count_nonzero(nuc_seg_whole == pair_candi_valid[ii])
+                    # step 1.2.2: the two dna's of the pair should have comparable size
+                    #             remove it if the size ratio is too small or too large
+                    sz1 = np.count_nonzero(dna_mask_label == pair_candi_valid[jj])
+                    sz2 = np.count_nonzero(dna_mask_label == pair_candi_valid[ii])
                     if sz1 / sz2 < 1.5625 and sz1 / sz2 > 0.64:
-                        cell_pairs.append([pair_candi_valid[ii], pair_candi_valid[jj]])
-                        cell_pairs_score.append(this_score)
-                        # iou = bb_intersection_over_union(roi2d, [y_range_no_crop[0][0], x_range_no_crop[0][0], y_range_no_crop[0][-1], x_range_no_crop[0][-1]])
-                        # print('checking iou')
-                        # print(iou)
-                        # print((y_range_no_crop[0][-1] - y_range_no_crop[0][0]) * (x_range_no_crop[0][-1] - x_range_no_crop[0][0]) / roi2d_size)
-                        cell_pairs_aux_score.append(inclusion_ratio)
+                        cell_pairs_in_one_box.append(
+                            [pair_candi_valid[ii], pair_candi_valid[jj]]
+                        )
+                        cell_pairs_aux_score_in_one_box.append(inclusion_ratio)
+
+            if len(cell_pairs_in_one_box) > 0:
+                # if there are more than one valid pair found in this box, we either
+                # keep the one with highest inclusion_ratio (if highest < 0.9) or
+                # remove pairs with inclusion_ratio less than 0.9
+                if np.max(cell_pairs_aux_score_in_one_box) < 0.9:
+                    best_pair_in_one_box = np.argmax(cell_pairs_aux_score_in_one_box)
+                    cell_pairs.append(cell_pairs_in_one_box[best_pair_in_one_box])
+                    cell_pairs_score.append(this_score)
+                    cell_pairs_aux_score.append(
+                        cell_pairs_aux_score_in_one_box[best_pair_in_one_box]
+                    )
+                else:
+                    for tmp_index, tmp_score in enumerate(
+                        cell_pairs_aux_score_in_one_box
+                    ):
+                        if tmp_score >= 0.9:
+                            cell_pairs.append(cell_pairs_in_one_box[tmp_index])
+                            cell_pairs_score.append(this_score)
+                            cell_pairs_aux_score.append(tmp_score)
 
         if len(cell_pairs) > 0:
             print("candidate cell pairs are found")
 
-            # see one cell is associated with more than one pair
+            # checking double assignment
+            # see if one cell is associated with more than one pair
+            # this is possible, for example where two mitosis happen next to
+            # each other
             if exist_double_assignment(cell_pairs):
+                # seperate out which are multi-assignment
                 simple_pair, multi_pairs, multi_pair_index = find_multi_assignment(
                     cell_pairs
                 )
-                multi_pairs_score = [cell_pairs_score[ii] for ii in multi_pair_index]
+                # for each multi-assignment, evaluate each of them
+                multi_pairs_score = [
+                    cell_pairs_score[ii_tmp] for ii_tmp in multi_pair_index
+                ]
                 multi_pairs_aux_score = [
-                    cell_pairs_aux_score[ii] for ii in multi_pair_index
+                    cell_pairs_aux_score[ii_tmp] for ii_tmp in multi_pair_index
                 ]
 
+                # prune, until no more multi-assignment
                 while True:
                     current_best_pair = find_strongest_associate(
                         multi_pairs_score, multi_pairs_aux_score
                     )
                     idx_to_remove = prune_cell_pairs(multi_pairs, current_best_pair)
-                    assert len(idx_to_remove) > 0
-                    for idx in idx_to_remove:
-                        del multi_pairs[idx]
-                        del multi_pairs_score[idx]
-                        del multi_pairs_aux_score[idx]
+                    if not len(idx_to_remove) > 0:
+                        print("bug, during cell pair pruning")
+                        if return_prediction:
+                            return None, [dna_mask_pred, mem_pred, seed_pred]
+                        else:
+                            return None
+                    multi_pairs = [
+                        rm_v
+                        for rm_i, rm_v in enumerate(multi_pairs)
+                        if rm_i not in idx_to_remove
+                    ]  # noqa: E501
+                    multi_pairs_score = [
+                        rm_v
+                        for rm_i, rm_v in enumerate(multi_pairs_score)
+                        if rm_i not in idx_to_remove
+                    ]  # noqa: E501
+                    multi_pairs_aux_score = [
+                        rm_v
+                        for rm_i, rm_v in enumerate(multi_pairs_aux_score)
+                        if rm_i not in idx_to_remove
+                    ]  # noqa: E501
 
                     if len(multi_pairs) == 0 or (
                         not exist_double_assignment(multi_pairs)
@@ -646,36 +718,28 @@ def SegModule(
                             multi_pair_index_new,
                         ) = find_multi_assignment(multi_pairs)
                         simple_pair = simple_pair + simple_pair_new
-                        multi_pairs_score = multi_pairs_score[multi_pair_index_new]
-                        multi_pairs_aux_score = multi_pairs_aux_score[
-                            multi_pair_index_new
-                        ]
+                        multi_pairs_score = [
+                            multi_pairs_score[ii_tmp] for ii_tmp in multi_pair_index_new
+                        ]  # noqa: E501
+                        multi_pairs_aux_score = [
+                            multi_pairs_aux_score[ii_tmp]
+                            for ii_tmp in multi_pair_index_new
+                        ]  # noqa: E501
 
+            # finally, ok to fix the indices
             for index, pair_ids in enumerate(cell_pairs):
                 nuc_seg = np.logical_or(
-                    nuc_seg_whole == pair_ids[0], nuc_seg_whole == pair_ids[1]
+                    dna_mask_label == pair_ids[0], dna_mask_label == pair_ids[1]
                 )
                 mem_seg = np.logical_or(
-                    mem_seg_whole == pair_ids[0], mem_seg_whole == pair_ids[1]
+                    cell_seg == pair_ids[0], cell_seg == pair_ids[1]
                 )
                 mem_seg = binary_closing(mem_seg, selem=ball(3))
 
-                mem_seg_whole[mem_seg > 0] = pair_ids[0]
-                nuc_seg_whole[nuc_seg > 0] = pair_ids[0]
+                cell_seg[mem_seg > 0] = pair_ids[0]
+                dna_mask_label[nuc_seg > 0] = pair_ids[0]
 
-            #### put back to the original variable
-            cell_seg = mem_seg_whole
-            dna_mask_label = nuc_seg_whole
-
-    ################################################################
-    # remove all border-touching cells
-    ################################################################
-    bd_idx = list(np.unique(cell_seg[boundary_mask > 0]))
-    new_bd_id = cell_seg.max() + 1
-    for cid in bd_idx:
-        if cid > 0:
-            cell_seg[cell_seg == cid] = new_bd_id
-
+    # re-squence the index
     cell_seg, _tmp, _tmp2 = relabel_sequential(cell_seg.astype(np.uint8))
 
     # propagate the cell index to dna
@@ -683,7 +747,35 @@ def SegModule(
     dna_mask_label[dna_mask_label > 0] = 1
     dna_mask_label = dna_mask_label * cell_seg
 
-    if return_prediction:
-        return cell_seg, dna_mask_label, [dna_mask_pred, mem_pred, seed_pred]
-    else:
-        return cell_seg, dna_mask_label
+    # create contours
+    seg_mem_contour = np.zeros_like(cell_seg)
+    seg_dna_contour = np.zeros_like(dna_mask_label)
+    valid_cell_index = np.unique(cell_seg[cell_seg > 0])
+    for index, cid in enumerate(valid_cell_index):
+        single_mem = cell_seg == cid
+        single_dna = dna_mask_label == cid
+        single_mem_contour = np.zeros_like(single_mem)
+        single_dna_contour = np.zeros_like(single_dna)
+        for zz in range(single_mem.shape[0]):
+            if np.any(single_mem[zz, :, :]):
+                single_mem_contour[zz, :, :] = find_boundaries(
+                    single_mem[zz, :, :] > 0, mode="inner"
+                )
+            if np.any(single_dna[zz, :, :]):
+                single_dna_contour[zz, :, :] = find_boundaries(
+                    single_dna[zz, :, :] > 0, mode="inner"
+                )
+
+        seg_mem_contour[single_mem_contour > 0] = cid
+        seg_dna_contour[single_dna_contour > 0] = cid
+
+    combined_seg = np.stack(
+        [
+            dna_mask_label.astype(np.uint8),
+            cell_seg.astype(np.uint8),
+            seg_dna_contour.astype(np.uint8),
+            seg_mem_contour.astype(np.uint8),
+        ],
+        axis=1,
+    )
+    return combined_seg

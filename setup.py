@@ -44,8 +44,6 @@ requirements = [
     'aicsmlsegment>0.0.5'
     'scikit-image',
     "quilt3",
-    "torchvision",
-    "torch>=1.6.0"
 ]
 
 extra_requirements = {

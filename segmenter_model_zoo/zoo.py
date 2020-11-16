@@ -101,7 +101,7 @@ SUPER_MODEL_MAPPING = {
         ],
         "instruction": "2 x Z x Y x X (dna | mem), or file path and index list",
     },
-    "DNA_MEM_instance_LF_integration": {
+    "DNA_MEM_instance_plus_LF": {
         "models": [
             "DNA_mask_production",
             "CellMask_edge_production",
@@ -111,7 +111,7 @@ SUPER_MODEL_MAPPING = {
         ],
         "instruction": "3 x Z x Y x X (dna | mem | bf), or file path and index list",
     },
-    "DNA_MEM_instance_LF_integration_two_camera": {
+    "DNA_MEM_instance_plus_LF_two_camera": {
         "models": [
             "DNA_mask_production",
             "CellMask_edge_production",
@@ -130,12 +130,12 @@ SUPER_MODEL_MAPPING = {
         ],
         "instruction": "2 x Z x Y x X (lamin | mem) or file path and index list",
     },
-    "LMNB1_fill_instance_100x_hipsc": {
-        "models": ["LMNB1_fill_production", "LMNB1_core_production"],
-        "instruction": "1 x Z x Y x X (lamin) or file path and index list",
-    },
-    "structure_AAVS1_production": {
+    "structure_AAVS1_110x_hipsc": {
         "models": ["CAAX_production"],
+        "instruction": "1 x Z x Y x X (caax) or file path and index list",
+    },
+    "structure_H2B_110x_hipsc": {
+        "models": ["H2B_coarse"],
         "instruction": "1 x Z x Y x X (h2b) or file path and index list",
     },
 }
