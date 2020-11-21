@@ -2,7 +2,7 @@ import os
 import sys
 import logging
 import numpy as np
-from typing import List, Union
+from typing import List, Union, Dict
 from pathlib import Path
 import importlib
 
@@ -170,7 +170,27 @@ class SegModel:
             quit()
         self.model = self.model.to(gpu_id)
 
-    def load_train(self, checkpoint_name, model_param={"local_path": "./"}):
+    def load_train(
+        self,
+        checkpoint_name: str,
+        model_param: Dict = {"local_path": "./"}
+    ):
+        """
+        load a trained model
+
+        Parameters
+        -------------
+        checkpoint_name: str
+            the name of the model, use list_all_trained_models() to get
+            a list of all current models
+        model_param: Dict
+            a dictionary of additional parameters can be passed in. If 
+            nothing is passed in, default parameters will be used. There
+            are two important parameters: "local_path" and "model_path". If 
+            "model_path" is specified, it will be loaded directly. Otherwise,
+            the model will be downloaded from quilt and save at "local_path"
+            (default is the current working directory).
+        """
 
         if not (checkpoint_name in CHECKPOINT_PATH_MAPPING):
             raise IOError(f"Checkpoint '{checkpoint_name}' does not exist")
@@ -179,12 +199,14 @@ class SegModel:
             from fnet.models import load_model as load_model_lf
             from fnet.cli.predict import parse_model
 
-            if CHECKPOINT_PATH_MAPPING[checkpoint_name]["path"] == "quilt":
+            if "model_path" in model_param:
+                model_path = model_param["model_path"]
+            elif CHECKPOINT_PATH_MAPPING[checkpoint_name]["path"] == "quilt":
                 model_path = validate_model(checkpoint_name, model_param["local_path"])
             else:
-                print("Non-quilt model path is not implemented yet.")
-                # TODO: allow hard-coded model zoo for easy local run
-                # model_path = CHECKPOINT_PATH_MAPPING[mname]['path']
+                # It is possible to modify the source file to hard-code the 
+                # model path to load everything
+                model_path = CHECKPOINT_PATH_MAPPING[checkpoint_name]["path"]
 
             model_def = parse_model(model_path)
             model = load_model_lf(model_def["path"], no_optim=True)
@@ -235,17 +257,19 @@ class SegModel:
                 model = DNN(self.nchannel, self.nclass, zoom_ratio)
                 self.softmax = model.final_activation
             else:
-                print("name error")
+                print("name error in model name")
                 sys.exit(0)
             self.model = model
 
             # load the trained model
-            if CHECKPOINT_PATH_MAPPING[checkpoint_name]["path"] == "quilt":
+            if "model_path" in model_param:
+                model_path = model_param["model_path"]
+            elif CHECKPOINT_PATH_MAPPING[checkpoint_name]["path"] == "quilt":
                 model_path = validate_model(checkpoint_name, model_param["local_path"])
             else:
-                print("Non-quilt model path is not implemented yet.")
-                # TODO: allow hard-coded model zoo for easy local run
-                # model_path = CHECKPOINT_PATH_MAPPING[mname]['path']
+                # It is possible to modify the source file to hard-code the 
+                # model path to load everything
+                model_path = CHECKPOINT_PATH_MAPPING[checkpoint_name]["path"]
 
             state = torch.load(model_path, map_location=torch.device("cpu"))
             if "model_state_dict" in state:
@@ -258,27 +282,59 @@ class SegModel:
         self.cutoff = CHECKPOINT_PATH_MAPPING[checkpoint_name]["default_cutoff"]
         print(f"model {checkpoint_name} is successfully loaded")
 
-    def load_default_cutoof(self, checkpoint_name, model_param={}):
-        # TODO: merge into load_train
-        self.cutoff = CHECKPOINT_PATH_MAPPING[checkpoint_name]["default_cutoff"]
-
     def get_cutoff(self):
+        """
+        load the cutoff value to be applied on the prediction
+        """
         return self.cutoff
 
     def list_all_trained_models(self):
+        """ 
+        print all current models
+        """
         for key, value in CHECKPOINT_PATH_MAPPING.items():
             print(key)
 
     def apply_on_single_zstack(
         self,
-        input_img=None,
-        filename=None,
-        inputCh=None,
-        normalization=None,
-        already_normalized=False,
-        cutoff=None,
-        inference_param={},
+        input_img: np.ndarray = None,
+        filename: str = None,
+        inputCh: Union(int, List(int)) = None,
+        normalization: int = None,
+        already_normalized: bool = False,
+        cutoff: float = None,
+        inference_param: Dict = {},
     ):
+        """
+        Apply a trained model on an image
+
+        Parameters:
+        ------------
+        input_img: np.ndarray
+            the image to be applied can be passed in as a numpy array
+        filename:  str
+            the image to be appplied can be passed in as a filename. If
+            input_img is used, the filename will be omitted
+        inputCh: Union(int, List(int))
+            when filename is used, inputCh must be specified. It can be
+            an integer (if only one channel is needed), or a list of 
+            integers (if multiple channels are needed). Each model may 
+            have different requirement.
+        normalization: int
+            an index to indicate which normalization reciepy will be used
+            to normalize the image 
+        already_normalized: bool
+            A flag to indicate whether the image has been normalized or not.
+            This is applicable to both cases: numpy array or filename.
+        cutoff: float
+            a cutoff value can be passed in, which will be applied on the
+            prediction. If nothing passed in, default value will be used.
+        inference_param: Dict
+            a dictionary to pass in extra parameters for inference. Currently,
+            only one parameter is allowed: "ResizeRatio" (a list of three
+            float numbers to indicate the ResizeRatio to apply on ZYX axis).
+            More parameters may be added in the future.
+        """
 
         torch.backends.cudnn.enabled = True
         torch.backends.cudnn.benchmark = True
@@ -287,9 +343,11 @@ class SegModel:
         if input_img is None:
             assert os.path.exists(filename)
             assert inputCh is not None
+            if not isinstance(inputCh, List):
+                inputCh = [inputCh]
 
             reader = AICSImage(filename)
-            input_img = reader.data[0, [inputCh], :, :, :].astype(np.float32)
+            input_img = reader.data[0, inputCh, :, :, :].astype(np.float32)
         else:
             input_img = input_img.astype(np.float32)
             # make sure the image has a dummy channel
@@ -308,7 +366,7 @@ class SegModel:
             input_img = input_normalization(input_img, args_norm)
 
         if "ResizeRatio" in inference_param:
-            ResizeRatio = inference_param["size_out"]
+            ResizeRatio = inference_param["ResizeRatio"]
             input_img = zoom(
                 input_img, (1, ResizeRatio[0], ResizeRatio[1], ResizeRatio[2]), order=1
             )
@@ -406,7 +464,26 @@ class SegModel:
 
 
 class SuperModel:
-    def __init__(self, model_name, model_param={}):
+    def __init__(self, model_name: str, model_param: Dict = {"local_path": "./"}):
+        """
+        Define a SuperModel
+
+        Parameters:
+        -----------
+        model_name: str
+            the name of the super model
+        model_param: Dict
+            the extra parameters for the super model.
+            the order must match the order of models in this SuperModel.
+            For each dict, there are two importance parameters: 
+            "local_path" and "model_path". "model_path" is a dictionary
+            specifying the path to each basic model, e.g. 
+            "model_path": {"DNA_mask_production": "/path/to/mask/model", 
+            "DNA_seed_production": "path/to/seed/model"}. If "model_path" 
+            is specified, the model will be loaded directly. Otherwise, 
+            the models will be downloaded from quilt and saved at 
+            "local_path" (default is the current working directory).
+        """
 
         assert "local_path" in model_param, "local_path is required"
         # TODO: allow hard-coded model path to skip local_path
@@ -423,19 +500,32 @@ class SuperModel:
                 from fnet.models import load_model as load_model_lf
                 from fnet.cli.predict import parse_model
 
-                if CHECKPOINT_PATH_MAPPING[mname]["path"] == "quilt":
+                if "model_path" in model_param and \
+                   mname in model_param["model_path"]:
+                    model_path = model_param["model_path"][mname]
+                elif CHECKPOINT_PATH_MAPPING[mname]["path"] == "quilt":
                     model_path = validate_model(mname, model_local_path)
                 else:
-                    print("Non-quilt model path is not implemented yet.")
-                    # TODO: allow hard-coded model zoo for easy local run
-                    # model_path = CHECKPOINT_PATH_MAPPING[mname]['path']
+                    # It is possible to modify the source file to hard-code the 
+                    # model path to load everything
+                    model_path = CHECKPOINT_PATH_MAPPING[mname]["path"]
+
                 model_def = parse_model(model_path)
                 m = load_model_lf(model_def["path"], no_optim=True)
                 m.to_gpu(0)
             else:
                 m = SegModel()
-                m.load_train(mname, model_param)
-                m.load_default_cutoof(mname)
+                if "model_path" in model_param and \
+                   mname in model_param["model_path"]:
+                    m.load_train(
+                        mname,
+                        {
+                            "local_path": model_param["local_path"],
+                            "model_path": model_param["model_path"][mname]
+                        }
+                    )
+                else:
+                    m.load_train(mname, model_param)
                 m.to_gpu("cuda:0")
 
             self.models.append(m)
@@ -494,7 +584,9 @@ class SuperModel:
 
 
 def list_all_super_models():
-    import sys
+    """
+    print all available super models
+    """
 
     if len(sys.argv) == 2:
         print(SUPER_MODEL_MAPPING[sys.argv[1]]["instruction"])
@@ -504,4 +596,4 @@ def list_all_super_models():
             # print(value['instruction'])
     else:
         print("error function")
-        quit()
+        sys.exit(0)
