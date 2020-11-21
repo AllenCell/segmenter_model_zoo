@@ -10,11 +10,6 @@ import itk
 
 from segmenter_model_zoo.utils import getLargestCC
 
-mem_pre_cut_th = 0.2  # 0.02
-seed_bw_th = 0.90
-dna_mask_bw_th = 0.5  # 0.7
-min_seed_size = 3800  # 9000 # 3800
-
 
 def SegModule(
     img=None,
@@ -23,8 +18,11 @@ def SegModule(
     filename=None,
     index=None,
     return_prediction=False,
-    two_camera=False,
     output_type="default",
+    mem_pre_cut_th: float = 0.2,
+    seed_bw_th: float = 0.90,
+    dna_mask_bw_th: float = 0.5,
+    min_seed_size: float = 3800
 ):
     # model order: dna_mask, cellmask, dna_seed
     if img is None:

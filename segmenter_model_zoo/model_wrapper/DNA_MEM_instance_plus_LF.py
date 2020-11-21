@@ -8,90 +8,23 @@ from skimage.measure import label
 from skimage.segmentation import relabel_sequential, find_boundaries
 from aicsmlsegment.utils import background_sub, simple_norm
 import itk
-from collections import Counter
 
 from cell_detector import detect
 from segmenter_model_zoo.quilt_utils import QuiltModelZoo
-from segmenter_model_zoo.utils import getLargestCC
-
-mem_pre_cut_th = 0.2 + 0.25  # 0.2  # 0.02
-seed_bw_th = 0.75  # 0.90
-dna_mask_bw_th = 0.5  # 0.7
-min_seed_size = 6000  # 9000 # 3800
-
-pair_box_score_cutoff = 0.75
-pair_inclusion_ratio_cutoff = 0.65
-
-mem_bf_cut = 0.25
-dna_bf_cutoff = 1.5
+from segmenter_model_zoo.utils import getLargestCC, prune_cell_pairs, \
+    find_strongest_associate, find_multi_assignment, exist_double_assignment
 
 flat_se = np.zeros((5, 5, 5), dtype=np.uint8)
 flat_se[2, :, :] = 1
 
-
-def bb_intersection_over_union(boxA, boxB):
-    # determine the (x, y)-coordinates of the intersection rectangle
-    xA = max(boxA[1], boxB[1])
-    yA = max(boxA[0], boxB[0])
-    xB = min(boxA[3], boxB[3])
-    yB = min(boxA[2], boxB[2])
-    # compute the area of intersection rectangle
-    interArea = max(0, xB - xA + 1) * max(0, yB - yA + 1)
-    # compute the area of both the prediction and ground-truth rectangles
-    boxAArea = (boxA[2] - boxA[0] + 1) * (boxA[3] - boxA[1] + 1)
-    boxBArea = (boxB[2] - boxB[0] + 1) * (boxB[3] - boxB[1] + 1)
-    # compute the intersection over union by taking the intersection
-    # area and dividing it by the sum of prediction + ground-truth
-    # areas - the interesection area
-    iou = interArea / float(boxAArea + boxBArea - interArea)
-    # return the intersection over union value
-    return iou
-
-
-def find_strongest_associate(main_score, aux_score):
-    score = []
-    for ii in range(len(main_score)):
-        score.append((main_score[ii], aux_score[ii]))
-    score_array = np.array(score, dtype="<f4,<f4")
-    weight_order = score_array.argsort()
-    return weight_order.argmax()
-
-
-def exist_double_assignment(cell_pairs):
-    nodes = set(x for ll in cell_pairs for x in ll)
-    num_node = len(nodes)
-    num_pair = len(cell_pairs)
-
-    return not num_pair * 2 == num_node
-
-
-def find_multi_assignment(cell_pairs):
-    nodes = [x for ll in cell_pairs for x in ll]
-    node_count = Counter(nodes)
-    simple_pair = []
-    multi_pair = []
-    multi_pair_index = []
-    for idx, p in enumerate(cell_pairs):
-        if node_count[p[0]] > 1 or node_count[p[1]] > 1:
-            multi_pair.append(p)
-            multi_pair_index.append(idx)
-        else:
-            simple_pair.append(p)
-
-    return simple_pair, multi_pair, multi_pair_index
-
-
-def prune_cell_pairs(multi_pair, current_best_pair):
-
-    p_best = multi_pair[current_best_pair]
-    idx_to_remove = []
-    for idx, p in enumerate(multi_pair):
-        if idx == current_best_pair:
-            continue
-        if p[0] in p_best or p[1] in p_best:
-            idx_to_remove.append(idx)
-
-    return idx_to_remove
+#############################################################
+# note: dna and cell segmentation plus labelfree has two
+# versions: two_camera or not. The difference is for the 
+# label free model. Currenly, these two wrappers are almost
+# identical except use tta or not for labelfree model
+# This needs to be better implemented in a more efficient way
+# in the future.
+#############################################################
 
 
 def SegModule(
@@ -101,18 +34,17 @@ def SegModule(
     filename=None,
     index=None,
     return_prediction=False,
-    two_camera=False,
+    mem_bf_cut: float = 0.25,
+    dna_bf_cutoff: float = 1.5,
+    pair_box_score_cutoff: float = 0.75,
+    pair_inclusion_ratio_cutoff: float = 0.65,
+    mem_pre_cut_th: float = 0.45,
+    seed_bw_th: float = 0.75,
+    dna_mask_bw_th: float = 0.5,
+    min_seed_size: float = 6000
 ):
 
-    # if two_camera:
-    #    mem_bf_cut = 1.9 ### only use lf pred for membrane top and bottom
-    # (the seperation in two camera could be wrong)
-    #    dna_bf_cutoff = 1.45 ### decrease cutoff after turn tta off
-    # else:
-    #    mem_bf_cut = 0.25
-    #    dna_bf_cutoff = 1.5
-    # model order: dna_mask, cellmask, dna_seed
-
+    # check image data
     if img is None:
         # load the image
         reader = AICSImage(filename)
@@ -160,43 +92,28 @@ def SegModule(
         dna_img, already_normalized=True, cutoff=-1
     )
     dna_mask_bw = dna_mask_pred > dna_mask_bw_th
-    # imsave('pred_dna.tiff', dna_mask_pred)
 
     # model 2: cell edge
     mem_pred = model_list[1].apply_on_single_zstack(
         mem_img, already_normalized=True, cutoff=-1
     )
-    # imsave('pred_cell.tiff', mem_pred)
 
     # model 3: dna_seed
     seed_pred = model_list[2].apply_on_single_zstack(
         dna_img, already_normalized=True, cutoff=-1
     )
     seed_bw = seed_pred > seed_bw_th
-    # imsave('pred_seed.tiff', seed_pred)
 
-    # model 4: dna from bf
-    if two_camera:
-        dna_bf_pred = model_list[3].apply_on_single_zstack(
-            input_img=img[2, :, :, :], use_tta=False
-        )
-    else:
-        dna_bf_pred = model_list[3].apply_on_single_zstack(
-            input_img=img[2, :, :, :], use_tta=True
-        )
+    # model 4: dna from bf (single camera, use tta)
+    dna_bf_pred = model_list[3].apply_on_single_zstack(
+        input_img=img[2, :, :, :], use_tta=True
+    )
     dna_bf_bw = dna_bf_pred > dna_bf_cutoff
-    # imsave('lf_dna.tiff', dna_mask_pred)
 
-    # model 5: mem from bf
-    if two_camera:
-        mem_bf_pred = model_list[4].apply_on_single_zstack(
-            input_img=img[2, :, :, :], use_tta=False
-        )
-    else:
-        mem_bf_pred = model_list[4].apply_on_single_zstack(
-            input_img=img[2, :, :, :], use_tta=True
-        )
-    # imsave('lf_mem.tiff', mem_bf_pred)
+    # model 5: mem from bf (single camera, use tta)
+    mem_bf_pred = model_list[4].apply_on_single_zstack(
+        input_img=img[2, :, :, :], use_tta=True
+    )
     print("predictions are done.")
 
     ###########################################################

@@ -19,7 +19,15 @@ from segmenter_model_zoo.quilt_utils import validate_model
 log = logging.getLogger(__name__)
 
 ###############################################################################
+# There are two types of models: basic model and super model
+# Basic model is just a trained neural network
+# Super model can be multiple basic models + certain preprocesisng and 
+# post processing step to generate the final output.
+# In the model zoo, a few label-free models are also included as basic models
+###############################################################################
 
+# There are two backbones in segmenter: unet_xy and unet_xy_zoom
+# define the defaul setting here
 MODEL_DEF_MAPPING = {
     "unet_xy_zoom": {
         "size_in": [52, 420, 420],
@@ -37,6 +45,7 @@ MODEL_DEF_MAPPING = {
     },
 }
 
+# a record of current basic models
 CHECKPOINT_PATH_MAPPING = {
     "DNA_mask_production": {
         "model_type": "unet_xy_zoom",
@@ -92,6 +101,7 @@ CHECKPOINT_PATH_MAPPING = {
     },
 }
 
+# a record of current super models
 SUPER_MODEL_MAPPING = {
     "DNA_MEM_instance_basic": {
         "models": [
@@ -143,15 +153,7 @@ SUPER_MODEL_MAPPING = {
 
 class SegModel:
     def __init__(self):
-
-        self.model = None
-        self.normalization = None
-        self.size_in = None
-        self.size_out = None
-        self.nclass = None
-        self.nchannel = None
-        self.OutputCh = None
-        self.cutoff = None
+        self.reset()
 
     def reset(self):
 
@@ -166,8 +168,8 @@ class SegModel:
 
     def to_gpu(self, gpu_id):
         if self.model is None:
-            print("load the model first")
-            quit()
+            print("please load the model first")
+            sys.exit(0)
         self.model = self.model.to(gpu_id)
 
     def load_train(
@@ -304,7 +306,7 @@ class SegModel:
         already_normalized: bool = False,
         cutoff: float = None,
         inference_param: Dict = {},
-    ):
+    ) -> np.ndarray:
         """
         Apply a trained model on an image
 
@@ -334,8 +336,14 @@ class SegModel:
             only one parameter is allowed: "ResizeRatio" (a list of three
             float numbers to indicate the ResizeRatio to apply on ZYX axis).
             More parameters may be added in the future.
+
+        Return:
+        -------------
+        output_img: np.ndarray
+            the segmentation result
         """
 
+        # set cudnn
         torch.backends.cudnn.enabled = True
         torch.backends.cudnn.benchmark = True
 
@@ -538,12 +546,13 @@ class SuperModel:
         input_img: np.ndarray = None,
         filename: Union[str, Path] = None,
         inputCh: List = [0],
+        **kwargs
     ) -> Union[np.ndarray, List]:
         """
         Appply a super model on one image
 
         Parameters:
-        ---
+        --------------
         input_img: np.ndarray
             the image to be segmented, if it is not None, filename and inputCh
             will not be used. Otherwise, use filename and inputCh to read image
@@ -555,7 +564,10 @@ class SuperModel:
             when input_img is None, take specific channels from the image loaded
             from filename
 
-        Return: Union[np.ndarray, List]
+        Return: 
+        ------------
+        output: Union[np.ndarray, List]
+            the segmentation result
         """
 
         # check data
@@ -577,9 +589,7 @@ class SuperModel:
         return SegModule(
             input_img,
             self.models,
-            return_prediction=False,
-            output_type="RnD",
-            two_camera=False,
+            **kwargs
         )
 
 
