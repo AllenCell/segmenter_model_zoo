@@ -83,7 +83,7 @@ CHECKPOINT_PATH_MAPPING = {
         "path": "quilt",
         "default_cutoff": 0.5,
     },
-    "LMNB1_core_production": {
+    "LMNB1_seed_production": {
         "model_type": "unet_xy_zoom",
         "norm": 15,
         "path": "quilt",
@@ -135,7 +135,7 @@ SUPER_MODEL_MAPPING = {
         "models": [
             "LMNB1_all_production",
             "LMNB1_fill_production",
-            "LMNB1_core_production",
+            "LMNB1_seed_production",
             "CellMask_edge_production",
         ],
         "instruction": "2 x Z x Y x X (lamin | mem) or file path and index list",
@@ -301,7 +301,7 @@ class SegModel:
         self,
         input_img: np.ndarray = None,
         filename: str = None,
-        inputCh: Union(int, List(int)) = None,
+        inputCh: Union[int, List[int]] = None,
         normalization: int = None,
         already_normalized: bool = False,
         cutoff: float = None,
@@ -355,10 +355,11 @@ class SegModel:
                 inputCh = [inputCh]
 
             reader = AICSImage(filename)
-            input_img = reader.data[0, inputCh, :, :, :].astype(np.float32)
+            input_img = reader.get_image_data("CZYX", C=inputCh, S=0, T=0)
+            input_img = input_img.astype(np.float32)
         else:
             input_img = input_img.astype(np.float32)
-            # make sure the image has a dummy channel
+            # make sure the image has a C dimension
             if not (len(input_img.shape) == 4 and input_img.shape[0] == 1):
                 input_img = np.expand_dims(input_img, axis=0)
 
@@ -593,11 +594,12 @@ class SuperModel:
         )
 
 
-def list_all_super_models():
+def list_all_super_models(item: str = "all"):
     """
     print all available super models
     """
 
+    """
     if len(sys.argv) == 2:
         print(SUPER_MODEL_MAPPING[sys.argv[1]]["instruction"])
     elif len(sys.argv) == 1:
@@ -607,3 +609,9 @@ def list_all_super_models():
     else:
         print("error function")
         sys.exit(0)
+    """
+    if item == "all":
+        for key, value in SUPER_MODEL_MAPPING.items():
+            print(key)
+    elif item in SUPER_MODEL_MAPPING:
+        print(SUPER_MODEL_MAPPING[item]["instruction"])

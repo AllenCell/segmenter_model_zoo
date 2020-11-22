@@ -1,5 +1,7 @@
 import os
 import numpy as np
+from typing import List, Union
+from pathlib import Path
 from aicsimageio import AICSImage
 from scipy.ndimage.morphology import binary_fill_holes
 from skimage.morphology import ball, dilation, disk, binary_closing
@@ -28,12 +30,11 @@ flat_se[2, :, :] = 1
 
 
 def SegModule(
-    img=None,
-    model_list=None,
-    prune_border=False,
-    filename=None,
-    index=None,
-    return_prediction=False,
+    img: np.ndarray = None,
+    model_list: List = None,
+    filename: Union[str, Path] = None,
+    index: List[int] = None,
+    return_prediction: bool = False,
     mem_bf_cut: float = 0.25,
     dna_bf_cutoff: float = 1.5,
     pair_box_score_cutoff: float = 0.75,
@@ -43,6 +44,72 @@ def SegModule(
     dna_mask_bw_th: float = 0.5,
     min_seed_size: float = 6000
 ):
+    """
+    Segmentation function for cells and nuclei segmentaiton WITH label-free
+    and mitotic pair correction. The label-free models only applicable to 
+    two-camera pipeline setting.
+
+
+    Parameters:
+    ----------
+    img: np.ndarray
+        a 4D numpy array of size 2 x Z x Y x X, the first channel is DNA
+        and the second channel is cell membrane. 
+    filename: Union[str, Path]
+        when img is None, use filename to load image
+    index: List[int]
+        a list of 2 integers, the first indicating which channel is DNA, 
+        the second integer indicating which channel is cell membrane. Only 
+        valid when using filename to load image. Not used when img is not None
+    model_list: List
+        the list of models to be applied on the image. Here, we assume 5 models
+        are provided (in this specific order): dna mask model, membrane segmentation 
+        model, dna seed model, label-free prediction of dna from bright-field,
+        and label-free prediction of cell membrane from bright-field
+    return_prediction: book
+        a flag indicating whether to return raw prediction
+    mem_bf_cut: float
+        an emprically determined cutoff value to binarize the label-free prediction of
+        membrane from brigh field. The binary result will be added to the binarized
+        output from membrane segmentation model in a weighted sum fashion. Default is
+        0.25.
+    dna_bf_cutoff: float
+        an emprically determined cutoff value to binarize the label-free prediction of
+        dna mask from brigh field. The binary result will be added to the binarized
+        output from dna mask model and dna seed model. Default is 1.5.
+    pair_box_score_cutoff: float
+        an emprically determined cutoff value. Any predicted bounding box from the
+        mitotic pair detection model with confidence score lower than
+        pair_box_score_cutoff will be discarded. Default is 0.75.
+    pair_inclusion_ratio_cutoff: float
+        an emprically determined cutoff value. The tight bounding box of any two 
+        different nuclei inside the predicted bounding box have to overlap with the 
+        bounding by more than ratio `pair_inclusion_ratio_cutoff`. Default is 0.65.
+    mem_pre_cut_th: float
+        an emprically determined cutoff value to binarize the prediction from
+        membrane segmentation model and the binary result is used to cut the seed.
+        Usually, this value needs to be relatively small, just to be conservative,
+        so that there won't be falsely merged seeds. Default is 0.45.
+    seed_bw_th: float
+        an empirically determined cutoff value to binarize the prediction from 
+        dna seed model. The binary result after cutted by binarized membrane will be
+        used as the seed for running watershed. Usually, this value needs to be 
+        relatively large, just to be conservative, so that seeds are less likely to
+        be falsely merged. Default is 0.75.
+    dna_mask_bw_th: float
+        an empirically determined cutoff value to binarize the prediction from 
+        dna mask model. Default is 0.5.
+    min_seed_size: float
+        an empirically determined size threshold to prune the seeds before running 
+        watershed. Any connected component (except those torching the image border)
+        with less than min_seed_size voxels will not be removed from seeds. Default
+        is 6000.
+
+    Return:
+    ------------
+        two numpy arrays: cell segmentatino and dna segmentation (labeled images) or 
+        together with raw prediction (if return_prediction is True)
+    """
 
     # check image data
     if img is None:
