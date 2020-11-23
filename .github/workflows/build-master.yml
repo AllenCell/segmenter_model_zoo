@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         python-version: [3.7, 3.8]
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [ubuntu-latest, windows-latest]
 
     steps:
     - uses: actions/checkout@v1
@@ -31,7 +31,6 @@ jobs:
     - name: Test with pytest
       run: |
         pytest --cov-report xml --cov=segmenter_model_zoo segmenter_model_zoo/tests/
-        codecov -t ${{ secrets.CODECOV_TOKEN }}
 
   lint:
     runs-on: ubuntu-latest
