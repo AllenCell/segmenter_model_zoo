@@ -1,0 +1,22 @@
+segmenter\_model\_zoo.bin package
+=================================
+
+Submodules
+----------
+
+segmenter\_model\_zoo.bin.batch\_dl\_run module
+-----------------------------------------------
+
+.. automodule:: segmenter_model_zoo.bin.batch_dl_run
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: segmenter_model_zoo.bin
+   :members:
+   :undoc-members:
+   :show-inheritance:

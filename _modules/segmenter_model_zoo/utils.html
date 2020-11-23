@@ -1,0 +1,467 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>segmenter_model_zoo.utils &mdash; segmenter_model_zoo 0.0.5 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> segmenter_model_zoo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.5
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#stable-release">Stable release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#from-sources">From sources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Package modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../segmenter_model_zoo.html">segmenter_model_zoo package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../segmenter_model_zoo.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../segmenter_model_zoo.bin.html">segmenter_model_zoo.bin package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../segmenter_model_zoo.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../segmenter_model_zoo.html#module-segmenter_model_zoo.quilt_utils">segmenter_model_zoo.quilt_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../segmenter_model_zoo.html#module-segmenter_model_zoo.utils">segmenter_model_zoo.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../segmenter_model_zoo.html#module-segmenter_model_zoo.zoo">segmenter_model_zoo.zoo module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../segmenter_model_zoo.html#module-segmenter_model_zoo">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#deploying">Deploying</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../math.html">Math notation example</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">segmenter_model_zoo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../segmenter_model_zoo.html">segmenter_model_zoo</a> &raquo;</li>
+        
+      <li>segmenter_model_zoo.utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for segmenter_model_zoo.utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">glob</span> <span class="kn">import</span> <span class="n">glob</span>
+<span class="kn">from</span> <span class="nn">skimage.measure</span> <span class="kn">import</span> <span class="n">label</span>
+<span class="kn">from</span> <span class="nn">aicsimageio.writers</span> <span class="kn">import</span> <span class="n">OmeTiffWriter</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+
+
+<span class="c1">################################################################################</span>
+<span class="c1"># common util functions</span>
+<span class="c1">################################################################################</span>
+<div class="viewcode-block" id="getLargestCC"><a class="viewcode-back" href="../../segmenter_model_zoo.html#segmenter_model_zoo.utils.getLargestCC">[docs]</a><span class="k">def</span> <span class="nf">getLargestCC</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">is_label</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    return the largest connect component from a label image or a binary image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">is_label</span><span class="p">:</span>
+        <span class="n">largestCC</span> <span class="o">=</span> <span class="n">labels</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">flat</span><span class="p">)[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sub_labels</span> <span class="o">=</span> <span class="n">label</span><span class="p">(</span><span class="n">labels</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">connectivity</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">return_num</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">largestCC</span> <span class="o">=</span> <span class="n">sub_labels</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">sub_labels</span><span class="o">.</span><span class="n">flat</span><span class="p">)[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">largestCC</span></div>
+
+
+<span class="c1">################################################################################</span>
+<span class="c1"># util functions for io</span>
+<span class="c1">################################################################################</span>
+<div class="viewcode-block" id="save_as_uint"><a class="viewcode-back" href="../../segmenter_model_zoo.html#segmenter_model_zoo.utils.save_as_uint">[docs]</a><span class="k">def</span> <span class="nf">save_as_uint</span><span class="p">(</span>
+    <span class="n">img</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">save_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
+    <span class="n">core_fn</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;segmentation&quot;</span><span class="p">,</span>
+    <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    save the segmentation to disk as uint type</span>
+<span class="sd">    (either 8-bit or 16-bit depending on data)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ---</span>
+<span class="sd">    img: np.ndarray</span>
+<span class="sd">        the image to save</span>
+
+<span class="sd">    save_path: Union[str, Path]</span>
+<span class="sd">        the path to save the image</span>
+
+<span class="sd">    core_fn: str</span>
+<span class="sd">        saved filename will be {core_fn}_{tag}.tiff</span>
+
+<span class="sd">    tag: str</span>
+<span class="sd">        the tag to be added to the end of output filename</span>
+<span class="sd">        default is &quot;segmentation&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># find the minimal bit</span>
+    <span class="k">if</span> <span class="n">img</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">255</span><span class="p">:</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">)</span>
+
+    <span class="c1"># save the file</span>
+    <span class="n">save_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">save_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">save_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">OmeTiffWriter</span><span class="p">(</span>
+        <span class="n">save_path</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">core_fn</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">tag</span><span class="si">}</span><span class="s2">.tiff&quot;</span><span class="p">,</span> <span class="n">overwrite_file</span><span class="o">=</span><span class="n">overwrite</span>
+    <span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">img</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="load_filenames"><a class="viewcode-back" href="../../segmenter_model_zoo.html#segmenter_model_zoo.utils.load_filenames">[docs]</a><span class="k">def</span> <span class="nf">load_filenames</span><span class="p">(</span><span class="n">data_config</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    load the filenames of all the images need to be processed based on config.</span>
+<span class="sd">    Three types of loading are currently supported:</span>
+<span class="sd">    - &quot;folder&quot;</span>
+<span class="sd">        * two parameters are required: &quot;dir&quot; and &quot;search&quot;. Basically, we just</span>
+<span class="sd">        search using the rules defined by &quot;search&quot; (either &quot;*&quot; for all files</span>
+<span class="sd">        or a regular expression) inside the folder &quot;dir&quot;.</span>
+<span class="sd">        * one optional parameter: &quot;data_range&quot;. If provided, a specific range</span>
+<span class="sd">        of all files will be processed, e.g. [0, 100] or [100, -1]. This is</span>
+<span class="sd">        useful when running in a distributed setting.</span>
+<span class="sd">    - &quot;zstack&quot;</span>
+<span class="sd">        * one parameter: &quot;dir&quot; specifying the filepath</span>
+<span class="sd">    - &quot;csv&quot;</span>
+<span class="sd">        * two parameters are required: &quot;file&quot; and &quot;column&quot;. After loading the</span>
+<span class="sd">        csv pointed by &quot;file&quot;, all filenames in the column defined by &quot;column&quot;</span>
+<span class="sd">        will be identified as files to be processed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">all_stacks</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">all_timelapse</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">data_item</span> <span class="ow">in</span> <span class="n">data_config</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">data_item</span><span class="p">[</span><span class="s2">&quot;item&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;folder&quot;</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="n">data_item</span><span class="p">[</span><span class="s2">&quot;search&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;*&quot;</span><span class="p">:</span>
+                <span class="n">filenames</span> <span class="o">=</span> <span class="n">glob</span><span class="p">(</span><span class="n">data_item</span><span class="p">[</span><span class="s2">&quot;dir&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s2">&quot;/*&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">reg</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">data_item</span><span class="p">[</span><span class="s2">&quot;search&quot;</span><span class="p">])</span>
+                <span class="n">filenames</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">data_item</span><span class="p">[</span><span class="s2">&quot;dir&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">f</span>
+                    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">data_item</span><span class="p">[</span><span class="s2">&quot;dir&quot;</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="n">reg</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                <span class="p">]</span>
+            <span class="n">filenames</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+            <span class="c1"># filenames = sorted(filenames, reverse=True)</span>
+            <span class="k">if</span> <span class="s2">&quot;data_range&quot;</span> <span class="ow">in</span> <span class="n">data_item</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">data_item</span><span class="p">[</span><span class="s2">&quot;data_range&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">all_stacks</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">filenames</span><span class="p">[</span><span class="n">data_item</span><span class="p">[</span><span class="s2">&quot;data_range&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">:])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">all_stacks</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                        <span class="n">filenames</span><span class="p">[</span>
+                            <span class="n">data_item</span><span class="p">[</span><span class="s2">&quot;data_range&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">:</span> <span class="n">data_item</span><span class="p">[</span><span class="s2">&quot;data_range&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="p">]</span>
+                    <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">all_stacks</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">filenames</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">data_item</span><span class="p">[</span><span class="s2">&quot;item&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;zstack&quot;</span><span class="p">:</span>
+            <span class="n">all_stacks</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">data_item</span><span class="p">[</span><span class="s2">&quot;dir&quot;</span><span class="p">]])</span>
+        <span class="k">elif</span> <span class="n">data_item</span><span class="p">[</span><span class="s2">&quot;item&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;timelapse&quot;</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;timelapse is not supported yet&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="c1"># TODO</span>
+            <span class="c1"># all_timelapse.extend(str(data_item[&quot;dir&quot;]))</span>
+        <span class="k">elif</span> <span class="n">data_item</span><span class="p">[</span><span class="s2">&quot;item&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;csv&quot;</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_item</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">])</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">data_item</span><span class="p">[</span><span class="s2">&quot;column&quot;</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">_index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+                <span class="n">fn</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+                <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+                <span class="n">all_stacks</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">fn</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_stacks</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_timelapse</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;we cannot handle timelapse data and non-timelapse data in one shot&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;please do this separately&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_stacks</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_timelapse</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;not file is found&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_stacks</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">all_stacks</span><span class="p">,</span> <span class="kc">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;not file is found&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+<span class="c1">################################################################################</span>
+<span class="c1"># util functions for dna and cell segmentations</span>
+<span class="c1">################################################################################</span>
+<div class="viewcode-block" id="bb_intersection_over_union"><a class="viewcode-back" href="../../segmenter_model_zoo.html#segmenter_model_zoo.utils.bb_intersection_over_union">[docs]</a><span class="k">def</span> <span class="nf">bb_intersection_over_union</span><span class="p">(</span><span class="n">boxA</span><span class="p">,</span> <span class="n">boxB</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;computer IOU of two bounding boxes&quot;&quot;&quot;</span>
+
+    <span class="c1"># determine the (x, y)-coordinates of the intersection rectangle</span>
+    <span class="n">xA</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">boxA</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">boxB</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">yA</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">boxA</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">boxB</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">xB</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">boxA</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">boxB</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">yB</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">boxA</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">boxB</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+    <span class="c1"># compute the area of intersection rectangle</span>
+    <span class="n">interArea</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xB</span> <span class="o">-</span> <span class="n">xA</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">yB</span> <span class="o">-</span> <span class="n">yA</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># compute the area of both the prediction and ground-truth rectangles</span>
+    <span class="n">boxAArea</span> <span class="o">=</span> <span class="p">(</span><span class="n">boxA</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">boxA</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">boxA</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">boxA</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">boxBArea</span> <span class="o">=</span> <span class="p">(</span><span class="n">boxB</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">boxB</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">boxB</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">boxB</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># compute the intersection over union by taking the intersection</span>
+    <span class="c1"># area and dividing it by the sum of prediction + ground-truth</span>
+    <span class="c1"># areas - the interesection area</span>
+    <span class="n">iou</span> <span class="o">=</span> <span class="n">interArea</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">boxAArea</span> <span class="o">+</span> <span class="n">boxBArea</span> <span class="o">-</span> <span class="n">interArea</span><span class="p">)</span>
+
+    <span class="c1"># return the intersection over union value</span>
+    <span class="k">return</span> <span class="n">iou</span></div>
+
+
+<div class="viewcode-block" id="find_strongest_associate"><a class="viewcode-back" href="../../segmenter_model_zoo.html#segmenter_model_zoo.utils.find_strongest_associate">[docs]</a><span class="k">def</span> <span class="nf">find_strongest_associate</span><span class="p">(</span><span class="n">main_score</span><span class="p">,</span> <span class="n">aux_score</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;find the most likely pair from all candidate in one bounding box&quot;&quot;&quot;</span>
+
+    <span class="c1"># collect confidence score of all candidates</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">main_score</span><span class="p">)):</span>
+        <span class="n">score</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">main_score</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">aux_score</span><span class="p">[</span><span class="n">ii</span><span class="p">]))</span>
+
+    <span class="c1"># sort</span>
+    <span class="n">score_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;&lt;f4,&lt;f4&quot;</span><span class="p">)</span>
+    <span class="n">weight_order</span> <span class="o">=</span> <span class="n">score_array</span><span class="o">.</span><span class="n">argsort</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">weight_order</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="exist_double_assignment"><a class="viewcode-back" href="../../segmenter_model_zoo.html#segmenter_model_zoo.utils.exist_double_assignment">[docs]</a><span class="k">def</span> <span class="nf">exist_double_assignment</span><span class="p">(</span><span class="n">cell_pairs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;check if one object is associated with multiple pairs&quot;&quot;&quot;</span>
+
+    <span class="n">nodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">x</span> <span class="k">for</span> <span class="n">ll</span> <span class="ow">in</span> <span class="n">cell_pairs</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ll</span><span class="p">)</span>
+    <span class="n">num_node</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+    <span class="n">num_pair</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cell_pairs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="ow">not</span> <span class="n">num_pair</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">==</span> <span class="n">num_node</span></div>
+
+
+<div class="viewcode-block" id="find_multi_assignment"><a class="viewcode-back" href="../../segmenter_model_zoo.html#segmenter_model_zoo.utils.find_multi_assignment">[docs]</a><span class="k">def</span> <span class="nf">find_multi_assignment</span><span class="p">(</span><span class="n">cell_pairs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;find all multi-assignment&quot;&quot;&quot;</span>
+
+    <span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">ll</span> <span class="ow">in</span> <span class="n">cell_pairs</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ll</span><span class="p">]</span>
+    <span class="n">node_count</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+    <span class="n">simple_pair</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">multi_pair</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">multi_pair_index</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cell_pairs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">node_count</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">node_count</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">multi_pair</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+            <span class="n">multi_pair_index</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">simple_pair</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">simple_pair</span><span class="p">,</span> <span class="n">multi_pair</span><span class="p">,</span> <span class="n">multi_pair_index</span></div>
+
+
+<div class="viewcode-block" id="prune_cell_pairs"><a class="viewcode-back" href="../../segmenter_model_zoo.html#segmenter_model_zoo.utils.prune_cell_pairs">[docs]</a><span class="k">def</span> <span class="nf">prune_cell_pairs</span><span class="p">(</span><span class="n">multi_pair</span><span class="p">,</span> <span class="n">current_best_pair</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;update candidates after taking out one pair&quot;&quot;&quot;</span>
+
+    <span class="n">p_best</span> <span class="o">=</span> <span class="n">multi_pair</span><span class="p">[</span><span class="n">current_best_pair</span><span class="p">]</span>
+    <span class="n">idx_to_remove</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">multi_pair</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="n">current_best_pair</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">p_best</span> <span class="ow">or</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">p_best</span><span class="p">:</span>
+            <span class="n">idx_to_remove</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">idx_to_remove</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Jianxu Chen
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

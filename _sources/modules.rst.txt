@@ -1,0 +1,7 @@
+segmenter_model_zoo
+===================
+
+.. toctree::
+   :maxdepth: 4
+
+   segmenter_model_zoo

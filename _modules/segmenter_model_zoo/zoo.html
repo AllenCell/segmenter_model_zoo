@@ -1,0 +1,840 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>segmenter_model_zoo.zoo &mdash; segmenter_model_zoo 0.0.5 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> segmenter_model_zoo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.5
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#stable-release">Stable release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#from-sources">From sources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Package modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../segmenter_model_zoo.html">segmenter_model_zoo package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../segmenter_model_zoo.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../segmenter_model_zoo.bin.html">segmenter_model_zoo.bin package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../segmenter_model_zoo.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../segmenter_model_zoo.html#module-segmenter_model_zoo.quilt_utils">segmenter_model_zoo.quilt_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../segmenter_model_zoo.html#module-segmenter_model_zoo.utils">segmenter_model_zoo.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../segmenter_model_zoo.html#module-segmenter_model_zoo.zoo">segmenter_model_zoo.zoo module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../segmenter_model_zoo.html#module-segmenter_model_zoo">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#deploying">Deploying</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../math.html">Math notation example</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">segmenter_model_zoo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../segmenter_model_zoo.html">segmenter_model_zoo</a> &raquo;</li>
+        
+      <li>segmenter_model_zoo.zoo</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for segmenter_model_zoo.zoo</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">importlib</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="kn">import</span> <span class="n">Variable</span>
+<span class="kn">from</span> <span class="nn">aicsmlsegment.utils</span> <span class="kn">import</span> <span class="n">input_normalization</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="n">zoom</span>
+<span class="kn">from</span> <span class="nn">aicsimageio</span> <span class="kn">import</span> <span class="n">AICSImage</span>
+
+<span class="kn">from</span> <span class="nn">segmenter_model_zoo.quilt_utils</span> <span class="kn">import</span> <span class="n">validate_model</span>
+
+<span class="c1">###############################################################################</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1">###############################################################################</span>
+<span class="c1"># There are two types of models: basic model and super model</span>
+<span class="c1"># Basic model is just a trained neural network</span>
+<span class="c1"># Super model can be multiple basic models + certain preprocesisng and</span>
+<span class="c1"># post processing step to generate the final output.</span>
+<span class="c1"># In the model zoo, a few label-free models are also included as basic models</span>
+<span class="c1">###############################################################################</span>
+
+<span class="c1"># There are two backbones in segmenter: unet_xy and unet_xy_zoom</span>
+<span class="c1"># define the defaul setting here</span>
+<span class="n">MODEL_DEF_MAPPING</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;unet_xy_zoom&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;size_in&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">52</span><span class="p">,</span> <span class="mi">420</span><span class="p">,</span> <span class="mi">420</span><span class="p">],</span>
+        <span class="s2">&quot;size_out&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">152</span><span class="p">,</span> <span class="mi">152</span><span class="p">],</span>
+        <span class="s2">&quot;nclass&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+        <span class="s2">&quot;nchannel&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;OutputCh&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;unet_xy&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;size_in&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">44</span><span class="p">,</span> <span class="mi">140</span><span class="p">,</span> <span class="mi">140</span><span class="p">],</span>
+        <span class="s2">&quot;size_out&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">52</span><span class="p">],</span>
+        <span class="s2">&quot;nclass&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+        <span class="s2">&quot;nchannel&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;OutputCh&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+
+<span class="c1"># a record of current basic models</span>
+<span class="n">CHECKPOINT_PATH_MAPPING</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;DNA_mask_production&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;model_type&quot;</span><span class="p">:</span> <span class="s2">&quot;unet_xy_zoom&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;norm&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+        <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;quilt&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;default_cutoff&quot;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;DNA_seed_production&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;model_type&quot;</span><span class="p">:</span> <span class="s2">&quot;unet_xy_zoom&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;norm&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+        <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;quilt&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;default_cutoff&quot;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;CellMask_edge_production&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;model_type&quot;</span><span class="p">:</span> <span class="s2">&quot;unet_xy_zoom&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;norm&quot;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+        <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;quilt&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;default_cutoff&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;CAAX_production&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;model_type&quot;</span><span class="p">:</span> <span class="s2">&quot;unet_xy_zoom&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;norm&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;quilt&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;default_cutoff&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;LMNB1_all_production&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;model_type&quot;</span><span class="p">:</span> <span class="s2">&quot;unet_xy&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;norm&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+        <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;quilt&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;default_cutoff&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;LMNB1_fill_production&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;model_type&quot;</span><span class="p">:</span> <span class="s2">&quot;unet_xy_zoom&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;norm&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+        <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;quilt&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;default_cutoff&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;LMNB1_seed_production&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;model_type&quot;</span><span class="p">:</span> <span class="s2">&quot;unet_xy_zoom&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;norm&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+        <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;quilt&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;default_cutoff&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;LF_DNA_mask&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;quilt&quot;</span><span class="p">,</span> <span class="s2">&quot;default_cutoff&quot;</span><span class="p">:</span> <span class="mf">1.4</span><span class="p">},</span>
+    <span class="s2">&quot;LF_DNA_mask_two_camera&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;quilt&quot;</span><span class="p">,</span> <span class="s2">&quot;default_cutoff&quot;</span><span class="p">:</span> <span class="mf">1.1</span><span class="p">},</span>
+    <span class="s2">&quot;LF_mem_edge&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;quilt&quot;</span><span class="p">,</span> <span class="s2">&quot;default_cutoff&quot;</span><span class="p">:</span> <span class="mf">1.4</span><span class="p">},</span>
+    <span class="s2">&quot;LF_mem_edge_two_camera&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;quilt&quot;</span><span class="p">,</span> <span class="s2">&quot;default_cutoff&quot;</span><span class="p">:</span> <span class="mf">1.4</span><span class="p">},</span>
+    <span class="s2">&quot;H2B_coarse&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;model_type&quot;</span><span class="p">:</span> <span class="s2">&quot;unet_xy_zoom&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;norm&quot;</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span>
+        <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;quilt&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;default_cutoff&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+
+<span class="c1"># a record of current super models</span>
+<span class="n">SUPER_MODEL_MAPPING</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;DNA_MEM_instance_basic&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;models&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;DNA_mask_production&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;CellMask_edge_production&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;DNA_seed_production&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;2 x Z x Y x X (dna | mem), or file path and index list&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;DNA_MEM_instance_plus_LF&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;models&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;DNA_mask_production&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;CellMask_edge_production&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;DNA_seed_production&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;LF_DNA_mask&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;LF_mem_edge&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;3 x Z x Y x X (dna | mem | bf), or file path and index list&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;DNA_MEM_instance_plus_LF_two_camera&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;models&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;DNA_mask_production&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;CellMask_edge_production&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;DNA_seed_production&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;LF_DNA_mask_two_camera&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;LF_mem_edge_two_camera&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;3 x Z x Y x X (dna | mem | bf), or file path and index list&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;LMNB1_morphological_production_alpha&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;models&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;LMNB1_all_production&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;LMNB1_fill_production&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;LMNB1_seed_production&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;CellMask_edge_production&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;2 x Z x Y x X (lamin | mem) or file path and index list&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;structure_AAVS1_100x_hipsc&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;models&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;CAAX_production&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;1 x Z x Y x X (caax) or file path and index list&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;structure_H2B_100x_hipsc&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;models&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;H2B_coarse&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;1 x Z x Y x X (h2b) or file path and index list&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="SegModel"><a class="viewcode-back" href="../../segmenter_model_zoo.html#segmenter_model_zoo.zoo.SegModel">[docs]</a><span class="k">class</span> <span class="nc">SegModel</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+<div class="viewcode-block" id="SegModel.reset"><a class="viewcode-back" href="../../segmenter_model_zoo.html#segmenter_model_zoo.zoo.SegModel.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normalization</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size_in</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size_out</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nclass</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nchannel</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">OutputCh</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cutoff</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="SegModel.to_gpu"><a class="viewcode-back" href="../../segmenter_model_zoo.html#segmenter_model_zoo.zoo.SegModel.to_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">to_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gpu_id</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;please load the model first&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">gpu_id</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SegModel.load_train"><a class="viewcode-back" href="../../segmenter_model_zoo.html#segmenter_model_zoo.zoo.SegModel.load_train">[docs]</a>    <span class="k">def</span> <span class="nf">load_train</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_param</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;local_path&quot;</span><span class="p">:</span> <span class="s2">&quot;./&quot;</span><span class="p">}</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        load a trained model</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------------</span>
+<span class="sd">        checkpoint_name: str</span>
+<span class="sd">            the name of the model, use list_all_trained_models() to get</span>
+<span class="sd">            a list of all current models</span>
+<span class="sd">        model_param: Dict</span>
+<span class="sd">            a dictionary of additional parameters can be passed in. If</span>
+<span class="sd">            nothing is passed in, default parameters will be used. There</span>
+<span class="sd">            are two important parameters: &quot;local_path&quot; and &quot;model_path&quot;. If</span>
+<span class="sd">            &quot;model_path&quot; is specified, it will be loaded directly. Otherwise,</span>
+<span class="sd">            the model will be downloaded from quilt and save at &quot;local_path&quot;</span>
+<span class="sd">            (default is the current working directory).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">checkpoint_name</span> <span class="ow">in</span> <span class="n">CHECKPOINT_PATH_MAPPING</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Checkpoint &#39;</span><span class="si">{</span><span class="n">checkpoint_name</span><span class="si">}</span><span class="s2">&#39; does not exist&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">checkpoint_name</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;LF&quot;</span><span class="p">:</span>  <span class="c1"># labelfree model</span>
+            <span class="kn">from</span> <span class="nn">fnet.models</span> <span class="kn">import</span> <span class="n">load_model</span> <span class="k">as</span> <span class="n">load_model_lf</span>
+            <span class="kn">from</span> <span class="nn">fnet.cli.predict</span> <span class="kn">import</span> <span class="n">parse_model</span>
+
+            <span class="k">if</span> <span class="s2">&quot;model_path&quot;</span> <span class="ow">in</span> <span class="n">model_param</span><span class="p">:</span>
+                <span class="n">model_path</span> <span class="o">=</span> <span class="n">model_param</span><span class="p">[</span><span class="s2">&quot;model_path&quot;</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">CHECKPOINT_PATH_MAPPING</span><span class="p">[</span><span class="n">checkpoint_name</span><span class="p">][</span><span class="s2">&quot;path&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;quilt&quot;</span><span class="p">:</span>
+                <span class="n">model_path</span> <span class="o">=</span> <span class="n">validate_model</span><span class="p">(</span><span class="n">checkpoint_name</span><span class="p">,</span> <span class="n">model_param</span><span class="p">[</span><span class="s2">&quot;local_path&quot;</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># It is possible to modify the source file to hard-code the</span>
+                <span class="c1"># model path to load everything</span>
+                <span class="n">model_path</span> <span class="o">=</span> <span class="n">CHECKPOINT_PATH_MAPPING</span><span class="p">[</span><span class="n">checkpoint_name</span><span class="p">][</span><span class="s2">&quot;path&quot;</span><span class="p">]</span>
+
+            <span class="n">model_def</span> <span class="o">=</span> <span class="n">parse_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">load_model_lf</span><span class="p">(</span><span class="n">model_def</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">],</span> <span class="n">no_optim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">model_type</span> <span class="o">=</span> <span class="n">CHECKPOINT_PATH_MAPPING</span><span class="p">[</span><span class="n">checkpoint_name</span><span class="p">][</span><span class="s2">&quot;model_type&quot;</span><span class="p">]</span>
+
+            <span class="c1"># load default model parameters or from model_param</span>
+            <span class="k">if</span> <span class="s2">&quot;size_in&quot;</span> <span class="ow">in</span> <span class="n">model_param</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">size_in</span> <span class="o">=</span> <span class="n">model_param</span><span class="p">[</span><span class="s2">&quot;size_in&quot;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">size_in</span> <span class="o">=</span> <span class="n">MODEL_DEF_MAPPING</span><span class="p">[</span><span class="n">model_type</span><span class="p">][</span><span class="s2">&quot;size_in&quot;</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="s2">&quot;size_out&quot;</span> <span class="ow">in</span> <span class="n">model_param</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">size_out</span> <span class="o">=</span> <span class="n">model_param</span><span class="p">[</span><span class="s2">&quot;size_out&quot;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">size_out</span> <span class="o">=</span> <span class="n">MODEL_DEF_MAPPING</span><span class="p">[</span><span class="n">model_type</span><span class="p">][</span><span class="s2">&quot;size_out&quot;</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="s2">&quot;nclass&quot;</span> <span class="ow">in</span> <span class="n">model_param</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">nclass</span> <span class="o">=</span> <span class="n">model_param</span><span class="p">[</span><span class="s2">&quot;nclass&quot;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">nclass</span> <span class="o">=</span> <span class="n">MODEL_DEF_MAPPING</span><span class="p">[</span><span class="n">model_type</span><span class="p">][</span><span class="s2">&quot;nclass&quot;</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="s2">&quot;nchannel&quot;</span> <span class="ow">in</span> <span class="n">model_param</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">nchannel</span> <span class="o">=</span> <span class="n">model_param</span><span class="p">[</span><span class="s2">&quot;nchannel&quot;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">nchannel</span> <span class="o">=</span> <span class="n">MODEL_DEF_MAPPING</span><span class="p">[</span><span class="n">model_type</span><span class="p">][</span><span class="s2">&quot;nchannel&quot;</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="s2">&quot;OutputCh&quot;</span> <span class="ow">in</span> <span class="n">model_param</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">OutputCh</span> <span class="o">=</span> <span class="n">model_param</span><span class="p">[</span><span class="s2">&quot;OutputCh&quot;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">OutputCh</span> <span class="o">=</span> <span class="n">MODEL_DEF_MAPPING</span><span class="p">[</span><span class="n">model_type</span><span class="p">][</span><span class="s2">&quot;OutputCh&quot;</span><span class="p">]</span>
+
+            <span class="c1"># define the model</span>
+            <span class="k">if</span> <span class="n">model_type</span> <span class="o">==</span> <span class="s2">&quot;unet_xy&quot;</span><span class="p">:</span>
+                <span class="kn">from</span> <span class="nn">aicsmlsegment.Net3D.unet_xy</span> <span class="kn">import</span> <span class="n">UNet3D</span> <span class="k">as</span> <span class="n">DNN</span>
+
+                <span class="n">model</span> <span class="o">=</span> <span class="n">DNN</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nchannel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nclass</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">softmax</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">final_activation</span>
+            <span class="k">elif</span> <span class="n">model_type</span> <span class="o">==</span> <span class="s2">&quot;unet_xy_zoom&quot;</span><span class="p">:</span>
+                <span class="kn">from</span> <span class="nn">aicsmlsegment.Net3D.unet_xy_enlarge</span> <span class="kn">import</span> <span class="n">UNet3D</span> <span class="k">as</span> <span class="n">DNN</span>
+
+                <span class="k">if</span> <span class="s2">&quot;zoom_ratio&quot;</span> <span class="ow">in</span> <span class="n">model_param</span><span class="p">:</span>
+                    <span class="n">zoom_ratio</span> <span class="o">=</span> <span class="n">model_param</span><span class="p">[</span><span class="s2">&quot;zoom_ratio&quot;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">zoom_ratio</span> <span class="o">=</span> <span class="mi">3</span>
+                <span class="n">model</span> <span class="o">=</span> <span class="n">DNN</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nchannel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nclass</span><span class="p">,</span> <span class="n">zoom_ratio</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">softmax</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">final_activation</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;name error in model name&quot;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+
+            <span class="c1"># load the trained model</span>
+            <span class="k">if</span> <span class="s2">&quot;model_path&quot;</span> <span class="ow">in</span> <span class="n">model_param</span><span class="p">:</span>
+                <span class="n">model_path</span> <span class="o">=</span> <span class="n">model_param</span><span class="p">[</span><span class="s2">&quot;model_path&quot;</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">CHECKPOINT_PATH_MAPPING</span><span class="p">[</span><span class="n">checkpoint_name</span><span class="p">][</span><span class="s2">&quot;path&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;quilt&quot;</span><span class="p">:</span>
+                <span class="n">model_path</span> <span class="o">=</span> <span class="n">validate_model</span><span class="p">(</span><span class="n">checkpoint_name</span><span class="p">,</span> <span class="n">model_param</span><span class="p">[</span><span class="s2">&quot;local_path&quot;</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># It is possible to modify the source file to hard-code the</span>
+                <span class="c1"># model path to load everything</span>
+                <span class="n">model_path</span> <span class="o">=</span> <span class="n">CHECKPOINT_PATH_MAPPING</span><span class="p">[</span><span class="n">checkpoint_name</span><span class="p">][</span><span class="s2">&quot;path&quot;</span><span class="p">]</span>
+
+            <span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="s2">&quot;model_state_dict&quot;</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;model_state_dict&quot;</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">normalization</span> <span class="o">=</span> <span class="n">CHECKPOINT_PATH_MAPPING</span><span class="p">[</span><span class="n">checkpoint_name</span><span class="p">][</span><span class="s2">&quot;norm&quot;</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cutoff</span> <span class="o">=</span> <span class="n">CHECKPOINT_PATH_MAPPING</span><span class="p">[</span><span class="n">checkpoint_name</span><span class="p">][</span><span class="s2">&quot;default_cutoff&quot;</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;model </span><span class="si">{</span><span class="n">checkpoint_name</span><span class="si">}</span><span class="s2"> is successfully loaded&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SegModel.get_cutoff"><a class="viewcode-back" href="../../segmenter_model_zoo.html#segmenter_model_zoo.zoo.SegModel.get_cutoff">[docs]</a>    <span class="k">def</span> <span class="nf">get_cutoff</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        load the cutoff value to be applied on the prediction</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cutoff</span></div>
+
+<div class="viewcode-block" id="SegModel.list_all_trained_models"><a class="viewcode-back" href="../../segmenter_model_zoo.html#segmenter_model_zoo.zoo.SegModel.list_all_trained_models">[docs]</a>    <span class="k">def</span> <span class="nf">list_all_trained_models</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        print all current models</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">CHECKPOINT_PATH_MAPPING</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SegModel.apply_on_single_zstack"><a class="viewcode-back" href="../../segmenter_model_zoo.html#segmenter_model_zoo.zoo.SegModel.apply_on_single_zstack">[docs]</a>    <span class="k">def</span> <span class="nf">apply_on_single_zstack</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">input_img</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">inputCh</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">normalization</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">already_normalized</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">cutoff</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">inference_param</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply a trained model on an image</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        ------------</span>
+<span class="sd">        input_img: np.ndarray</span>
+<span class="sd">            the image to be applied can be passed in as a numpy array</span>
+<span class="sd">        filename:  str</span>
+<span class="sd">            the image to be appplied can be passed in as a filename. If</span>
+<span class="sd">            input_img is used, the filename will be omitted</span>
+<span class="sd">        inputCh: Union(int, List(int))</span>
+<span class="sd">            when filename is used, inputCh must be specified. It can be</span>
+<span class="sd">            an integer (if only one channel is needed), or a list of</span>
+<span class="sd">            integers (if multiple channels are needed). Each model may</span>
+<span class="sd">            have different requirement.</span>
+<span class="sd">        normalization: int</span>
+<span class="sd">            an index to indicate which normalization reciepy will be used</span>
+<span class="sd">            to normalize the image</span>
+<span class="sd">        already_normalized: bool</span>
+<span class="sd">            A flag to indicate whether the image has been normalized or not.</span>
+<span class="sd">            This is applicable to both cases: numpy array or filename.</span>
+<span class="sd">        cutoff: float</span>
+<span class="sd">            a cutoff value can be passed in, which will be applied on the</span>
+<span class="sd">            prediction. If nothing passed in, default value will be used.</span>
+<span class="sd">        inference_param: Dict</span>
+<span class="sd">            a dictionary to pass in extra parameters for inference. Currently,</span>
+<span class="sd">            only one parameter is allowed: &quot;ResizeRatio&quot; (a list of three</span>
+<span class="sd">            float numbers to indicate the ResizeRatio to apply on ZYX axis).</span>
+<span class="sd">            More parameters may be added in the future.</span>
+
+<span class="sd">        Return:</span>
+<span class="sd">        -------------</span>
+<span class="sd">        output_img: np.ndarray</span>
+<span class="sd">            the segmentation result</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># set cudnn</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># check data</span>
+        <span class="k">if</span> <span class="n">input_img</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="n">inputCh</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inputCh</span><span class="p">,</span> <span class="n">List</span><span class="p">):</span>
+                <span class="n">inputCh</span> <span class="o">=</span> <span class="p">[</span><span class="n">inputCh</span><span class="p">]</span>
+
+            <span class="n">reader</span> <span class="o">=</span> <span class="n">AICSImage</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">input_img</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_image_data</span><span class="p">(</span><span class="s2">&quot;CZYX&quot;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="n">inputCh</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">input_img</span> <span class="o">=</span> <span class="n">input_img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">input_img</span> <span class="o">=</span> <span class="n">input_img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="c1"># make sure the image has a C dimension</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">input_img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span> <span class="ow">and</span> <span class="n">input_img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">input_img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">input_img</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">already_normalized</span><span class="p">:</span>
+            <span class="c1"># TODO: this can be implemented in a more elegant way after improving</span>
+            <span class="c1"># aicsmlsegment API.</span>
+            <span class="n">args_norm</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span>  <span class="c1"># noqa: E731</span>
+            <span class="k">if</span> <span class="n">normalization</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">args_norm</span><span class="o">.</span><span class="n">Normalization</span> <span class="o">=</span> <span class="n">normalization</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">args_norm</span><span class="o">.</span><span class="n">Normalization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalization</span>
+
+            <span class="n">input_img</span> <span class="o">=</span> <span class="n">input_normalization</span><span class="p">(</span><span class="n">input_img</span><span class="p">,</span> <span class="n">args_norm</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;ResizeRatio&quot;</span> <span class="ow">in</span> <span class="n">inference_param</span><span class="p">:</span>
+            <span class="n">ResizeRatio</span> <span class="o">=</span> <span class="n">inference_param</span><span class="p">[</span><span class="s2">&quot;ResizeRatio&quot;</span><span class="p">]</span>
+            <span class="n">input_img</span> <span class="o">=</span> <span class="n">zoom</span><span class="p">(</span>
+                <span class="n">input_img</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ResizeRatio</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ResizeRatio</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ResizeRatio</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ResizeRatio</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
+
+        <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+        <span class="c1"># do padding on input</span>
+        <span class="n">padding</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size_in</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_out</span><span class="p">)]</span>
+        <span class="n">img_pad0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span>
+            <span class="n">input_img</span><span class="p">,</span>
+            <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">padding</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">padding</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="p">(</span><span class="n">padding</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">padding</span><span class="p">[</span><span class="mi">2</span><span class="p">])),</span>
+            <span class="s2">&quot;symmetric&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">img_pad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span>
+            <span class="n">img_pad0</span><span class="p">,</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">padding</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">padding</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span> <span class="s2">&quot;constant&quot;</span>
+        <span class="p">)</span>
+
+        <span class="c1"># we only support single output image in model zoo</span>
+        <span class="c1"># other outputs are only supported in full segmenter prediction so far</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">OutputCh</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+        <span class="n">output_img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">input_img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+        <span class="c1"># loop through the image patch by patch</span>
+        <span class="n">num_step_z</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">input_img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_out</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">num_step_y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">input_img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_out</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">num_step_x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">input_img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_out</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">ix</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_step_x</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">ix</span> <span class="o">&lt;</span> <span class="n">num_step_x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">xa</span> <span class="o">=</span> <span class="n">ix</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_out</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">xa</span> <span class="o">=</span> <span class="n">input_img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_out</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+                <span class="k">for</span> <span class="n">iy</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_step_y</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">iy</span> <span class="o">&lt;</span> <span class="n">num_step_y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">ya</span> <span class="o">=</span> <span class="n">iy</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_out</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">ya</span> <span class="o">=</span> <span class="n">input_img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_out</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+                    <span class="k">for</span> <span class="n">iz</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_step_z</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">iz</span> <span class="o">&lt;</span> <span class="n">num_step_z</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                            <span class="n">za</span> <span class="o">=</span> <span class="n">iz</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_out</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">za</span> <span class="o">=</span> <span class="n">input_img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_out</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+                        <span class="n">input_patch</span> <span class="o">=</span> <span class="n">img_pad</span><span class="p">[</span>
+                            <span class="p">:,</span>
+                            <span class="n">za</span> <span class="p">:</span> <span class="p">(</span><span class="n">za</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_in</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                            <span class="n">ya</span> <span class="p">:</span> <span class="p">(</span><span class="n">ya</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_in</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                            <span class="n">xa</span> <span class="p">:</span> <span class="p">(</span><span class="n">xa</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_in</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
+                        <span class="p">]</span>
+                        <span class="n">input_img_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">input_patch</span><span class="p">)</span>
+                        <span class="n">tmp_out</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">Variable</span><span class="p">(</span><span class="n">input_img_tensor</span><span class="o">.</span><span class="n">cuda</span><span class="p">())</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+                        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">OutputCh</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span>
+                            <span class="n">tmp_out</span>
+                        <span class="p">),</span> <span class="s2">&quot;the parameter OutputCh not compatible with output tensors&quot;</span>
+
+                        <span class="n">label</span> <span class="o">=</span> <span class="n">tmp_out</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">OutputCh</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+                        <span class="n">prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+                        <span class="n">out_flat_tensor</span> <span class="o">=</span> <span class="n">prob</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">data</span>
+                        <span class="n">out_tensor</span> <span class="o">=</span> <span class="n">out_flat_tensor</span><span class="o">.</span><span class="n">view</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">size_out</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">size_out</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">size_out</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">nclass</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                        <span class="p">)</span>
+                        <span class="n">out_nda</span> <span class="o">=</span> <span class="n">out_tensor</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+                        <span class="n">output_img</span><span class="p">[</span>
+                            <span class="mi">0</span><span class="p">,</span>
+                            <span class="n">za</span> <span class="p">:</span> <span class="p">(</span><span class="n">za</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_out</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                            <span class="n">ya</span> <span class="p">:</span> <span class="p">(</span><span class="n">ya</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_out</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                            <span class="n">xa</span> <span class="p">:</span> <span class="p">(</span><span class="n">xa</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_out</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
+                        <span class="p">]</span> <span class="o">=</span> <span class="n">out_nda</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">OutputCh</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+
+        <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">empty_cache</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">cutoff</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># load default cutoff</span>
+            <span class="n">cutoff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cutoff</span>
+
+        <span class="k">if</span> <span class="n">cutoff</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">output_img</span> <span class="o">=</span> <span class="n">output_img</span> <span class="o">&gt;</span> <span class="n">cutoff</span>
+            <span class="n">output_img</span> <span class="o">=</span> <span class="n">output_img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+            <span class="n">output_img</span><span class="p">[</span><span class="n">output_img</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">output_img</span> <span class="o">=</span> <span class="p">(</span><span class="n">output_img</span> <span class="o">-</span> <span class="n">output_img</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">/</span> <span class="p">(</span>
+                <span class="n">output_img</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">output_img</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="n">output_img</span> <span class="o">=</span> <span class="n">output_img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">output_img</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:]</span></div></div>
+
+
+<div class="viewcode-block" id="SuperModel"><a class="viewcode-back" href="../../segmenter_model_zoo.html#segmenter_model_zoo.zoo.SuperModel">[docs]</a><span class="k">class</span> <span class="nc">SuperModel</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_param</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;local_path&quot;</span><span class="p">:</span> <span class="s2">&quot;./&quot;</span><span class="p">}):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define a SuperModel</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        model_name: str</span>
+<span class="sd">            the name of the super model</span>
+<span class="sd">        model_param: Dict</span>
+<span class="sd">            the extra parameters for the super model.</span>
+<span class="sd">            the order must match the order of models in this SuperModel.</span>
+<span class="sd">            For each dict, there are two importance parameters:</span>
+<span class="sd">            &quot;local_path&quot; and &quot;model_path&quot;. &quot;model_path&quot; is a dictionary</span>
+<span class="sd">            specifying the path to each basic model, e.g.</span>
+<span class="sd">            &quot;model_path&quot;: {&quot;DNA_mask_production&quot;: &quot;/path/to/mask/model&quot;,</span>
+<span class="sd">            &quot;DNA_seed_production&quot;: &quot;path/to/seed/model&quot;}. If &quot;model_path&quot;</span>
+<span class="sd">            is specified, the model will be loaded directly. Otherwise,</span>
+<span class="sd">            the models will be downloaded from quilt and saved at</span>
+<span class="sd">            &quot;local_path&quot; (default is the current working directory).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">assert</span> <span class="s2">&quot;local_path&quot;</span> <span class="ow">in</span> <span class="n">model_param</span><span class="p">,</span> <span class="s2">&quot;local_path is required&quot;</span>
+        <span class="c1"># TODO: allow hard-coded model path to skip local_path</span>
+        <span class="n">model_local_path</span> <span class="o">=</span> <span class="n">model_param</span><span class="p">[</span><span class="s2">&quot;local_path&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">model_name</span> <span class="ow">in</span> <span class="n">SUPER_MODEL_MAPPING</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;model name &#39;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">&#39; does not exist&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_list</span> <span class="o">=</span> <span class="n">SUPER_MODEL_MAPPING</span><span class="p">[</span><span class="n">model_name</span><span class="p">][</span><span class="s2">&quot;models&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span> <span class="o">=</span> <span class="n">model_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">models</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">mi</span><span class="p">,</span> <span class="n">mname</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">mname</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;LF&quot;</span><span class="p">:</span>
+                <span class="kn">from</span> <span class="nn">fnet.models</span> <span class="kn">import</span> <span class="n">load_model</span> <span class="k">as</span> <span class="n">load_model_lf</span>
+                <span class="kn">from</span> <span class="nn">fnet.cli.predict</span> <span class="kn">import</span> <span class="n">parse_model</span>
+
+                <span class="k">if</span> <span class="s2">&quot;model_path&quot;</span> <span class="ow">in</span> <span class="n">model_param</span> <span class="ow">and</span> <span class="n">mname</span> <span class="ow">in</span> <span class="n">model_param</span><span class="p">[</span><span class="s2">&quot;model_path&quot;</span><span class="p">]:</span>
+                    <span class="n">model_path</span> <span class="o">=</span> <span class="n">model_param</span><span class="p">[</span><span class="s2">&quot;model_path&quot;</span><span class="p">][</span><span class="n">mname</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="n">CHECKPOINT_PATH_MAPPING</span><span class="p">[</span><span class="n">mname</span><span class="p">][</span><span class="s2">&quot;path&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;quilt&quot;</span><span class="p">:</span>
+                    <span class="n">model_path</span> <span class="o">=</span> <span class="n">validate_model</span><span class="p">(</span><span class="n">mname</span><span class="p">,</span> <span class="n">model_local_path</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># It is possible to modify the source file to hard-code the</span>
+                    <span class="c1"># model path to load everything</span>
+                    <span class="n">model_path</span> <span class="o">=</span> <span class="n">CHECKPOINT_PATH_MAPPING</span><span class="p">[</span><span class="n">mname</span><span class="p">][</span><span class="s2">&quot;path&quot;</span><span class="p">]</span>
+
+                <span class="n">model_def</span> <span class="o">=</span> <span class="n">parse_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="n">load_model_lf</span><span class="p">(</span><span class="n">model_def</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">],</span> <span class="n">no_optim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">m</span><span class="o">.</span><span class="n">to_gpu</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="n">SegModel</span><span class="p">()</span>
+                <span class="k">if</span> <span class="s2">&quot;model_path&quot;</span> <span class="ow">in</span> <span class="n">model_param</span> <span class="ow">and</span> <span class="n">mname</span> <span class="ow">in</span> <span class="n">model_param</span><span class="p">[</span><span class="s2">&quot;model_path&quot;</span><span class="p">]:</span>
+                    <span class="n">m</span><span class="o">.</span><span class="n">load_train</span><span class="p">(</span>
+                        <span class="n">mname</span><span class="p">,</span>
+                        <span class="p">{</span>
+                            <span class="s2">&quot;local_path&quot;</span><span class="p">:</span> <span class="n">model_param</span><span class="p">[</span><span class="s2">&quot;local_path&quot;</span><span class="p">],</span>
+                            <span class="s2">&quot;model_path&quot;</span><span class="p">:</span> <span class="n">model_param</span><span class="p">[</span><span class="s2">&quot;model_path&quot;</span><span class="p">][</span><span class="n">mname</span><span class="p">],</span>
+                        <span class="p">},</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">m</span><span class="o">.</span><span class="n">load_train</span><span class="p">(</span><span class="n">mname</span><span class="p">,</span> <span class="n">model_param</span><span class="p">)</span>
+                <span class="n">m</span><span class="o">.</span><span class="n">to_gpu</span><span class="p">(</span><span class="s2">&quot;cuda:0&quot;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">model_local_path</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">SUPER_MODEL_MAPPING</span><span class="p">[</span><span class="n">model_name</span><span class="p">][</span><span class="s2">&quot;instruction&quot;</span><span class="p">])</span>
+
+<div class="viewcode-block" id="SuperModel.apply_on_single_zstack"><a class="viewcode-back" href="../../segmenter_model_zoo.html#segmenter_model_zoo.zoo.SuperModel.apply_on_single_zstack">[docs]</a>    <span class="k">def</span> <span class="nf">apply_on_single_zstack</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">input_img</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">inputCh</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appply a super model on one image</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        --------------</span>
+<span class="sd">        input_img: np.ndarray</span>
+<span class="sd">            the image to be segmented, if it is not None, filename and inputCh</span>
+<span class="sd">            will not be used. Otherwise, use filename and inputCh to read image</span>
+
+<span class="sd">        filename: Union(str, Path)</span>
+<span class="sd">            when input_img is None, use filename to load image</span>
+
+<span class="sd">        inputCh: List</span>
+<span class="sd">            when input_img is None, take specific channels from the image loaded</span>
+<span class="sd">            from filename</span>
+
+<span class="sd">        Return:</span>
+<span class="sd">        ------------</span>
+<span class="sd">        output: Union[np.ndarray, List]</span>
+<span class="sd">            the segmentation result</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># check data</span>
+        <span class="k">if</span> <span class="n">input_img</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> does not exist&quot;</span>
+            <span class="k">assert</span> <span class="n">inputCh</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;input channel must be provided&quot;</span>
+
+            <span class="n">reader</span> <span class="o">=</span> <span class="n">AICSImage</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">input_img</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_image_data</span><span class="p">(</span><span class="s2">&quot;CZYX&quot;</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="n">inputCh</span><span class="p">)</span>
+
+        <span class="c1"># make sure it is float32</span>
+        <span class="n">input_img</span> <span class="o">=</span> <span class="n">input_img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+        <span class="c1"># load the model wrapper</span>
+        <span class="n">module_name</span> <span class="o">=</span> <span class="s2">&quot;segmenter_model_zoo.model_wrapper.&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span>
+        <span class="n">wrapper_module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
+        <span class="n">SegModule</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">wrapper_module</span><span class="p">,</span> <span class="s2">&quot;SegModule&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">SegModule</span><span class="p">(</span><span class="n">input_img</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="list_all_super_models"><a class="viewcode-back" href="../../segmenter_model_zoo.html#segmenter_model_zoo.zoo.list_all_super_models">[docs]</a><span class="k">def</span> <span class="nf">list_all_super_models</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    print all available super models</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    if len(sys.argv) == 2:</span>
+<span class="sd">        print(SUPER_MODEL_MAPPING[sys.argv[1]][&quot;instruction&quot;])</span>
+<span class="sd">    elif len(sys.argv) == 1:</span>
+<span class="sd">        for key, value in SUPER_MODEL_MAPPING.items():</span>
+<span class="sd">            print(key)</span>
+<span class="sd">            # print(value[&#39;instruction&#39;])</span>
+<span class="sd">    else:</span>
+<span class="sd">        print(&quot;error function&quot;)</span>
+<span class="sd">        sys.exit(0)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">SUPER_MODEL_MAPPING</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">SUPER_MODEL_MAPPING</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">SUPER_MODEL_MAPPING</span><span class="p">[</span><span class="n">item</span><span class="p">][</span><span class="s2">&quot;instruction&quot;</span><span class="p">])</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Jianxu Chen
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

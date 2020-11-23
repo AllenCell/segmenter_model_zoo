@@ -1,0 +1,45 @@
+segmenter\_model\_zoo package
+=============================
+
+Subpackages
+-----------
+
+.. toctree::
+
+   segmenter_model_zoo.bin
+
+Submodules
+----------
+
+segmenter\_model\_zoo.quilt\_utils module
+-----------------------------------------
+
+.. automodule:: segmenter_model_zoo.quilt_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+segmenter\_model\_zoo.utils module
+----------------------------------
+
+.. automodule:: segmenter_model_zoo.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+segmenter\_model\_zoo.zoo module
+--------------------------------
+
+.. automodule:: segmenter_model_zoo.zoo
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: segmenter_model_zoo
+   :members:
+   :undoc-members:
+   :show-inheritance:

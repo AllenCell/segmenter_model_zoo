@@ -1,0 +1,384 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>segmenter_model_zoo.bin.batch_dl_run &mdash; segmenter_model_zoo 0.0.5 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> segmenter_model_zoo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.5
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#stable-release">Stable release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#from-sources">From sources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Package modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../segmenter_model_zoo.html">segmenter_model_zoo package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../segmenter_model_zoo.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../segmenter_model_zoo.bin.html">segmenter_model_zoo.bin package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../segmenter_model_zoo.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../segmenter_model_zoo.html#module-segmenter_model_zoo.quilt_utils">segmenter_model_zoo.quilt_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../segmenter_model_zoo.html#module-segmenter_model_zoo.utils">segmenter_model_zoo.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../segmenter_model_zoo.html#module-segmenter_model_zoo.zoo">segmenter_model_zoo.zoo module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../segmenter_model_zoo.html#module-segmenter_model_zoo">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#deploying">Deploying</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../math.html">Math notation example</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">segmenter_model_zoo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../segmenter_model_zoo.html">segmenter_model_zoo</a> &raquo;</li>
+        
+      <li>segmenter_model_zoo.bin.batch_dl_run</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for segmenter_model_zoo.bin.batch_dl_run</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This sample script will get deployed in the bin directory of the</span>
+<span class="sd">users&#39; virtualenv when the parent module is installed using pip.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span><span class="p">,</span> <span class="n">PurePosixPath</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">segmenter_model_zoo.zoo</span> <span class="kn">import</span> <span class="n">SuperModel</span>
+<span class="kn">from</span> <span class="nn">segmenter_model_zoo.utils</span> <span class="kn">import</span> <span class="n">load_filenames</span><span class="p">,</span> <span class="n">save_as_uint</span>
+
+<span class="c1">###############################################################################</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+<span class="c1"># Note: basicConfig should only be called in bin scripts (CLIs).</span>
+<span class="c1"># https://docs.python.org/3/library/logging.html#logging.basicConfig</span>
+<span class="c1"># &quot;This function does nothing if the root logger already has handlers configured for</span>
+<span class="c1"># it.&quot; As such, it should only be called once, and at the highest level (the CLIs in</span>
+<span class="c1"># this case). It should NEVER be called in library code!</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+    <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+    <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;[</span><span class="si">%(asctime)s</span><span class="s2"> - </span><span class="si">%(name)s</span><span class="s2"> - </span><span class="si">%(lineno)3d</span><span class="s2">][</span><span class="si">%(levelname)s</span><span class="s2">] </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1">###############################################################################</span>
+
+
+<div class="viewcode-block" id="Args"><a class="viewcode-back" href="../../../segmenter_model_zoo.bin.html#segmenter_model_zoo.bin.batch_dl_run.Args">[docs]</a><span class="k">class</span> <span class="nc">Args</span><span class="p">(</span><span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Arguments that could be passed in through the command line</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__parse</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
+            <span class="n">prog</span><span class="o">=</span><span class="s2">&quot;run dl segmentation&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;the entry point for running segmentation using ML model zoo&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--config&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the path to the configuration file&quot;</span>
+        <span class="p">)</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;-d&quot;</span><span class="p">,</span> <span class="s2">&quot;--debug&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;debug&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span>
+        <span class="p">)</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--overwrite&quot;</span><span class="p">,</span>
+            <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;whether to overwrite existing results&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--search_tag&quot;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;a string used to match filename when checking existence&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">namespace</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Seg3DStacks"><a class="viewcode-back" href="../../../segmenter_model_zoo.bin.html#segmenter_model_zoo.bin.batch_dl_run.Seg3DStacks">[docs]</a><span class="k">class</span> <span class="nc">Seg3DStacks</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">SuperModel</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">],</span> <span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">overwrite</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">overwrite</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">search_tag</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">debug</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;output_path&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_channel</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;input_channel&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Seg3DStacks.execute"><a class="viewcode-back" href="../../../segmenter_model_zoo.bin.html#segmenter_model_zoo.bin.batch_dl_run.Seg3DStacks.execute">[docs]</a>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filenames</span><span class="p">:</span> <span class="n">List</span><span class="p">):</span>
+        <span class="c1"># print out all filenames, if debug</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">filenames</span><span class="p">)</span>
+
+        <span class="n">save_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">fi</span><span class="p">,</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">filenames</span><span class="p">)):</span>
+            <span class="n">fn_core</span> <span class="o">=</span> <span class="n">PurePosixPath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">fn</span><span class="p">))</span><span class="o">.</span><span class="n">stem</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">overwrite</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1"># check if similar segmentation exists</span>
+                    <span class="n">existing_results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">save_path</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">fn_core</span> <span class="o">+</span> <span class="s2">&quot;*.&quot;</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">existing_results</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;the following files already exists, please check.&quot;</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">existing_results</span><span class="p">)</span>
+                        <span class="k">continue</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># do exact match</span>
+                    <span class="n">check_name</span> <span class="o">=</span> <span class="n">save_path</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fn_core</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">search_tag</span><span class="si">}</span><span class="s2">.tiff&quot;</span>
+                    <span class="k">if</span> <span class="n">check_name</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">check_name</span><span class="si">}</span><span class="s2"> exists, skipping&quot;</span><span class="p">)</span>
+                        <span class="k">continue</span>
+
+            <span class="c1"># run segmentation</span>
+            <span class="n">seg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">apply_on_single_zstack</span><span class="p">(</span>
+                <span class="n">filename</span><span class="o">=</span><span class="n">fn</span><span class="p">,</span> <span class="n">inputCh</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">input_channel</span>
+            <span class="p">)</span>
+
+            <span class="c1">##############################################</span>
+            <span class="c1"># check return type.</span>
+            <span class="c1"># two options: np.ndarray | List</span>
+            <span class="c1">#   - case 1: np.ndarray (simply one segmentation)</span>
+            <span class="c1">#   - case 2: List (two sub-lists: seg and seg_name)</span>
+            <span class="c1">##############################################</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">seg</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+                <span class="n">save_as_uint</span><span class="p">(</span><span class="n">seg</span><span class="p">,</span> <span class="n">save_path</span><span class="p">,</span> <span class="n">fn_core</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">overwrite</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">seg</span><span class="p">,</span> <span class="n">List</span><span class="p">):</span>
+                <span class="n">seg_output</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">seg</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">seg</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">seg_img</span><span class="p">,</span> <span class="n">seg_tag</span> <span class="ow">in</span> <span class="n">seg_output</span><span class="p">:</span>
+                    <span class="n">save_as_uint</span><span class="p">(</span><span class="n">seg_img</span><span class="p">,</span> <span class="n">save_path</span><span class="p">,</span> <span class="n">fn_core</span><span class="p">,</span> <span class="n">seg_tag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">overwrite</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;all files are done&quot;</span><span class="p">)</span></div></div>
+
+
+<span class="c1">###############################################################################</span>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../segmenter_model_zoo.bin.html#segmenter_model_zoo.bin.batch_dl_run.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">Args</span><span class="p">()</span>
+        <span class="n">dbg</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">debug</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">))</span>
+        <span class="n">all_files</span><span class="p">,</span> <span class="n">timelapse_flag</span> <span class="o">=</span> <span class="n">load_filenames</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">all_files</span><span class="p">)</span>
+
+        <span class="c1"># Do your work here - preferably in a class or function,</span>
+        <span class="c1"># passing in your args. E.g.</span>
+        <span class="k">if</span> <span class="n">timelapse_flag</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;timelapse is not supported yet&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">exe</span> <span class="o">=</span> <span class="n">Seg3DStacks</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="n">exe</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">all_files</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;=============================================&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dbg</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;=============================================&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;=============================================&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<span class="c1"># Allow caller to directly run this module (usually in development scenarios)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Jianxu Chen
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

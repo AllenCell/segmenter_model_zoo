@@ -1,0 +1,538 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>segmenter_model_zoo package &mdash; segmenter_model_zoo 0.0.5 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="segmenter_model_zoo.bin package" href="segmenter_model_zoo.bin.html" />
+    <link rel="prev" title="segmenter_model_zoo" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> segmenter_model_zoo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.5
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#stable-release">Stable release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#from-sources">From sources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Package modules</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">segmenter_model_zoo package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="segmenter_model_zoo.bin.html">segmenter_model_zoo.bin package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-segmenter_model_zoo.quilt_utils">segmenter_model_zoo.quilt_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-segmenter_model_zoo.utils">segmenter_model_zoo.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-segmenter_model_zoo.zoo">segmenter_model_zoo.zoo module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-segmenter_model_zoo">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#deploying">Deploying</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Math notation example</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">segmenter_model_zoo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">segmenter_model_zoo</a> &raquo;</li>
+        
+      <li>segmenter_model_zoo package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/segmenter_model_zoo.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+      
+        <a href="segmenter_model_zoo.bin.html" class="btn btn-neutral float-right" title="segmenter_model_zoo.bin package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="modules.html" class="btn btn-neutral float-left" title="segmenter_model_zoo" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+  </div>
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="segmenter-model-zoo-package">
+<h1>segmenter_model_zoo package<a class="headerlink" href="#segmenter-model-zoo-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="segmenter_model_zoo.bin.html">segmenter_model_zoo.bin package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="segmenter_model_zoo.bin.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="segmenter_model_zoo.bin.html#module-segmenter_model_zoo.bin.batch_dl_run">segmenter_model_zoo.bin.batch_dl_run module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="segmenter_model_zoo.bin.html#module-segmenter_model_zoo.bin">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-segmenter_model_zoo.quilt_utils">
+<span id="segmenter-model-zoo-quilt-utils-module"></span><h2>segmenter_model_zoo.quilt_utils module<a class="headerlink" href="#module-segmenter_model_zoo.quilt_utils" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="segmenter_model_zoo.quilt_utils.QuiltModelZoo">
+<em class="property">class </em><code class="sig-prename descclassname">segmenter_model_zoo.quilt_utils.</code><code class="sig-name descname">QuiltModelZoo</code><a class="reference internal" href="_modules/segmenter_model_zoo/quilt_utils.html#QuiltModelZoo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.quilt_utils.QuiltModelZoo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>download model from quilt</p>
+<p>connect to model zoo on quilt3</p>
+<dl class="method">
+<dt id="segmenter_model_zoo.quilt_utils.QuiltModelZoo.download_model">
+<code class="sig-name descname">download_model</code><span class="sig-paren">(</span><em class="sig-param">model_name: str</em>, <em class="sig-param">save_path: Union[str</em>, <em class="sig-param">pathlib.Path] = './zoo/model.pth'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/segmenter_model_zoo/quilt_utils.html#QuiltModelZoo.download_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.quilt_utils.QuiltModelZoo.download_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>download the model “model_name” to “out_path”</p>
+<p>Paremeters
+—
+model_name: str</p>
+<blockquote>
+<div><p>the name of the model to be downloaded</p>
+</div></blockquote>
+<dl class="simple">
+<dt>save_path: Union(str, Path)</dt><dd><p>the path to save the model, default is ‘./zoo/model.pth’</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="segmenter_model_zoo.quilt_utils.QuiltModelZoo.peak_all_models">
+<code class="sig-name descname">peak_all_models</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List<a class="reference internal" href="_modules/segmenter_model_zoo/quilt_utils.html#QuiltModelZoo.peak_all_models"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.quilt_utils.QuiltModelZoo.peak_all_models" title="Permalink to this definition">¶</a></dt>
+<dd><p>print out names of existing models in the model zoo</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="segmenter_model_zoo.quilt_utils.validate_model">
+<code class="sig-prename descclassname">segmenter_model_zoo.quilt_utils.</code><code class="sig-name descname">validate_model</code><span class="sig-paren">(</span><em class="sig-param">model_name</em>, <em class="sig-param">save_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/segmenter_model_zoo/quilt_utils.html#validate_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.quilt_utils.validate_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>check if model exists, otherwise download it</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-segmenter_model_zoo.utils">
+<span id="segmenter-model-zoo-utils-module"></span><h2>segmenter_model_zoo.utils module<a class="headerlink" href="#module-segmenter_model_zoo.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="segmenter_model_zoo.utils.bb_intersection_over_union">
+<code class="sig-prename descclassname">segmenter_model_zoo.utils.</code><code class="sig-name descname">bb_intersection_over_union</code><span class="sig-paren">(</span><em class="sig-param">boxA</em>, <em class="sig-param">boxB</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/segmenter_model_zoo/utils.html#bb_intersection_over_union"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.utils.bb_intersection_over_union" title="Permalink to this definition">¶</a></dt>
+<dd><p>computer IOU of two bounding boxes</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="segmenter_model_zoo.utils.exist_double_assignment">
+<code class="sig-prename descclassname">segmenter_model_zoo.utils.</code><code class="sig-name descname">exist_double_assignment</code><span class="sig-paren">(</span><em class="sig-param">cell_pairs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/segmenter_model_zoo/utils.html#exist_double_assignment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.utils.exist_double_assignment" title="Permalink to this definition">¶</a></dt>
+<dd><p>check if one object is associated with multiple pairs</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="segmenter_model_zoo.utils.find_multi_assignment">
+<code class="sig-prename descclassname">segmenter_model_zoo.utils.</code><code class="sig-name descname">find_multi_assignment</code><span class="sig-paren">(</span><em class="sig-param">cell_pairs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/segmenter_model_zoo/utils.html#find_multi_assignment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.utils.find_multi_assignment" title="Permalink to this definition">¶</a></dt>
+<dd><p>find all multi-assignment</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="segmenter_model_zoo.utils.find_strongest_associate">
+<code class="sig-prename descclassname">segmenter_model_zoo.utils.</code><code class="sig-name descname">find_strongest_associate</code><span class="sig-paren">(</span><em class="sig-param">main_score</em>, <em class="sig-param">aux_score</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/segmenter_model_zoo/utils.html#find_strongest_associate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.utils.find_strongest_associate" title="Permalink to this definition">¶</a></dt>
+<dd><p>find the most likely pair from all candidate in one bounding box</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="segmenter_model_zoo.utils.getLargestCC">
+<code class="sig-prename descclassname">segmenter_model_zoo.utils.</code><code class="sig-name descname">getLargestCC</code><span class="sig-paren">(</span><em class="sig-param">labels</em>, <em class="sig-param">is_label=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/segmenter_model_zoo/utils.html#getLargestCC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.utils.getLargestCC" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the largest connect component from a label image or a binary image</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="segmenter_model_zoo.utils.load_filenames">
+<code class="sig-prename descclassname">segmenter_model_zoo.utils.</code><code class="sig-name descname">load_filenames</code><span class="sig-paren">(</span><em class="sig-param">data_config</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/segmenter_model_zoo/utils.html#load_filenames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.utils.load_filenames" title="Permalink to this definition">¶</a></dt>
+<dd><p>load the filenames of all the images need to be processed based on config.
+Three types of loading are currently supported:
+- “folder”</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>two parameters are required: “dir” and “search”. Basically, we just</p></li>
+</ul>
+<p>search using the rules defined by “search” (either “*” for all files
+or a regular expression) inside the folder “dir”.
+* one optional parameter: “data_range”. If provided, a specific range
+of all files will be processed, e.g. [0, 100] or [100, -1]. This is
+useful when running in a distributed setting.</p>
+</div></blockquote>
+<ul>
+<li><dl class="simple">
+<dt>“zstack”</dt><dd><ul class="simple">
+<li><p>one parameter: “dir” specifying the filepath</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>“csv”</dt><dd><ul class="simple">
+<li><p>two parameters are required: “file” and “column”. After loading the</p></li>
+</ul>
+<p>csv pointed by “file”, all filenames in the column defined by “column”
+will be identified as files to be processed.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="segmenter_model_zoo.utils.prune_cell_pairs">
+<code class="sig-prename descclassname">segmenter_model_zoo.utils.</code><code class="sig-name descname">prune_cell_pairs</code><span class="sig-paren">(</span><em class="sig-param">multi_pair</em>, <em class="sig-param">current_best_pair</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/segmenter_model_zoo/utils.html#prune_cell_pairs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.utils.prune_cell_pairs" title="Permalink to this definition">¶</a></dt>
+<dd><p>update candidates after taking out one pair</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="segmenter_model_zoo.utils.save_as_uint">
+<code class="sig-prename descclassname">segmenter_model_zoo.utils.</code><code class="sig-name descname">save_as_uint</code><span class="sig-paren">(</span><em class="sig-param">img: numpy.ndarray, save_path: Union[str, pathlib.Path], core_fn: str, tag: str = 'segmentation', overwrite: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/segmenter_model_zoo/utils.html#save_as_uint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.utils.save_as_uint" title="Permalink to this definition">¶</a></dt>
+<dd><p>save the segmentation to disk as uint type
+(either 8-bit or 16-bit depending on data)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img</strong> (<em>np.ndarray</em>) – the image to save</p></li>
+<li><p><strong>save_path</strong> (<em>Union[str, Path]</em>) – the path to save the image</p></li>
+<li><p><strong>core_fn</strong> (<em>str</em>) – saved filename will be {core_fn}_{tag}.tiff</p></li>
+<li><p><strong>tag</strong> (<em>str</em>) – the tag to be added to the end of output filename
+default is “segmentation”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-segmenter_model_zoo.zoo">
+<span id="segmenter-model-zoo-zoo-module"></span><h2>segmenter_model_zoo.zoo module<a class="headerlink" href="#module-segmenter_model_zoo.zoo" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="segmenter_model_zoo.zoo.SegModel">
+<em class="property">class </em><code class="sig-prename descclassname">segmenter_model_zoo.zoo.</code><code class="sig-name descname">SegModel</code><a class="reference internal" href="_modules/segmenter_model_zoo/zoo.html#SegModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.zoo.SegModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="segmenter_model_zoo.zoo.SegModel.apply_on_single_zstack">
+<code class="sig-name descname">apply_on_single_zstack</code><span class="sig-paren">(</span><em class="sig-param">input_img: numpy.ndarray = None</em>, <em class="sig-param">filename: str = None</em>, <em class="sig-param">inputCh: Union[int</em>, <em class="sig-param">List[int]] = None</em>, <em class="sig-param">normalization: int = None</em>, <em class="sig-param">already_normalized: bool = False</em>, <em class="sig-param">cutoff: float = None</em>, <em class="sig-param">inference_param: Dict = {}</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="_modules/segmenter_model_zoo/zoo.html#SegModel.apply_on_single_zstack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.zoo.SegModel.apply_on_single_zstack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply a trained model on an image</p>
+<dl class="simple">
+<dt>input_img: np.ndarray</dt><dd><p>the image to be applied can be passed in as a numpy array</p>
+</dd>
+<dt>filename:  str</dt><dd><p>the image to be appplied can be passed in as a filename. If
+input_img is used, the filename will be omitted</p>
+</dd>
+<dt>inputCh: Union(int, List(int))</dt><dd><p>when filename is used, inputCh must be specified. It can be
+an integer (if only one channel is needed), or a list of
+integers (if multiple channels are needed). Each model may
+have different requirement.</p>
+</dd>
+<dt>normalization: int</dt><dd><p>an index to indicate which normalization reciepy will be used
+to normalize the image</p>
+</dd>
+<dt>already_normalized: bool</dt><dd><p>A flag to indicate whether the image has been normalized or not.
+This is applicable to both cases: numpy array or filename.</p>
+</dd>
+<dt>cutoff: float</dt><dd><p>a cutoff value can be passed in, which will be applied on the
+prediction. If nothing passed in, default value will be used.</p>
+</dd>
+<dt>inference_param: Dict</dt><dd><p>a dictionary to pass in extra parameters for inference. Currently,
+only one parameter is allowed: “ResizeRatio” (a list of three
+float numbers to indicate the ResizeRatio to apply on ZYX axis).
+More parameters may be added in the future.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>output_img: np.ndarray</dt><dd><p>the segmentation result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="segmenter_model_zoo.zoo.SegModel.get_cutoff">
+<code class="sig-name descname">get_cutoff</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/segmenter_model_zoo/zoo.html#SegModel.get_cutoff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.zoo.SegModel.get_cutoff" title="Permalink to this definition">¶</a></dt>
+<dd><p>load the cutoff value to be applied on the prediction</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="segmenter_model_zoo.zoo.SegModel.list_all_trained_models">
+<code class="sig-name descname">list_all_trained_models</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/segmenter_model_zoo/zoo.html#SegModel.list_all_trained_models"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.zoo.SegModel.list_all_trained_models" title="Permalink to this definition">¶</a></dt>
+<dd><p>print all current models</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="segmenter_model_zoo.zoo.SegModel.load_train">
+<code class="sig-name descname">load_train</code><span class="sig-paren">(</span><em class="sig-param">checkpoint_name: str</em>, <em class="sig-param">model_param: Dict = {'local_path': './'}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/segmenter_model_zoo/zoo.html#SegModel.load_train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.zoo.SegModel.load_train" title="Permalink to this definition">¶</a></dt>
+<dd><p>load a trained model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>checkpoint_name</strong> (<em>str</em>) – the name of the model, use list_all_trained_models() to get
+a list of all current models</p></li>
+<li><p><strong>model_param</strong> (<em>Dict</em>) – a dictionary of additional parameters can be passed in. If
+nothing is passed in, default parameters will be used. There
+are two important parameters: “local_path” and “model_path”. If
+“model_path” is specified, it will be loaded directly. Otherwise,
+the model will be downloaded from quilt and save at “local_path”
+(default is the current working directory).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="segmenter_model_zoo.zoo.SegModel.reset">
+<code class="sig-name descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/segmenter_model_zoo/zoo.html#SegModel.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.zoo.SegModel.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="segmenter_model_zoo.zoo.SegModel.to_gpu">
+<code class="sig-name descname">to_gpu</code><span class="sig-paren">(</span><em class="sig-param">gpu_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/segmenter_model_zoo/zoo.html#SegModel.to_gpu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.zoo.SegModel.to_gpu" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="segmenter_model_zoo.zoo.SuperModel">
+<em class="property">class </em><code class="sig-prename descclassname">segmenter_model_zoo.zoo.</code><code class="sig-name descname">SuperModel</code><span class="sig-paren">(</span><em class="sig-param">model_name: str</em>, <em class="sig-param">model_param: Dict = {'local_path': './'}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/segmenter_model_zoo/zoo.html#SuperModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.zoo.SuperModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Define a SuperModel</p>
+<dl class="simple">
+<dt>model_name: str</dt><dd><p>the name of the super model</p>
+</dd>
+<dt>model_param: Dict</dt><dd><p>the extra parameters for the super model.
+the order must match the order of models in this SuperModel.
+For each dict, there are two importance parameters:
+“local_path” and “model_path”. “model_path” is a dictionary
+specifying the path to each basic model, e.g.
+“model_path”: {“DNA_mask_production”: “/path/to/mask/model”,
+“DNA_seed_production”: “path/to/seed/model”}. If “model_path”
+is specified, the model will be loaded directly. Otherwise,
+the models will be downloaded from quilt and saved at
+“local_path” (default is the current working directory).</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="segmenter_model_zoo.zoo.SuperModel.apply_on_single_zstack">
+<code class="sig-name descname">apply_on_single_zstack</code><span class="sig-paren">(</span><em class="sig-param">input_img: numpy.ndarray = None, filename: Union[str, pathlib.Path] = None, inputCh: List = [0], **kwargs</em><span class="sig-paren">)</span> &#x2192; Union[numpy.ndarray, List]<a class="reference internal" href="_modules/segmenter_model_zoo/zoo.html#SuperModel.apply_on_single_zstack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.zoo.SuperModel.apply_on_single_zstack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Appply a super model on one image</p>
+<dl class="simple">
+<dt>input_img: np.ndarray</dt><dd><p>the image to be segmented, if it is not None, filename and inputCh
+will not be used. Otherwise, use filename and inputCh to read image</p>
+</dd>
+<dt>filename: Union(str, Path)</dt><dd><p>when input_img is None, use filename to load image</p>
+</dd>
+<dt>inputCh: List</dt><dd><p>when input_img is None, take specific channels from the image loaded
+from filename</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>output: Union[np.ndarray, List]</dt><dd><p>the segmentation result</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="segmenter_model_zoo.zoo.list_all_super_models">
+<code class="sig-prename descclassname">segmenter_model_zoo.zoo.</code><code class="sig-name descname">list_all_super_models</code><span class="sig-paren">(</span><em class="sig-param">item: str = 'all'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/segmenter_model_zoo/zoo.html#list_all_super_models"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.zoo.list_all_super_models" title="Permalink to this definition">¶</a></dt>
+<dd><p>print all available super models</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-segmenter_model_zoo">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-segmenter_model_zoo" title="Permalink to this headline">¶</a></h2>
+<p>Top-level package for segmenter_model_zoo.</p>
+<dl class="function">
+<dt id="segmenter_model_zoo.get_module_version">
+<code class="sig-prename descclassname">segmenter_model_zoo.</code><code class="sig-name descname">get_module_version</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/segmenter_model_zoo.html#get_module_version"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.get_module_version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Jianxu Chen
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
