@@ -6,8 +6,6 @@ __pycache__/
 # C extensions
 *.so
 
-playbooks/
-
 .vscode/
 
 # Distribution / packaging

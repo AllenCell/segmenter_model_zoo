@@ -86,7 +86,7 @@ setup(
     test_suite="segmenter_model_zoo/tests",
     tests_require=test_requirements,
     extras_require=extra_requirements,
-    url="https://github.com/aics-int/segmenter_model_zoo",
+    url="https://github.com/AllenCell/segmenter_model_zoo",
     # Do not edit this string manually, always use bumpversion
     # Details in CONTRIBUTING.rst
     version="0.0.5",

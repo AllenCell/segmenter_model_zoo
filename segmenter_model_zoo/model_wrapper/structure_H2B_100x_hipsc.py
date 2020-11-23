@@ -1,14 +1,51 @@
+from typing import List, Union
+from pathlib import Path
+import numpy as np
 from skimage.morphology import remove_small_objects
 from aicsmlsegment.utils import background_sub, simple_norm
 from aicsimageio import AICSImage
 
-pred_cutoff = 0.5
-minsize = 100
-
 
 def SegModule(
-    img=None, model_list=None, filename=None, index=None, return_prediction=False
+    img: np.ndarray = None,
+    model_list: List = None,
+    filename: Union[str, Path] = None,
+    index: Union[int, List[int]] = None,
+    return_prediction: bool = False,
+    pred_cutoff: float = 0.5,
+    minsize: int = 100,
 ):
+    """
+    Segmentation function for H2B coarse segmentation. NOTE: this is not the
+    H2B segmentation provided in the Allen Cell Data Collection. This is a
+    coarse version, which can be roughly considered as equivelant to nuclear
+    segmentation
+
+
+    Parameters:
+    ----------
+    img: np.ndarray
+        a 4D numpy array of size 1 x Z x Y x X of H2B image
+    filename: Union[str, Path]
+        when img is None, use filename to load image
+    index: Union[int, List[int]]
+        an integers or a list of only one integer indicating which channel is H2B.
+        Only valid when using filename to load image. Not used when img is not None
+    model_list: List
+        the list of models to be applied on the image. Here, we assume 1 model
+        is provided, H2B coarse segmentation model.
+    return_prediction: book
+        a flag indicating whether to return raw prediction
+    pred_cutoff: float
+        an empirically determined cutoff value to binarize the prediction from
+        the H2B coarse segmentation model. Default is 0.5.
+    minsize: int
+        an empirically determined size threshold to prune the segmentation result
+
+    Return:
+    ------------
+        one numpy array or together with raw prediction (if return_prediction is True)
+    """
 
     if img is None:
         # load the image
@@ -32,6 +69,9 @@ def SegModule(
     bw[:2, :, :] = 0
     bw[-2:, :, :] = 0
     bw = remove_small_objects(bw, min_size=minsize)
+
+    bw = bw.astype(np.uint8)
+    bw[bw > 0] = 255
 
     if return_prediction:
         return bw, pred

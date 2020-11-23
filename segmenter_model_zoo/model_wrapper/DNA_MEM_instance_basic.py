@@ -1,4 +1,6 @@
 import numpy as np
+from typing import List, Union
+from pathlib import Path
 from aicsimageio import AICSImage
 from scipy.ndimage.morphology import binary_fill_holes
 from skimage.morphology import dilation, disk
@@ -10,22 +12,66 @@ import itk
 
 from segmenter_model_zoo.utils import getLargestCC
 
-mem_pre_cut_th = 0.2  # 0.02
-seed_bw_th = 0.90
-dna_mask_bw_th = 0.5  # 0.7
-min_seed_size = 3800  # 9000 # 3800
-
 
 def SegModule(
-    img=None,
-    model_list=None,
-    prune_border=False,
-    filename=None,
-    index=None,
-    return_prediction=False,
-    two_camera=False,
-    output_type="default",
+    img: np.ndarray = None,
+    model_list: List = None,
+    filename: Union[str, Path] = None,
+    index: List[int] = None,
+    return_prediction: bool = False,
+    mem_pre_cut_th: float = 0.2,
+    seed_bw_th: float = 0.90,
+    dna_mask_bw_th: float = 0.5,
+    min_seed_size: float = 6000,
 ):
+    """
+    Segmentation function for cells and nuclei segmentaiton without label-free
+    and mitotic pair correction.
+
+
+    Parameters:
+    ----------
+    img: np.ndarray
+        a 4D numpy array of size 2 x Z x Y x X, the first channel is DNA
+        and the second channel is cell membrane.
+    filename: Union[str, Path]
+        when img is None, use filename to load image
+    index: List[int]
+        a list of 2 integers, the first indicating which channel is DNA,
+        the second integer indicating which channel is cell membrane. Only
+        valid when using filename to load image. Not used when img is not None
+    model_list: List
+        the list of models to be applied on the image. Here, we assume 3 models
+        are provided (in this specific order): dna mask model, membrane segmentation
+        model and dna seed model.
+    return_prediction: book
+        a flag indicating whether to return raw prediction
+    mem_pre_cut_th: float
+        an emprically determined cutoff value to binarize the prediction from
+        membrane segmentation model and the binary result is used to cut the seed.
+        Usually, this value needs to be relatively small, just to be conservative,
+        so that there won't be falsely merged seeds. Default is 0.2.
+    seed_bw_th: float
+        an empirically determined cutoff value to binarize the prediction from
+        dna seed model. The binary result after cutted by binarized membrane will be
+        used as the seed for running watershed. Usually, this value needs to be
+        relatively large, just to be conservative, so that seeds are less likely to
+        be falsely merged. Default is 0.90.
+    dna_mask_bw_th: float
+        an empirically determined cutoff value to binarize the prediction from
+        dna mask model. Default is 0.5.
+    min_seed_size: float
+        an empirically determined size threshold to prune the seeds before running
+        watershed. Any connected component (except those torching the image border)
+        with less than min_seed_size voxels will not be removed from seeds. Default
+        is 6000.
+
+    Return:
+    ------------
+        two numpy arrays: cell segmentatino and dna segmentation (labeled images) or
+        together with raw prediction (if return_prediction is True)
+    """
+
     # model order: dna_mask, cellmask, dna_seed
     if img is None:
         # load the image
@@ -339,4 +385,4 @@ def SegModule(
     if return_prediction:
         return cell_seg, dna_mask_label, [dna_mask_pred, mem_pred, seed_pred]
     else:
-        return [[cell_seg, dna_mask_label], ["cell_segmentation", "dna_segmentation"]]
+        return [cell_seg, dna_mask_label], ["cell_segmentation", "dna_segmentation"]
