@@ -32,13 +32,13 @@ You can either clone the public repository:
 
 .. code-block:: console
 
-    $ git clone git://github.com/aics-int/segmenter_model_zoo
+    $ git clone git://github.com/AllenCell/segmenter_model_zoo
 
 Or download the `tarball`_:
 
 .. code-block:: console
 
-    $ curl  -OL https://github.com/aics-int/segmenter_model_zoo/tarball/master
+    $ curl  -OL https://github.com/AllenCell/segmenter_model_zoo/tarball/master
 
 Once you have a copy of the source, you can install it with:
 
@@ -47,5 +47,5 @@ Once you have a copy of the source, you can install it with:
     $ python setup.py install
 
 
-.. _Github repo: https://github.com/aics-int/segmenter_model_zoo
-.. _tarball: https://github.com/aics-int/segmenter_model_zoo/tarball/master
+.. _Github repo: https://github.com/AllenCell/segmenter_model_zoo
+.. _tarball: https://github.com/AllenCell/segmenter_model_zoo/tarball/master

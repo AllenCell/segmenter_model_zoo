@@ -21,7 +21,7 @@ log = logging.getLogger(__name__)
 ###############################################################################
 # There are two types of models: basic model and super model
 # Basic model is just a trained neural network
-# Super model can be multiple basic models + certain preprocesisng and 
+# Super model can be multiple basic models + certain preprocesisng and
 # post processing step to generate the final output.
 # In the model zoo, a few label-free models are also included as basic models
 ###############################################################################
@@ -140,11 +140,11 @@ SUPER_MODEL_MAPPING = {
         ],
         "instruction": "2 x Z x Y x X (lamin | mem) or file path and index list",
     },
-    "structure_AAVS1_110x_hipsc": {
+    "structure_AAVS1_100x_hipsc": {
         "models": ["CAAX_production"],
         "instruction": "1 x Z x Y x X (caax) or file path and index list",
     },
-    "structure_H2B_110x_hipsc": {
+    "structure_H2B_100x_hipsc": {
         "models": ["H2B_coarse"],
         "instruction": "1 x Z x Y x X (h2b) or file path and index list",
     },
@@ -173,9 +173,7 @@ class SegModel:
         self.model = self.model.to(gpu_id)
 
     def load_train(
-        self,
-        checkpoint_name: str,
-        model_param: Dict = {"local_path": "./"}
+        self, checkpoint_name: str, model_param: Dict = {"local_path": "./"}
     ):
         """
         load a trained model
@@ -186,9 +184,9 @@ class SegModel:
             the name of the model, use list_all_trained_models() to get
             a list of all current models
         model_param: Dict
-            a dictionary of additional parameters can be passed in. If 
+            a dictionary of additional parameters can be passed in. If
             nothing is passed in, default parameters will be used. There
-            are two important parameters: "local_path" and "model_path". If 
+            are two important parameters: "local_path" and "model_path". If
             "model_path" is specified, it will be loaded directly. Otherwise,
             the model will be downloaded from quilt and save at "local_path"
             (default is the current working directory).
@@ -206,7 +204,7 @@ class SegModel:
             elif CHECKPOINT_PATH_MAPPING[checkpoint_name]["path"] == "quilt":
                 model_path = validate_model(checkpoint_name, model_param["local_path"])
             else:
-                # It is possible to modify the source file to hard-code the 
+                # It is possible to modify the source file to hard-code the
                 # model path to load everything
                 model_path = CHECKPOINT_PATH_MAPPING[checkpoint_name]["path"]
 
@@ -269,7 +267,7 @@ class SegModel:
             elif CHECKPOINT_PATH_MAPPING[checkpoint_name]["path"] == "quilt":
                 model_path = validate_model(checkpoint_name, model_param["local_path"])
             else:
-                # It is possible to modify the source file to hard-code the 
+                # It is possible to modify the source file to hard-code the
                 # model path to load everything
                 model_path = CHECKPOINT_PATH_MAPPING[checkpoint_name]["path"]
 
@@ -291,7 +289,7 @@ class SegModel:
         return self.cutoff
 
     def list_all_trained_models(self):
-        """ 
+        """
         print all current models
         """
         for key, value in CHECKPOINT_PATH_MAPPING.items():
@@ -319,12 +317,12 @@ class SegModel:
             input_img is used, the filename will be omitted
         inputCh: Union(int, List(int))
             when filename is used, inputCh must be specified. It can be
-            an integer (if only one channel is needed), or a list of 
-            integers (if multiple channels are needed). Each model may 
+            an integer (if only one channel is needed), or a list of
+            integers (if multiple channels are needed). Each model may
             have different requirement.
         normalization: int
             an index to indicate which normalization reciepy will be used
-            to normalize the image 
+            to normalize the image
         already_normalized: bool
             A flag to indicate whether the image has been normalized or not.
             This is applicable to both cases: numpy array or filename.
@@ -484,13 +482,13 @@ class SuperModel:
         model_param: Dict
             the extra parameters for the super model.
             the order must match the order of models in this SuperModel.
-            For each dict, there are two importance parameters: 
+            For each dict, there are two importance parameters:
             "local_path" and "model_path". "model_path" is a dictionary
-            specifying the path to each basic model, e.g. 
-            "model_path": {"DNA_mask_production": "/path/to/mask/model", 
-            "DNA_seed_production": "path/to/seed/model"}. If "model_path" 
-            is specified, the model will be loaded directly. Otherwise, 
-            the models will be downloaded from quilt and saved at 
+            specifying the path to each basic model, e.g.
+            "model_path": {"DNA_mask_production": "/path/to/mask/model",
+            "DNA_seed_production": "path/to/seed/model"}. If "model_path"
+            is specified, the model will be loaded directly. Otherwise,
+            the models will be downloaded from quilt and saved at
             "local_path" (default is the current working directory).
         """
 
@@ -509,13 +507,12 @@ class SuperModel:
                 from fnet.models import load_model as load_model_lf
                 from fnet.cli.predict import parse_model
 
-                if "model_path" in model_param and \
-                   mname in model_param["model_path"]:
+                if "model_path" in model_param and mname in model_param["model_path"]:
                     model_path = model_param["model_path"][mname]
                 elif CHECKPOINT_PATH_MAPPING[mname]["path"] == "quilt":
                     model_path = validate_model(mname, model_local_path)
                 else:
-                    # It is possible to modify the source file to hard-code the 
+                    # It is possible to modify the source file to hard-code the
                     # model path to load everything
                     model_path = CHECKPOINT_PATH_MAPPING[mname]["path"]
 
@@ -524,14 +521,13 @@ class SuperModel:
                 m.to_gpu(0)
             else:
                 m = SegModel()
-                if "model_path" in model_param and \
-                   mname in model_param["model_path"]:
+                if "model_path" in model_param and mname in model_param["model_path"]:
                     m.load_train(
                         mname,
                         {
                             "local_path": model_param["local_path"],
-                            "model_path": model_param["model_path"][mname]
-                        }
+                            "model_path": model_param["model_path"][mname],
+                        },
                     )
                 else:
                     m.load_train(mname, model_param)
@@ -547,7 +543,7 @@ class SuperModel:
         input_img: np.ndarray = None,
         filename: Union[str, Path] = None,
         inputCh: List = [0],
-        **kwargs
+        **kwargs,
     ) -> Union[np.ndarray, List]:
         """
         Appply a super model on one image
@@ -565,7 +561,7 @@ class SuperModel:
             when input_img is None, take specific channels from the image loaded
             from filename
 
-        Return: 
+        Return:
         ------------
         output: Union[np.ndarray, List]
             the segmentation result
@@ -587,11 +583,7 @@ class SuperModel:
         wrapper_module = importlib.import_module(module_name)
         SegModule = getattr(wrapper_module, "SegModule")
 
-        return SegModule(
-            input_img,
-            self.models,
-            **kwargs
-        )
+        return SegModule(input_img, self.models, **kwargs)
 
 
 def list_all_super_models(item: str = "all"):

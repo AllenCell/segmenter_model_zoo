@@ -13,11 +13,11 @@ def SegModule(
     index: Union[int, List[int]] = None,
     return_prediction: bool = False,
     pred_cutoff: float = 0.5,
-    minsize: int = 100
+    minsize: int = 100,
 ):
     """
-    Segmentation function for H2B coarse segmentation. NOTE: this is not the 
-    H2B segmentation provided in the Allen Cell Data Collection. This is a 
+    Segmentation function for H2B coarse segmentation. NOTE: this is not the
+    H2B segmentation provided in the Allen Cell Data Collection. This is a
     coarse version, which can be roughly considered as equivelant to nuclear
     segmentation
 

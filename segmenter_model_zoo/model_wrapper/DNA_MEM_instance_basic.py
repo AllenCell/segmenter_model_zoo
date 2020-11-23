@@ -22,7 +22,7 @@ def SegModule(
     mem_pre_cut_th: float = 0.2,
     seed_bw_th: float = 0.90,
     dna_mask_bw_th: float = 0.5,
-    min_seed_size: float = 6000
+    min_seed_size: float = 6000,
 ):
     """
     Segmentation function for cells and nuclei segmentaiton without label-free
@@ -33,16 +33,16 @@ def SegModule(
     ----------
     img: np.ndarray
         a 4D numpy array of size 2 x Z x Y x X, the first channel is DNA
-        and the second channel is cell membrane. 
+        and the second channel is cell membrane.
     filename: Union[str, Path]
         when img is None, use filename to load image
     index: List[int]
-        a list of 2 integers, the first indicating which channel is DNA, 
-        the second integer indicating which channel is cell membrane. Only 
+        a list of 2 integers, the first indicating which channel is DNA,
+        the second integer indicating which channel is cell membrane. Only
         valid when using filename to load image. Not used when img is not None
     model_list: List
         the list of models to be applied on the image. Here, we assume 3 models
-        are provided (in this specific order): dna mask model, membrane segmentation 
+        are provided (in this specific order): dna mask model, membrane segmentation
         model and dna seed model.
     return_prediction: book
         a flag indicating whether to return raw prediction
@@ -52,23 +52,23 @@ def SegModule(
         Usually, this value needs to be relatively small, just to be conservative,
         so that there won't be falsely merged seeds. Default is 0.2.
     seed_bw_th: float
-        an empirically determined cutoff value to binarize the prediction from 
+        an empirically determined cutoff value to binarize the prediction from
         dna seed model. The binary result after cutted by binarized membrane will be
-        used as the seed for running watershed. Usually, this value needs to be 
+        used as the seed for running watershed. Usually, this value needs to be
         relatively large, just to be conservative, so that seeds are less likely to
         be falsely merged. Default is 0.90.
     dna_mask_bw_th: float
-        an empirically determined cutoff value to binarize the prediction from 
+        an empirically determined cutoff value to binarize the prediction from
         dna mask model. Default is 0.5.
     min_seed_size: float
-        an empirically determined size threshold to prune the seeds before running 
+        an empirically determined size threshold to prune the seeds before running
         watershed. Any connected component (except those torching the image border)
         with less than min_seed_size voxels will not be removed from seeds. Default
         is 6000.
 
     Return:
     ------------
-        two numpy arrays: cell segmentatino and dna segmentation (labeled images) or 
+        two numpy arrays: cell segmentatino and dna segmentation (labeled images) or
         together with raw prediction (if return_prediction is True)
     """
 

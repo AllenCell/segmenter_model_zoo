@@ -12,7 +12,7 @@ from collections import Counter
 
 
 ################################################################################
-# common util functions 
+# common util functions
 ################################################################################
 def getLargestCC(labels, is_label=True):
     """
@@ -38,7 +38,7 @@ def save_as_uint(
     overwrite: bool = False,
 ):
     """
-    save the segmentation to disk as uint type 
+    save the segmentation to disk as uint type
     (either 8-bit or 16-bit depending on data)
 
     Parameters
@@ -81,14 +81,14 @@ def load_filenames(data_config):
     - "folder"
         * two parameters are required: "dir" and "search". Basically, we just
         search using the rules defined by "search" (either "*" for all files
-        or a regular expression) inside the folder "dir". 
+        or a regular expression) inside the folder "dir".
         * one optional parameter: "data_range". If provided, a specific range
-        of all files will be processed, e.g. [0, 100] or [100, -1]. This is 
-        useful when running in a distributed setting. 
+        of all files will be processed, e.g. [0, 100] or [100, -1]. This is
+        useful when running in a distributed setting.
     - "zstack"
         * one parameter: "dir" specifying the filepath
     - "csv"
-        * two parameters are required: "file" and "column". After loading the 
+        * two parameters are required: "file" and "column". After loading the
         csv pointed by "file", all filenames in the column defined by "column"
         will be identified as files to be processed.
     """
@@ -183,7 +183,7 @@ def bb_intersection_over_union(boxA, boxB):
 def find_strongest_associate(main_score, aux_score):
     """find the most likely pair from all candidate in one bounding box"""
 
-    # collect confidence score of all candidates 
+    # collect confidence score of all candidates
     score = []
     for ii in range(len(main_score)):
         score.append((main_score[ii], aux_score[ii]))

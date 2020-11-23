@@ -11,7 +11,7 @@ def SegModule(
     filename: Union[str, Path] = None,
     index: Union[int, List[int]] = None,
     return_prediction: bool = False,
-    pred_cutoff: float = 0.5
+    pred_cutoff: float = 0.5,
 ):
     """
     Segmentation function for CAAX segmentation.

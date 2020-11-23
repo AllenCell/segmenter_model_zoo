@@ -28,40 +28,40 @@ def SegModule(
     output_type: str = "production",
 ):
     """
-    Segmentation function for lamin b1 morphological segmentation. The name 
-    "morphological segmentation" refers that the lamin shells are guaranteed 
-    to be a fully closed shell (i.e. topologically fillable in 3D) 
+    Segmentation function for lamin b1 morphological segmentation. The name
+    "morphological segmentation" refers that the lamin shells are guaranteed
+    to be a fully closed shell (i.e. topologically fillable in 3D)
 
 
     Parameters:
     ----------
     img: np.ndarray
         a 4D numpy array of size 2 x Z x Y x X, the first channel is lamin b1
-        and the second channel is cell membrane. 
+        and the second channel is cell membrane.
     filename: Union[str, Path]
         when img is None, use filename to load image
     index: List[int]
-        a list of 2 integers, the first indicating which channel is lamin b1, 
-        the second integer indicating which channel is cell membrane. Only 
+        a list of 2 integers, the first indicating which channel is lamin b1,
+        the second integer indicating which channel is cell membrane. Only
         valid when using filename to load image. Not used when img is not None
     model_list: List
         the list of models to be applied on the image. Here, we assume 4 models
-        are provided (in this specific order): lamin structure segmentation model, 
+        are provided (in this specific order): lamin structure segmentation model,
         lamin fill model, lamin core model, and membrane segmentation model.
     return_prediction: book
         a flag indicating whether to return raw prediction
     output_type: str
         There are two ways to return the output: "production" (default) and "RnD".
         "production" means only the final lamin b1 segmentation result will be
-        returned. "RnD" means lamin fill and lamin shell will also be returned, 
+        returned. "RnD" means lamin fill and lamin shell will also be returned,
         which are intermediate results for generating the final lamin b1 segmentation.
         lamin fill is usefull particularly to represent nuclear segmentation and
         can be used to measured the nuclei shapes. lamin shell is just the boundary
-        of lamin fill. 
+        of lamin fill.
 
     Return:
     ------------
-        1 or 3 numpy array (depending on output_type) or together with raw 
+        1 or 3 numpy array (depending on output_type) or together with raw
         prediction (if return_prediction is True)
     """
 
