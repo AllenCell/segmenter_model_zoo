@@ -2,7 +2,7 @@
 
 [![Build Status](https://github.com/AllenCell/segmenter_model_zoo/workflows/Build%20Master/badge.svg)](https://github.com/AllenCell/segmenter_model_zoo/actions)
 [![Documentation](https://github.com/AllenCell/segmenter_model_zoo/workflows/Documentation/badge.svg)](https://AllenCell.github.io/segmenter_model_zoo)
-[![Code Coverage](https://codecov.io/gh/AllenCell/segmenter_model_zoo/branch/master/graph/badge.svg)](https://codecov.io/gh/AllenCell/segmenter_model_zoo)
+[![Code Coverage](https://codecov.io/gh/AllenCell/segmenter_model_zoo/branch/main/graph/badge.svg)](https://codecov.io/gh/AllenCell/segmenter_model_zoo)
 
 Batch processing script and functions for running deep learning based segmentation models released by Allen Institute for Cell Science. 
 
