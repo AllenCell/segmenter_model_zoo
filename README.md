@@ -23,6 +23,8 @@ in Allen Cell Data Collection, which uses an object detection model that require
 compiling certain CUDA code in Linux. So the full version is only supported in Linux, but 
 we provide a simplified version without object detection that can run on both Windows and Linux, which will also be useful for most users. See more details in the list of models below.
 
+Note: If you are using Windows and see the an error like `error: Microsoft Visual C++ 14.0 or greater is required. Get it with Microsoft C++ Build Tools`, then juse follow the detailed intruction in the error message to download Microsoft Build Tools. The specific version we used is *MSVC v142 - VS 2019 C++ x64/x86 build tools (v14.27)*
+
 ## Installation
 
 ### Step 1: Install PyTorch from official website
