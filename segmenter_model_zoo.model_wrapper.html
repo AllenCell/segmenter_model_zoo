@@ -1,0 +1,333 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>segmenter_model_zoo.model_wrapper package &mdash; segmenter_model_zoo 0.0.5 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributing" href="contributing.html" />
+    <link rel="prev" title="segmenter_model_zoo.bin package" href="segmenter_model_zoo.bin.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> segmenter_model_zoo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.5
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#stable-release">Stable release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#from-sources">From sources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Package modules</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="segmenter_model_zoo.html">segmenter_model_zoo package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="segmenter_model_zoo.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="segmenter_model_zoo.bin.html">segmenter_model_zoo.bin package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">segmenter_model_zoo.model_wrapper package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="segmenter_model_zoo.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="segmenter_model_zoo.html#module-segmenter_model_zoo.quilt_utils">segmenter_model_zoo.quilt_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="segmenter_model_zoo.html#module-segmenter_model_zoo.utils">segmenter_model_zoo.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="segmenter_model_zoo.html#module-segmenter_model_zoo.zoo">segmenter_model_zoo.zoo module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="segmenter_model_zoo.html#module-segmenter_model_zoo">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#deploying">Deploying</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Math notation example</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">segmenter_model_zoo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">segmenter_model_zoo</a> &raquo;</li>
+        
+          <li><a href="segmenter_model_zoo.html">segmenter_model_zoo package</a> &raquo;</li>
+        
+      <li>segmenter_model_zoo.model_wrapper package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/segmenter_model_zoo.model_wrapper.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+      
+        <a href="contributing.html" class="btn btn-neutral float-right" title="Contributing" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+      
+      
+        <a href="segmenter_model_zoo.bin.html" class="btn btn-neutral float-left" title="segmenter_model_zoo.bin package" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+  </div>
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="segmenter-model-zoo-model-wrapper-package">
+<h1>segmenter_model_zoo.model_wrapper package<a class="headerlink" href="#segmenter-model-zoo-model-wrapper-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="segmenter-model-zoo-model-wrapper-dna-mem-instance-basic-module">
+<h2>segmenter_model_zoo.model_wrapper.DNA_MEM_instance_basic module<a class="headerlink" href="#segmenter-model-zoo-model-wrapper-dna-mem-instance-basic-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="segmenter-model-zoo-model-wrapper-dna-mem-instance-plus-lf-module">
+<h2>segmenter_model_zoo.model_wrapper.DNA_MEM_instance_plus_LF module<a class="headerlink" href="#segmenter-model-zoo-model-wrapper-dna-mem-instance-plus-lf-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="segmenter-model-zoo-model-wrapper-dna-mem-instance-plus-lf-two-camera-module">
+<h2>segmenter_model_zoo.model_wrapper.DNA_MEM_instance_plus_LF_two_camera module<a class="headerlink" href="#segmenter-model-zoo-model-wrapper-dna-mem-instance-plus-lf-two-camera-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="segmenter-model-zoo-model-wrapper-lmnb1-morphological-production-alpha-module">
+<h2>segmenter_model_zoo.model_wrapper.LMNB1_morphological_production_alpha module<a class="headerlink" href="#segmenter-model-zoo-model-wrapper-lmnb1-morphological-production-alpha-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-segmenter_model_zoo.model_wrapper.structure_AAVS1_100x_hipsc">
+<span id="segmenter-model-zoo-model-wrapper-structure-aavs1-100x-hipsc-module"></span><h2>segmenter_model_zoo.model_wrapper.structure_AAVS1_100x_hipsc module<a class="headerlink" href="#module-segmenter_model_zoo.model_wrapper.structure_AAVS1_100x_hipsc" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="segmenter_model_zoo.model_wrapper.structure_AAVS1_100x_hipsc.SegModule">
+<code class="sig-prename descclassname">segmenter_model_zoo.model_wrapper.structure_AAVS1_100x_hipsc.</code><code class="sig-name descname">SegModule</code><span class="sig-paren">(</span><em class="sig-param">img: numpy.ndarray = None</em>, <em class="sig-param">model_list: List = None</em>, <em class="sig-param">filename: Union[str</em>, <em class="sig-param">pathlib.Path] = None</em>, <em class="sig-param">index: Union[int</em>, <em class="sig-param">List[int]] = None</em>, <em class="sig-param">return_prediction: bool = False</em>, <em class="sig-param">pred_cutoff: float = 0.5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/segmenter_model_zoo/model_wrapper/structure_AAVS1_100x_hipsc.html#SegModule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.model_wrapper.structure_AAVS1_100x_hipsc.SegModule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Segmentation function for CAAX segmentation.</p>
+<dl class="simple">
+<dt>img: np.ndarray</dt><dd><p>a 4D numpy array of size 1 x Z x Y x X of CAAX image</p>
+</dd>
+<dt>filename: Union[str, Path]</dt><dd><p>when img is None, use filename to load image</p>
+</dd>
+<dt>index: Union[int, List[int]]</dt><dd><p>an integers or a list of only one integer indicating which channel is CAAX.
+Only valid when using filename to load image. Not used when img is not None</p>
+</dd>
+<dt>model_list: List</dt><dd><p>the list of models to be applied on the image. Here, we assume 1 model
+is provided, CAAX segmentation model.</p>
+</dd>
+<dt>return_prediction: book</dt><dd><p>a flag indicating whether to return raw prediction</p>
+</dd>
+<dt>pred_cutoff: float</dt><dd><p>an empirically determined cutoff value to binarize the prediction from
+the CAAX segmentation model. Default is 0.5.</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>one numpy array or together with raw prediction (if return_prediction is True)</p>
+</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-segmenter_model_zoo.model_wrapper.structure_H2B_100x_hipsc">
+<span id="segmenter-model-zoo-model-wrapper-structure-h2b-100x-hipsc-module"></span><h2>segmenter_model_zoo.model_wrapper.structure_H2B_100x_hipsc module<a class="headerlink" href="#module-segmenter_model_zoo.model_wrapper.structure_H2B_100x_hipsc" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="segmenter_model_zoo.model_wrapper.structure_H2B_100x_hipsc.SegModule">
+<code class="sig-prename descclassname">segmenter_model_zoo.model_wrapper.structure_H2B_100x_hipsc.</code><code class="sig-name descname">SegModule</code><span class="sig-paren">(</span><em class="sig-param">img: numpy.ndarray = None</em>, <em class="sig-param">model_list: List = None</em>, <em class="sig-param">filename: Union[str</em>, <em class="sig-param">pathlib.Path] = None</em>, <em class="sig-param">index: Union[int</em>, <em class="sig-param">List[int]] = None</em>, <em class="sig-param">return_prediction: bool = False</em>, <em class="sig-param">pred_cutoff: float = 0.5</em>, <em class="sig-param">minsize: int = 100</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/segmenter_model_zoo/model_wrapper/structure_H2B_100x_hipsc.html#SegModule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.model_wrapper.structure_H2B_100x_hipsc.SegModule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Segmentation function for H2B coarse segmentation. NOTE: this is not the
+H2B segmentation provided in the Allen Cell Data Collection. This is a
+coarse version, which can be roughly considered as equivelant to nuclear
+segmentation</p>
+<dl class="simple">
+<dt>img: np.ndarray</dt><dd><p>a 4D numpy array of size 1 x Z x Y x X of H2B image</p>
+</dd>
+<dt>filename: Union[str, Path]</dt><dd><p>when img is None, use filename to load image</p>
+</dd>
+<dt>index: Union[int, List[int]]</dt><dd><p>an integers or a list of only one integer indicating which channel is H2B.
+Only valid when using filename to load image. Not used when img is not None</p>
+</dd>
+<dt>model_list: List</dt><dd><p>the list of models to be applied on the image. Here, we assume 1 model
+is provided, H2B coarse segmentation model.</p>
+</dd>
+<dt>return_prediction: book</dt><dd><p>a flag indicating whether to return raw prediction</p>
+</dd>
+<dt>pred_cutoff: float</dt><dd><p>an empirically determined cutoff value to binarize the prediction from
+the H2B coarse segmentation model. Default is 0.5.</p>
+</dd>
+<dt>minsize: int</dt><dd><p>an empirically determined size threshold to prune the segmentation result</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>one numpy array or together with raw prediction (if return_prediction is True)</p>
+</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-segmenter_model_zoo.model_wrapper">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-segmenter_model_zoo.model_wrapper" title="Permalink to this headline">¶</a></h2>
+<p>Bin scripts package for segmenter_model_zoo.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Jianxu Chen.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
