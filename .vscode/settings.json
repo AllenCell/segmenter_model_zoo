@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "C:\\Users\\aics-\\anaconda3\\envs\\ml-workbench\\python.exe",
+    "python.pythonPath": "C:\\Users\\jianxuc\\AppData\\Local\\Continuum\\anaconda3\\envs\\workbench\\python.exe",
     "python.linting.pylintEnabled": false,
     "python.linting.flake8Enabled": true,
     "python.linting.enabled": true
