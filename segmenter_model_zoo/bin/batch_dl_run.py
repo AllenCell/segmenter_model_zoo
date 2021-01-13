@@ -57,7 +57,7 @@ class Args(argparse.Namespace):
         p.add_argument(
             "--search_tag",
             type=str,
-            help="a string used to match filename when checking existence",
+            help="a string used to match filename when checking existing results",
         )
         p.parse_args(namespace=self)
 
