@@ -342,7 +342,7 @@ will be identified as files to be processed.</p>
 
 <dl class="function">
 <dt id="segmenter_model_zoo.utils.save_as_uint">
-<code class="sig-prename descclassname">segmenter_model_zoo.utils.</code><code class="sig-name descname">save_as_uint</code><span class="sig-paren">(</span><em class="sig-param">img: numpy.ndarray, save_path: Union[str, pathlib.Path], core_fn: str, tag: str = 'segmentation', overwrite: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/segmenter_model_zoo/utils.html#save_as_uint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.utils.save_as_uint" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">segmenter_model_zoo.utils.</code><code class="sig-name descname">save_as_uint</code><span class="sig-paren">(</span><em class="sig-param">img: numpy.ndarray, save_path: Union[str, pathlib.Path], core_fn: str, overwrite: bool = False, tag: str = 'segmentation'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/segmenter_model_zoo/utils.html#save_as_uint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#segmenter_model_zoo.utils.save_as_uint" title="Permalink to this definition">¶</a></dt>
 <dd><p>save the segmentation to disk as uint type
 (either 8-bit or 16-bit depending on data)</p>
 <dl class="field-list simple">
@@ -351,6 +351,7 @@ will be identified as files to be processed.</p>
 <li><p><strong>img</strong> (<em>np.ndarray</em>) – the image to save</p></li>
 <li><p><strong>save_path</strong> (<em>Union[str, Path]</em>) – the path to save the image</p></li>
 <li><p><strong>core_fn</strong> (<em>str</em>) – saved filename will be {core_fn}_{tag}.tiff</p></li>
+<li><p><strong>overwrite</strong> (<em>bool</em>) – whether allowing overwriting existing results</p></li>
 <li><p><strong>tag</strong> (<em>str</em>) – the tag to be added to the end of output filename
 default is “segmentation”</p></li>
 </ul>

@@ -222,8 +222,8 @@
     <span class="n">img</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">save_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
     <span class="n">core_fn</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;segmentation&quot;</span><span class="p">,</span>
     <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;segmentation&quot;</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    save the segmentation to disk as uint type</span>
@@ -239,6 +239,9 @@
 
 <span class="sd">    core_fn: str</span>
 <span class="sd">        saved filename will be {core_fn}_{tag}.tiff</span>
+
+<span class="sd">    overwrite: bool</span>
+<span class="sd">        whether allowing overwriting existing results</span>
 
 <span class="sd">    tag: str</span>
 <span class="sd">        the tag to be added to the end of output filename</span>
