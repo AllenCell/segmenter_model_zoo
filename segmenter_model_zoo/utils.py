@@ -34,8 +34,8 @@ def save_as_uint(
     img: np.ndarray,
     save_path: Union[str, Path],
     core_fn: str,
-    tag: str = "segmentation",
     overwrite: bool = False,
+    tag: str = "segmentation",
 ):
     """
     save the segmentation to disk as uint type
@@ -51,6 +51,9 @@ def save_as_uint(
 
     core_fn: str
         saved filename will be {core_fn}_{tag}.tiff
+
+    overwrite: bool
+        whether allowing overwriting existing results
 
     tag: str
         the tag to be added to the end of output filename

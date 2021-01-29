@@ -110,7 +110,7 @@ class Seg3DStacks(object):
             elif isinstance(seg, List):
                 seg_output = zip(seg[0], seg[1])
                 for seg_img, seg_tag in seg_output:
-                    save_as_uint(seg_img, save_path, fn_core, seg_tag, self.overwrite)
+                    save_as_uint(seg_img, save_path, fn_core, self.overwrite, seg_tag)
 
         print("all files are done")
 
