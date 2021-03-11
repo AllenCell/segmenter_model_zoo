@@ -36,6 +36,14 @@ segmenter\_model\_zoo.model\_wrapper.LMNB1\_morphological\_production\_alpha mod
    :undoc-members:
    :show-inheritance:
 
+segmenter\_model\_zoo.model\_wrapper.LMNB1\_morphological\_with\_labelfree module
+---------------------------------------------------------------------------------
+
+.. automodule:: segmenter_model_zoo.model_wrapper.LMNB1_morphological_with_labelfree
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 segmenter\_model\_zoo.model\_wrapper.structure\_AAVS1\_100x\_hipsc module
 -------------------------------------------------------------------------
 
