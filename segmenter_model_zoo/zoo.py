@@ -306,7 +306,7 @@ class SegModel:
         cutoff: float = None,
         inference_param: Dict = {},
         size_in: List = None,
-        size_out: List = None
+        size_out: List = None,
     ) -> np.ndarray:
         """
         Apply a trained model on an image
