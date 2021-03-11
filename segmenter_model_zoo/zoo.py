@@ -305,6 +305,8 @@ class SegModel:
         already_normalized: bool = False,
         cutoff: float = None,
         inference_param: Dict = {},
+        size_in: List = None,
+        size_out: List = None
     ) -> np.ndarray:
         """
         Apply a trained model on an image
@@ -335,6 +337,10 @@ class SegModel:
             only one parameter is allowed: "ResizeRatio" (a list of three
             float numbers to indicate the ResizeRatio to apply on ZYX axis).
             More parameters may be added in the future.
+        size_in: List
+            the input patch size, to overwrite default
+        size_out: List
+            the output patch size, to overwrite default
 
         Return:
         -------------
@@ -384,8 +390,14 @@ class SegModel:
         model = self.model
         model.eval()
 
+        # check if need to use default size_in and size_out
+        if size_in is None:
+            size_in = self.size_in
+        if size_out is None:
+            size_out = self.size_out
+
         # do padding on input
-        padding = [(x - y) // 2 for x, y in zip(self.size_in, self.size_out)]
+        padding = [(x - y) // 2 for x, y in zip(size_in, size_out)]
         img_pad0 = np.pad(
             input_img,
             ((0, 0), (0, 0), (padding[1], padding[1]), (padding[2], padding[2])),
@@ -397,19 +409,19 @@ class SegModel:
 
         input_image_size = np.array((img_pad.shape)[-3:])
         added_padding = np.array(
-            [2 * ((x - y) // 2) for x, y in zip(self.size_in, self.size_out)]
+            [2 * ((x - y) // 2) for x, y in zip(size_in, size_out)]
         )
         original_image_size = input_image_size - added_padding
-        print(self.size_in)
-        print(self.size_out)
-        print(original_image_size)
-        print(self.model_name)
-        print(list(img_pad.shape[2:]))
+
+        # pad the extra batch dimension
+        img_pad = np.expand_dims(img_pad, axis=0)
+
+        # run sliding window inference
         with torch.no_grad():
-            output_img, _ = sliding_window_inference(
+            output_tensor, _ = sliding_window_inference(
                 inputs=torch.from_numpy(img_pad).float().cuda(),
-                roi_size=self.size_in,
-                out_size=self.size_out,
+                roi_size=size_in,
+                out_size=size_out,
                 original_image_size=original_image_size,
                 sw_batch_size=1,
                 predictor=model.forward,
@@ -418,10 +430,17 @@ class SegModel:
                 model_name=self.model_name,
             )
 
+        output_img = output_tensor.cpu().data.numpy()
         if self.OutputCh:
-            # old models
-            if type(self.OutputCh) == list and len(self.OutputCh) > 2:
-                self.OutputCh = self.OutputCh[1]
+            # old models, only take the output from the highest resolution
+            if type(self.OutputCh) == list:
+                # if it is [v1, v2], the second value is which channel to take from
+                # the highest resolution output
+                if len(self.OutputCh) >= 2:
+                    self.OutputCh = self.OutputCh[1]
+                else:
+                    # just convert list to integer
+                    self.OutputCh = self.OutputCh[0]
             output_img = output_img[:, self.OutputCh, :, :, :]
 
         torch.cuda.empty_cache()
