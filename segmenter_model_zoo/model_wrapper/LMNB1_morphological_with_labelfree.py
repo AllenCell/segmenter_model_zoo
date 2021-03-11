@@ -28,8 +28,8 @@ def SegModule(
     output_type: str = "production",
 ):
     """
-    Segmentation function for lamin b1 morphological segmentation with labelfree. 
-    The name "morphological segmentation" refers that the lamin shells are 
+    Segmentation function for lamin b1 morphological segmentation with labelfree.
+    The name "morphological segmentation" refers that the lamin shells are
     segmented to be a fully closed shell (i.e. topologically fillable in 3D)
 
 
