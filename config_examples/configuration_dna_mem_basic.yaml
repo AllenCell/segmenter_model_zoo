@@ -1,0 +1,51 @@
+##########################################################################################################
+# About data
+##########################################################################################################
+Data:
+  - item: zstack
+    dir: C:\projects\segmenter_model_zoo\sample\AICS-58_13788.ome.tif
+
+  #############################################################
+  # Other supported "item":
+  #############################################################
+  # Case 1: processing all images in a folder
+  #   "search" can be "*" (all files) or a regular expression
+  #   "data_range" (optional) can define which chunk of files
+  #   (after sorted in alphabetic order) to process. This is useful
+  #   for running in distributed setting
+  ###################
+  #- item: folder
+  #  dir: '/home/jianxuc/dna_cell_seg/SMC1A/original'
+  #  search: *.tiff
+  #  data_range: [374, 408]
+  #
+  ###################
+  # Case 2: processing files listed in a csv
+  #   "column" specifies which column of the csv containing the filenames
+  ###################
+  #- item: csv
+  #  dir: '/home/jianxuc/dna_cell_seg/experiment_20201001.csv'
+  #  column: 'src_file'
+  #############################################################
+  #
+  # Note: multiple items can be listed under -Data, as long as they use same 
+  # input_channel (see below)
+
+
+##########################################################################################################
+# About Method
+##########################################################################################################
+# which model to use
+model: 'DNA_MEM_instance_basic'
+
+# where to download or search for local copy of the model
+# if the model is found in local_path, then will be loaded directly, 
+# otherwise, it will be automatically downloaded from our cloud storage
+local_path: C:\projects\segmenter_model_zoo\sample\model
+
+# which channel of the image to use (different model may require different channels, 
+# see demo jupyter notebook)
+input_channel: [2,0] 
+
+# where to save the results
+output_path: C:\projects\segmenter_model_zoo\sample\output

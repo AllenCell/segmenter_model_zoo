@@ -38,7 +38,7 @@ Or download the `tarball`_:
 
 .. code-block:: console
 
-    $ curl  -OL https://github.com/AllenCell/segmenter_model_zoo/tarball/master
+    $ curl  -OL https://github.com/AllenCell/segmenter_model_zoo/tarball/main
 
 Once you have a copy of the source, you can install it with:
 
@@ -48,4 +48,4 @@ Once you have a copy of the source, you can install it with:
 
 
 .. _Github repo: https://github.com/AllenCell/segmenter_model_zoo
-.. _tarball: https://github.com/AllenCell/segmenter_model_zoo/tarball/master
+.. _tarball: https://github.com/AllenCell/segmenter_model_zoo/tarball/main

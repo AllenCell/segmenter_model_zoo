@@ -2,7 +2,7 @@
 
 [![Build Status](https://github.com/AllenCell/segmenter_model_zoo/workflows/Build%20Master/badge.svg)](https://github.com/AllenCell/segmenter_model_zoo/actions)
 [![Documentation](https://github.com/AllenCell/segmenter_model_zoo/workflows/Documentation/badge.svg)](https://AllenCell.github.io/segmenter_model_zoo)
-[![Code Coverage](https://codecov.io/gh/AllenCell/segmenter_model_zoo/branch/master/graph/badge.svg)](https://codecov.io/gh/AllenCell/segmenter_model_zoo)
+[![Code Coverage](https://codecov.io/gh/AllenCell/segmenter_model_zoo/branch/main/graph/badge.svg)](https://codecov.io/gh/AllenCell/segmenter_model_zoo)
 
 Batch processing script and functions for running deep learning based segmentation models released by Allen Institute for Cell Science. 
 
@@ -22,6 +22,8 @@ setup up. The only exception is the full version of cells and nuclei segmentatio
 in Allen Cell Data Collection, which uses an object detection model that requires 
 compiling certain CUDA code in Linux. So the full version is only supported in Linux, but 
 we provide a simplified version without object detection that can run on both Windows and Linux, which will also be useful for most users. See more details in the list of models below.
+
+Note: If you are using Windows and see the an error like `error: Microsoft Visual C++ 14.0 or greater is required. Get it with Microsoft C++ Build Tools`, then juse follow the detailed intruction in the error message to download Microsoft Build Tools. The specific version we used is *MSVC v142 - VS 2019 C++ x64/x86 build tools (v14.27)*
 
 ## Installation
 
