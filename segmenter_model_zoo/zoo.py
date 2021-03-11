@@ -407,12 +407,6 @@ class SegModel:
             img_pad0, ((0, 0), (padding[0], padding[0]), (0, 0), (0, 0)), "constant"
         )
 
-        input_image_size = np.array((img_pad.shape)[-3:])
-        added_padding = np.array(
-            [2 * ((x - y) // 2) for x, y in zip(size_in, size_out)]
-        )
-        original_image_size = input_image_size - added_padding
-
         # pad the extra batch dimension
         img_pad = np.expand_dims(img_pad, axis=0)
 
@@ -422,7 +416,7 @@ class SegModel:
                 inputs=torch.from_numpy(img_pad).float().cuda(),
                 roi_size=size_in,
                 out_size=size_out,
-                original_image_size=original_image_size,
+                original_image_size=input_img.shape[-3:],
                 sw_batch_size=1,
                 predictor=model.forward,
                 overlap=0.25,
