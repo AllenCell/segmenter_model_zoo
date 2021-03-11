@@ -384,14 +384,30 @@ class SegModel:
         model = self.model
         model.eval()
 
-        input_image_size = np.array((input_img.shape)[-3:])
+        # do padding on input
+        padding = [(x - y) // 2 for x, y in zip(self.size_in, self.size_out)]
+        img_pad0 = np.pad(
+            input_img,
+            ((0, 0), (0, 0), (padding[1], padding[1]), (padding[2], padding[2])),
+            "symmetric",
+        )
+        img_pad = np.pad(
+            img_pad0, ((0, 0), (padding[0], padding[0]), (0, 0), (0, 0)), "constant"
+        )
+
+        input_image_size = np.array((img_pad.shape)[-3:])
         added_padding = np.array(
             [2 * ((x - y) // 2) for x, y in zip(self.size_in, self.size_out)]
         )
         original_image_size = input_image_size - added_padding
+        print(self.size_in)
+        print(self.size_out)
+        print(original_image_size)
+        print(self.model_name)
+        print(list(img_pad.shape[2:]))
         with torch.no_grad():
             output_img, _ = sliding_window_inference(
-                inputs=input_img.cuda(),
+                inputs=torch.from_numpy(img_pad).float().cuda(),
                 roi_size=self.size_in,
                 out_size=self.size_out,
                 original_image_size=original_image_size,

@@ -41,9 +41,9 @@ dev_requirements = [
 requirements = [
     'PyYAML',
     'aicsimageio>3.3.0',
-    'aicsmlsegment>0.0.5'
+    'aicsmlsegment>0.0.5',
     'scikit-image',
-    "quilt3",
+    'quilt3',
 ]
 
 extra_requirements = {
