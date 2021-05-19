@@ -8,7 +8,7 @@ from typing import List, Union
 
 
 class QuiltModelZoo:
-    """ download model from quilt """
+    """download model from quilt"""
 
     def __init__(self):
         """connect to model zoo on quilt3"""
@@ -59,7 +59,7 @@ class QuiltModelZoo:
 
 
 def validate_model(model_name, save_path):
-    """ check if model exists, otherwise download it """
+    """check if model exists, otherwise download it"""
     model_path = save_path + os.sep + model_name + ".pth"
     if not os.path.exists(model_path):
         zoo_client = QuiltModelZoo()
