@@ -196,7 +196,7 @@
 
 
 <div class="viewcode-block" id="QuiltModelZoo"><a class="viewcode-back" href="../../segmenter_model_zoo.html#segmenter_model_zoo.quilt_utils.QuiltModelZoo">[docs]</a><span class="k">class</span> <span class="nc">QuiltModelZoo</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot; download model from quilt &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;download model from quilt&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;connect to model zoo on quilt3&quot;&quot;&quot;</span>
@@ -247,7 +247,7 @@
 
 
 <div class="viewcode-block" id="validate_model"><a class="viewcode-back" href="../../segmenter_model_zoo.html#segmenter_model_zoo.quilt_utils.validate_model">[docs]</a><span class="k">def</span> <span class="nf">validate_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">save_path</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; check if model exists, otherwise download it &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;check if model exists, otherwise download it&quot;&quot;&quot;</span>
     <span class="n">model_path</span> <span class="o">=</span> <span class="n">save_path</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">model_name</span> <span class="o">+</span> <span class="s2">&quot;.pth&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">model_path</span><span class="p">):</span>
         <span class="n">zoo_client</span> <span class="o">=</span> <span class="n">QuiltModelZoo</span><span class="p">()</span>
