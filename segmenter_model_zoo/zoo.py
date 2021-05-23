@@ -13,6 +13,7 @@ from aicsimageio import AICSImage
 
 from segmenter_model_zoo.quilt_utils import validate_model
 from aicsmlsegment.multichannel_sliding_window import sliding_window_inference
+from aicsmlsegment.fnet_prediction_torch import predict_piecewise
 
 ###############################################################################
 
@@ -244,12 +245,15 @@ class SegModel:
 
             # define the model
             if model_type == "unet_xy":
-                from aicsmlsegment.Net3D.unet_xy import UNet3D as DNN
+                from aicsmlsegment.NetworkArchitecture.unet_xy import UNet3D as DNN
 
                 model = DNN(self.nchannel, self.nclass)
                 self.softmax = model.final_activation
-            elif model_type == "unet_xy_zoom":
-                from aicsmlsegment.Net3D.unet_xy_enlarge import UNet3D as DNN
+            elif model_type in ["unet_xy_zoom", "unet_xy_zoom_0pad"]:
+                module = importlib.import_module(
+                    "aicsmlsegment.NetworkArchitecture." + self.model_name
+                )
+                DNN = getattr(module, "UNet3D")
 
                 if "zoom_ratio" in model_param:
                     zoom_ratio = model_param["zoom_ratio"]
@@ -396,34 +400,53 @@ class SegModel:
         if size_out is None:
             size_out = self.size_out
 
-        # do padding on input
-        padding = [(x - y) // 2 for x, y in zip(size_in, size_out)]
-        img_pad0 = np.pad(
-            input_img,
-            ((0, 0), (0, 0), (padding[1], padding[1]), (padding[2], padding[2])),
-            "symmetric",
-        )
-        img_pad = np.pad(
-            img_pad0, ((0, 0), (padding[0], padding[0]), (0, 0), (0, 0)), "constant"
-        )
-
-        # pad the extra batch dimension
-        img_pad = np.expand_dims(img_pad, axis=0)
-
-        # run sliding window inference
-        with torch.no_grad():
-            output_tensor, _ = sliding_window_inference(
-                inputs=torch.from_numpy(img_pad).float().cuda(),
-                roi_size=size_in,
-                out_size=size_out,
-                original_image_size=input_img.shape[-3:],
-                sw_batch_size=1,
-                predictor=model.forward,
-                overlap=0.25,
-                mode="gaussian",
-                model_name=self.model_name,
+        if size_in == size_out:
+            dims_max = [0] + size_in
+            overlaps = [int(0.1 * dim) for dim in dims_max]
+            output_tensor = predict_piecewise(
+                model,
+                input_img[0],
+                dims_max=dims_max,
+                overlaps=overlaps,
+            )
+            for i in range(1, input_img.shape[0]):
+                this_output = predict_piecewise(
+                    model,
+                    input_img[i],
+                    dims_max=dims_max,
+                    overlaps=overlaps,
+                )
+                output_tensor = torch.cat((output_tensor, this_output), dim=0)
+        else:
+            # do padding on input
+            padding = [(x - y) // 2 for x, y in zip(size_in, size_out)]
+            img_pad0 = np.pad(
+                input_img,
+                ((0, 0), (0, 0), (padding[1], padding[1]), (padding[2], padding[2])),
+                "symmetric",
+            )
+            img_pad = np.pad(
+                img_pad0, ((0, 0), (padding[0], padding[0]), (0, 0), (0, 0)), "constant"
             )
 
+            # pad the extra batch dimension
+            img_pad = np.expand_dims(img_pad, axis=0)
+
+            # run sliding window inference
+            with torch.no_grad():
+                output_tensor, _ = sliding_window_inference(
+                    inputs=torch.from_numpy(img_pad).float().cuda(),
+                    roi_size=size_in,
+                    out_size=size_out,
+                    original_image_size=input_img.shape[-3:],
+                    sw_batch_size=1,
+                    predictor=model.forward,
+                    overlap=0.25,
+                    mode="gaussian",
+                    model_name=self.model_name,
+                )
+
+        output_tensor = torch.nn.Softmax(dim=1)(output_tensor)
         output_img = output_tensor.cpu().data.numpy()
         if self.OutputCh:
             # old models, only take the output from the highest resolution
