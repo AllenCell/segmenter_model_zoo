@@ -44,6 +44,13 @@ MODEL_DEF_MAPPING = {
         "nchannel": 1,
         "OutputCh": [0, 1],
     },
+    "unet_xy_zoom_0pad": {
+        "size_in": [32, 360, 360],
+        "size_out": [32, 360, 360],
+        "nclass": [2, 2, 2],
+        "nchannel": 1,
+        "OutputCh": 1,
+    },
 }
 
 # a record of current basic models
@@ -83,6 +90,12 @@ CHECKPOINT_PATH_MAPPING = {
         "norm": 15,
         "path": "quilt",
         "default_cutoff": 0.5,
+    },
+    "LMNB1_fill_production_v2": {
+        "model_type": "unet_xy_zoom_0pad",
+        "norm": 15,
+        "path": "//allen/aics/assay-dev/users/Benji/problem3/late_tp_addition/run_7/checkpoint_epoch=259.ckpt",   # noqa E501
+        "default_cutoff": 0.4,
     },
     "LMNB1_seed_production": {
         "model_type": "unet_xy_zoom",
