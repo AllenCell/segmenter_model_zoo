@@ -427,7 +427,7 @@ class SegModel:
         if size_in == size_out:
             dims_max = [0] + size_in
             overlaps = [int(0.1 * dim) for dim in dims_max]
-            input_tensor = torch.from_numpy(input_img).to(torch.device("cuda:0"))
+            input_tensor = torch.from_numpy(input_img)
             output_tensor = predict_piecewise(
                 model,
                 input_tensor,
