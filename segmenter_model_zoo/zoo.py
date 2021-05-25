@@ -94,7 +94,7 @@ CHECKPOINT_PATH_MAPPING = {
     "LMNB1_fill_production_v2": {
         "model_type": "unet_xy_zoom_0pad",
         "norm": 15,
-        "path": "//allen/aics/assay-dev/users/Benji/problem3/late_tp_addition/run_7/checkpoint_epoch=259.ckpt",   # noqa E501
+        "path": "//allen/aics/assay-dev/users/Benji/problem3/late_tp_addition/run_7/checkpoint_epoch=259.ckpt",  # noqa E501
         "default_cutoff": 0.4,
     },
     "LMNB1_seed_production": {
@@ -298,9 +298,10 @@ class SegModel:
                     self.model.load_state_dict(state["state_dict"])
                 except Exception:
                     from collections import OrderedDict
+
                     model_state = state["state_dict"]
-                    model_state_adjusted = OrderedDict() 
-                    for key, value in model_state.items() :
+                    model_state_adjusted = OrderedDict()
+                    for key, value in model_state.items():
                         model_state_adjusted[key[6:]] = value
                     self.model.load_state_dict(model_state_adjusted)
             else:
