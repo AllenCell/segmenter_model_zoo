@@ -264,7 +264,7 @@ class SegModel:
                 self.softmax = model.final_activation
             elif model_type in ["unet_xy_zoom", "unet_xy_zoom_0pad"]:
                 module = importlib.import_module(
-                    "aicsmlsegment.NetworkArchitecture." + self.model_name
+                    "aicsmlsegment.NetworkArchitecture." + model_type
                 )
                 DNN = getattr(module, "UNet3D")
 
@@ -427,13 +427,14 @@ class SegModel:
         if size_in == size_out:
             dims_max = [0] + size_in
             overlaps = [int(0.1 * dim) for dim in dims_max]
-            input_tensor = torch.from_numpy(input_img)
-            output_tensor = predict_piecewise(
-                model,
-                input_tensor,
-                dims_max=dims_max,
-                overlaps=overlaps,
-            )
+            input_tensor = torch.from_numpy(input_img).to("cuda:0")
+            with torch.no_grad():
+                output_tensor = predict_piecewise(
+                    model,
+                    input_tensor,
+                    dims_max=dims_max,
+                    overlaps=overlaps,
+                )
         else:
             # do padding on input
             padding = [(x - y) // 2 for x, y in zip(size_in, size_out)]
