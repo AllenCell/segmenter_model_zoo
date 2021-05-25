@@ -290,8 +290,19 @@ class SegModel:
                 model_path = CHECKPOINT_PATH_MAPPING[checkpoint_name]["path"]
 
             state = torch.load(model_path, map_location=torch.device("cpu"))
+            print(state.keys())
             if "model_state_dict" in state:
                 self.model.load_state_dict(state["model_state_dict"])
+            elif "state_dict" in state:
+                try:
+                    self.model.load_state_dict(state["state_dict"])
+                except Exception:
+                    from collections import OrderedDict
+                    model_state = state["state_dict"]
+                    model_state_adjusted = OrderedDict() 
+                    for key, value in model_state.items() :
+                        model_state_adjusted[key[6:]] = value
+                    self.model.load_state_dict(model_state_adjusted)
             else:
                 self.model.load_state_dict(state)
 
@@ -416,20 +427,13 @@ class SegModel:
         if size_in == size_out:
             dims_max = [0] + size_in
             overlaps = [int(0.1 * dim) for dim in dims_max]
+            input_tensor = torch.from_numpy(input_img).to(torch.device("cuda:0"))
             output_tensor = predict_piecewise(
                 model,
-                input_img[0],
+                input_tensor,
                 dims_max=dims_max,
                 overlaps=overlaps,
             )
-            for i in range(1, input_img.shape[0]):
-                this_output = predict_piecewise(
-                    model,
-                    input_img[i],
-                    dims_max=dims_max,
-                    overlaps=overlaps,
-                )
-                output_tensor = torch.cat((output_tensor, this_output), dim=0)
         else:
             # do padding on input
             padding = [(x - y) // 2 for x, y in zip(size_in, size_out)]
