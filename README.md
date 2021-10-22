@@ -6,6 +6,8 @@
 
 Batch processing script and functions for running deep learning based segmentation models released by Allen Institute for Cell Science. 
 
+you can [![Try it out on Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/AllenCell/segmenter_model_zoo)
+
 ---
 
 ## Features
