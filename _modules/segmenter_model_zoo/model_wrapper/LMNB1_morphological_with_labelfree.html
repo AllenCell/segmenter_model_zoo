@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>segmenter_model_zoo.model_wrapper.LMNB1_morphological_with_labelfree &mdash; segmenter_model_zoo 0.0.7 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> segmenter_model_zoo
+          </a>
+              <div class="version">
+                0.0.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#stable-release">Stable release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#from-sources">From sources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Package modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../segmenter_model_zoo.html">segmenter_model_zoo package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../segmenter_model_zoo.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../segmenter_model_zoo.bin.html">segmenter_model_zoo.bin package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../segmenter_model_zoo.model_wrapper.html">segmenter_model_zoo.model_wrapper package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../segmenter_model_zoo.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../segmenter_model_zoo.html#module-segmenter_model_zoo.quilt_utils">segmenter_model_zoo.quilt_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../segmenter_model_zoo.html#module-segmenter_model_zoo.utils">segmenter_model_zoo.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../segmenter_model_zoo.html#module-segmenter_model_zoo.zoo">segmenter_model_zoo.zoo module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../segmenter_model_zoo.html#module-segmenter_model_zoo">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#deploying">Deploying</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../math.html">Math notation example</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">segmenter_model_zoo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+          <li><a href="../../segmenter_model_zoo.html">segmenter_model_zoo</a> &raquo;</li>
+      <li>segmenter_model_zoo.model_wrapper.LMNB1_morphological_with_labelfree</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for segmenter_model_zoo.model_wrapper.LMNB1_morphological_with_labelfree</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage.morphology</span> <span class="kn">import</span> <span class="n">binary_fill_holes</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="n">gaussian_filter</span>
+<span class="kn">import</span> <span class="nn">itk</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">skimage.morphology</span> <span class="kn">import</span> <span class="n">remove_small_objects</span>
+<span class="kn">from</span> <span class="nn">skimage.measure</span> <span class="kn">import</span> <span class="n">label</span>
+<span class="kn">from</span> <span class="nn">skimage.segmentation</span> <span class="kn">import</span> <span class="n">find_boundaries</span>
+<span class="kn">from</span> <span class="nn">aicsmlsegment.utils</span> <span class="kn">import</span> <span class="n">background_sub</span><span class="p">,</span> <span class="n">simple_norm</span>
+<span class="kn">from</span> <span class="nn">aicsimageio</span> <span class="kn">import</span> <span class="n">AICSImage</span>
+
+<span class="n">mitosis_cutoff</span> <span class="o">=</span> <span class="mf">0.5</span>  <span class="c1"># 0.3</span>
+<span class="n">core_cutoff</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">fill_est_cutoff</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">min_overlap</span> <span class="o">=</span> <span class="mf">0.9</span>
+<span class="n">min_core</span> <span class="o">=</span> <span class="mi">1600</span>
+<span class="n">mem_bf_cut</span> <span class="o">=</span> <span class="mf">0.25</span>
+
+
+<div class="viewcode-block" id="SegModule"><a class="viewcode-back" href="../../../segmenter_model_zoo.model_wrapper.html#segmenter_model_zoo.model_wrapper.LMNB1_morphological_with_labelfree.SegModule">[docs]</a><span class="k">def</span> <span class="nf">SegModule</span><span class="p">(</span>
+    <span class="n">img</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">model_list</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">index</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">return_prediction</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">output_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;production&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Segmentation function for lamin b1 morphological segmentation with labelfree.</span>
+<span class="sd">    The name &quot;morphological segmentation&quot; refers that the lamin shells are</span>
+<span class="sd">    segmented to be a fully closed shell (i.e. topologically fillable in 3D)</span>
+
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    ----------</span>
+<span class="sd">    img: np.ndarray</span>
+<span class="sd">        a 4D numpy array of size 2 x Z x Y x X, the first channel is lamin b1</span>
+<span class="sd">        and the second channel is bright field image.</span>
+<span class="sd">    filename: Union[str, Path]</span>
+<span class="sd">        when img is None, use filename to load image</span>
+<span class="sd">    index: List[int]</span>
+<span class="sd">        a list of 2 integers, the first indicating which channel is lamin b1,</span>
+<span class="sd">        the second integer indicating which channel is bright field. Only</span>
+<span class="sd">        valid when using filename to load image. Not used when img is not None</span>
+<span class="sd">    model_list: List</span>
+<span class="sd">        the list of models to be applied on the image. Here, we assume 4 models</span>
+<span class="sd">        are provided (in this specific order): lamin structure segmentation model,</span>
+<span class="sd">        lamin fill model, lamin core model, and membrane segmentation model.</span>
+<span class="sd">    return_prediction: book</span>
+<span class="sd">        a flag indicating whether to return raw prediction</span>
+<span class="sd">    output_type: str</span>
+<span class="sd">        There are two ways to return the output: &quot;production&quot; (default) and &quot;RnD&quot;.</span>
+<span class="sd">        &quot;production&quot; means only the final lamin b1 segmentation result will be</span>
+<span class="sd">        returned. &quot;RnD&quot; means lamin fill and lamin shell will also be returned,</span>
+<span class="sd">        which are intermediate results for generating the final lamin b1 segmentation.</span>
+<span class="sd">        lamin fill is usefull particularly to represent nuclear segmentation and</span>
+<span class="sd">        can be used to measured the nuclei shapes. lamin shell is just the boundary</span>
+<span class="sd">        of lamin fill.</span>
+
+<span class="sd">    Return:</span>
+<span class="sd">    ------------</span>
+<span class="sd">        1 or 3 numpy array (depending on output_type) or together with raw</span>
+<span class="sd">        prediction (if return_prediction is True)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># model order: mitosis, fill, core, mem_edge_lf</span>
+    <span class="k">if</span> <span class="n">img</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># load the image</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">AICSImage</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:]</span>
+
+    <span class="c1"># make sure the image has 4 dimensions</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span> <span class="ow">and</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span>
+
+    <span class="c1"># extract lamin channel</span>
+    <span class="n">lamin_img</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:]</span>
+    <span class="n">lamin_img</span><span class="p">[</span><span class="n">lamin_img</span> <span class="o">&gt;</span> <span class="mi">4000</span><span class="p">]</span> <span class="o">=</span> <span class="n">lamin_img</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">lamin_img</span> <span class="o">=</span> <span class="n">background_sub</span><span class="p">(</span><span class="n">lamin_img</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+
+    <span class="c1"># extra cellmask channel</span>
+    <span class="n">mem_img</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:]</span>
+    <span class="n">mem_img</span><span class="p">[</span><span class="n">mem_img</span> <span class="o">&gt;</span> <span class="mi">10000</span><span class="p">]</span> <span class="o">=</span> <span class="n">mem_img</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">mem_img</span> <span class="o">=</span> <span class="n">background_sub</span><span class="p">(</span><span class="n">mem_img</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+    <span class="n">mem_img</span> <span class="o">=</span> <span class="n">simple_norm</span><span class="p">(</span><span class="n">mem_img</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+
+    <span class="c1"># model 1: mitosis</span>
+    <span class="n">mitosis_pred</span> <span class="o">=</span> <span class="n">model_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">apply_on_single_zstack</span><span class="p">(</span>
+        <span class="n">lamin_img</span><span class="p">,</span> <span class="n">already_normalized</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=-</span><span class="mi">1</span>
+    <span class="p">)</span>
+    <span class="n">mitosis_smooth</span> <span class="o">=</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">mitosis_pred</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="c1"># import random</span>
+    <span class="c1"># rr = random.randint(100,199)</span>
+    <span class="c1"># imsave(&#39;test_all_&#39;+str(rr)+&#39;.tiff&#39;, mitosis_pred)</span>
+
+    <span class="c1"># model 2: fill</span>
+    <span class="n">fill_pred</span> <span class="o">=</span> <span class="n">model_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">apply_on_single_zstack</span><span class="p">(</span>
+        <span class="n">lamin_img</span><span class="p">,</span> <span class="n">already_normalized</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=-</span><span class="mi">1</span>
+    <span class="p">)</span>
+    <span class="n">fill_estimation</span> <span class="o">=</span> <span class="n">fill_pred</span> <span class="o">&gt;</span> <span class="n">fill_est_cutoff</span>
+
+    <span class="c1"># imsave(&#39;test_fill_&#39;+str(rr)+&#39;.tiff&#39;, fill_pred)</span>
+
+    <span class="c1"># model 3: core</span>
+    <span class="n">core_pred</span> <span class="o">=</span> <span class="n">model_list</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">apply_on_single_zstack</span><span class="p">(</span>
+        <span class="n">lamin_img</span><span class="p">,</span> <span class="n">already_normalized</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=-</span><span class="mi">1</span>
+    <span class="p">)</span>
+    <span class="n">core_bw</span> <span class="o">=</span> <span class="n">core_pred</span> <span class="o">&gt;</span> <span class="n">core_cutoff</span>
+    <span class="n">core_bw</span> <span class="o">=</span> <span class="n">remove_small_objects</span><span class="p">(</span><span class="n">core_bw</span><span class="p">,</span> <span class="n">min_size</span><span class="o">=</span><span class="n">min_core</span><span class="p">)</span>
+
+    <span class="c1"># imsave(&#39;test_core_&#39;+str(rr)+&#39;.tiff&#39;, core_bw.astype(np.uint8))</span>
+
+    <span class="c1"># model 4: cell boundary from BF to further prune the mask</span>
+    <span class="n">cellmask_pred</span> <span class="o">=</span> <span class="n">model_list</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">apply_on_single_zstack</span><span class="p">(</span>
+        <span class="n">input_img</span><span class="o">=</span><span class="n">img</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">use_tta</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">cellmask_bw</span> <span class="o">=</span> <span class="n">cellmask_pred</span> <span class="o">&gt;</span> <span class="n">mem_bf_cut</span>
+
+    <span class="c1"># imsave(&#39;test_edge_&#39;+str(rr)+&#39;.tiff&#39;, cellmask_pred)</span>
+
+    <span class="c1"># prepare for watershed</span>
+    <span class="n">mitosis_smooth</span><span class="p">[</span><span class="n">cellmask_bw</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.005</span>
+
+    <span class="c1"># do watershed</span>
+    <span class="n">seed</span><span class="p">,</span> <span class="n">seed_num</span> <span class="o">=</span> <span class="n">label</span><span class="p">(</span><span class="n">core_bw</span><span class="p">,</span> <span class="n">return_num</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">seed</span><span class="p">[</span><span class="n">cellmask_bw</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">seed_num</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="n">raw_itk</span> <span class="o">=</span> <span class="n">itk</span><span class="o">.</span><span class="n">GetImageFromArray</span><span class="p">(</span><span class="n">mitosis_smooth</span><span class="p">)</span>
+    <span class="n">seed_itk</span> <span class="o">=</span> <span class="n">itk</span><span class="o">.</span><span class="n">GetImageFromArray</span><span class="p">(</span><span class="n">seed</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">))</span>
+    <span class="n">seg_itk</span> <span class="o">=</span> <span class="n">itk</span><span class="o">.</span><span class="n">morphological_watershed_from_markers_image_filter</span><span class="p">(</span>
+        <span class="n">raw_itk</span><span class="p">,</span> <span class="n">marker_image</span><span class="o">=</span><span class="n">seed_itk</span><span class="p">,</span> <span class="n">fully_connected</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mark_watershed_line</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">filled</span> <span class="o">=</span> <span class="n">itk</span><span class="o">.</span><span class="n">GetArrayFromImage</span><span class="p">(</span><span class="n">seg_itk</span><span class="p">)</span>
+
+    <span class="c1"># filled = watershed(mitosis_smooth, seed, watershed_line=False)</span>
+
+    <span class="n">filled</span><span class="p">[</span><span class="n">filled</span> <span class="o">&gt;</span> <span class="n">seed_num</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">fill_ref</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span>
+        <span class="n">fill_estimation</span><span class="p">,</span> <span class="n">binary_fill_holes</span><span class="p">(</span><span class="n">mitosis_pred</span> <span class="o">&gt;</span> <span class="n">mitosis_cutoff</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="c1"># imsave(&#39;test_new_fill_&#39;+str(rr)+&#39;.tiff&#39;, filled.astype(np.uint8))</span>
+    <span class="c1"># imsave(&#39;test_fill_ref_&#39;+str(rr)+&#39;.tiff&#39;, fill_ref.astype(np.uint8))</span>
+
+    <span class="c1"># remove &quot;failed&quot; cells (certain mitotic stage is not fillable, or is filled badly)</span>
+    <span class="k">for</span> <span class="n">ci</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">seed_num</span><span class="p">):</span>
+        <span class="n">single_fill</span> <span class="o">=</span> <span class="n">filled</span> <span class="o">==</span> <span class="n">ci</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">single_fill</span><span class="p">,</span> <span class="n">fill_estimation</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="o">&gt;</span> <span class="mi">5000000</span>
+        <span class="p">):</span>
+            <span class="n">filled</span><span class="p">[</span><span class="n">single_fill</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">continue</span>
+
+        <span class="n">overlap_area</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">single_fill</span><span class="p">,</span> <span class="n">fill_ref</span><span class="p">)</span>
+        <span class="n">overlap_ratio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">overlap_area</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+            <span class="mf">1e-8</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">single_fill</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">overlap_ratio</span> <span class="o">&lt;</span> <span class="n">min_overlap</span><span class="p">:</span>
+            <span class="n">filled</span><span class="p">[</span><span class="n">single_fill</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># get two versions of segmentation</span>
+    <span class="n">shell</span> <span class="o">=</span> <span class="n">find_boundaries</span><span class="p">(</span><span class="n">filled</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">)</span>
+    <span class="n">merged</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">shell</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">mitosis_pred</span> <span class="o">&gt;</span> <span class="n">mitosis_cutoff</span><span class="p">)</span>
+
+    <span class="c1"># return results</span>
+    <span class="n">merged</span> <span class="o">=</span> <span class="n">merged</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+    <span class="n">merged</span><span class="p">[</span><span class="n">merged</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span>
+    <span class="n">merged</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">merged</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">shell</span> <span class="o">=</span> <span class="n">shell</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+    <span class="n">shell</span><span class="p">[</span><span class="n">shell</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span>
+
+    <span class="k">if</span> <span class="n">output_type</span> <span class="o">==</span> <span class="s2">&quot;production&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">merged</span>
+    <span class="k">elif</span> <span class="n">output_type</span> <span class="o">==</span> <span class="s2">&quot;RnD&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">return_prediction</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="p">[</span><span class="n">merged</span><span class="p">,</span> <span class="n">filled</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">),</span> <span class="n">shell</span><span class="p">],</span>
+                <span class="p">[</span><span class="s2">&quot;_structure_&quot;</span><span class="p">,</span> <span class="s2">&quot;_fill_&quot;</span><span class="p">,</span> <span class="s2">&quot;_shell_&quot;</span><span class="p">],</span>
+                <span class="p">[</span><span class="n">mitosis_pred</span><span class="p">,</span> <span class="n">fill_pred</span><span class="p">,</span> <span class="n">core_pred</span><span class="p">,</span> <span class="n">cellmask_pred</span><span class="p">],</span>
+                <span class="p">[</span><span class="s2">&quot;_all_&quot;</span><span class="p">,</span> <span class="s2">&quot;_fill_&quot;</span><span class="p">,</span> <span class="s2">&quot;_core_&quot;</span><span class="p">,</span> <span class="s2">&quot;_edge_bf_&quot;</span><span class="p">],</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">merged</span><span class="p">,</span> <span class="n">filled</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">),</span> <span class="n">shell</span><span class="p">],</span> <span class="p">[</span>
+                <span class="s2">&quot;_structure_&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;_fill_&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;_shell_&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unsupported output type&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, Jianxu Chen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>segmenter_model_zoo.model_wrapper.DNA_MEM_instance_basic &mdash; segmenter_model_zoo 0.0.7 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> segmenter_model_zoo
+          </a>
+              <div class="version">
+                0.0.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#stable-release">Stable release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#from-sources">From sources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Package modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../segmenter_model_zoo.html">segmenter_model_zoo package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../segmenter_model_zoo.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../segmenter_model_zoo.bin.html">segmenter_model_zoo.bin package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../segmenter_model_zoo.model_wrapper.html">segmenter_model_zoo.model_wrapper package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../segmenter_model_zoo.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../segmenter_model_zoo.html#module-segmenter_model_zoo.quilt_utils">segmenter_model_zoo.quilt_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../segmenter_model_zoo.html#module-segmenter_model_zoo.utils">segmenter_model_zoo.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../segmenter_model_zoo.html#module-segmenter_model_zoo.zoo">segmenter_model_zoo.zoo module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../segmenter_model_zoo.html#module-segmenter_model_zoo">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#deploying">Deploying</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../math.html">Math notation example</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">segmenter_model_zoo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+          <li><a href="../../segmenter_model_zoo.html">segmenter_model_zoo</a> &raquo;</li>
+      <li>segmenter_model_zoo.model_wrapper.DNA_MEM_instance_basic</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for segmenter_model_zoo.model_wrapper.DNA_MEM_instance_basic</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">aicsimageio</span> <span class="kn">import</span> <span class="n">AICSImage</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage.morphology</span> <span class="kn">import</span> <span class="n">binary_fill_holes</span>
+<span class="kn">from</span> <span class="nn">skimage.morphology</span> <span class="kn">import</span> <span class="n">dilation</span><span class="p">,</span> <span class="n">disk</span>
+<span class="kn">from</span> <span class="nn">skimage.morphology</span> <span class="kn">import</span> <span class="n">remove_small_objects</span>
+<span class="kn">from</span> <span class="nn">skimage.measure</span> <span class="kn">import</span> <span class="n">label</span>
+<span class="kn">from</span> <span class="nn">skimage.segmentation</span> <span class="kn">import</span> <span class="n">relabel_sequential</span><span class="p">,</span> <span class="n">find_boundaries</span>
+<span class="kn">from</span> <span class="nn">aicsmlsegment.utils</span> <span class="kn">import</span> <span class="n">background_sub</span><span class="p">,</span> <span class="n">simple_norm</span>
+<span class="kn">import</span> <span class="nn">itk</span>
+
+<span class="kn">from</span> <span class="nn">segmenter_model_zoo.utils</span> <span class="kn">import</span> <span class="n">getLargestCC</span>
+
+
+<div class="viewcode-block" id="SegModule"><a class="viewcode-back" href="../../../segmenter_model_zoo.model_wrapper.html#segmenter_model_zoo.model_wrapper.DNA_MEM_instance_basic.SegModule">[docs]</a><span class="k">def</span> <span class="nf">SegModule</span><span class="p">(</span>
+    <span class="n">img</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">model_list</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">index</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">return_prediction</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">mem_pre_cut_th</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">seed_bw_th</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.90</span><span class="p">,</span>
+    <span class="n">dna_mask_bw_th</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">min_seed_size</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">6000</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Segmentation function for cells and nuclei segmentaiton without label-free</span>
+<span class="sd">    and mitotic pair correction.</span>
+
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    ----------</span>
+<span class="sd">    img: np.ndarray</span>
+<span class="sd">        a 4D numpy array of size 2 x Z x Y x X, the first channel is DNA</span>
+<span class="sd">        and the second channel is cell membrane.</span>
+<span class="sd">    filename: Union[str, Path]</span>
+<span class="sd">        when img is None, use filename to load image</span>
+<span class="sd">    index: List[int]</span>
+<span class="sd">        a list of 2 integers, the first indicating which channel is DNA,</span>
+<span class="sd">        the second integer indicating which channel is cell membrane. Only</span>
+<span class="sd">        valid when using filename to load image. Not used when img is not None</span>
+<span class="sd">    model_list: List</span>
+<span class="sd">        the list of models to be applied on the image. Here, we assume 3 models</span>
+<span class="sd">        are provided (in this specific order): dna mask model, membrane segmentation</span>
+<span class="sd">        model and dna seed model.</span>
+<span class="sd">    return_prediction: book</span>
+<span class="sd">        a flag indicating whether to return raw prediction</span>
+<span class="sd">    mem_pre_cut_th: float</span>
+<span class="sd">        an emprically determined cutoff value to binarize the prediction from</span>
+<span class="sd">        membrane segmentation model and the binary result is used to cut the seed.</span>
+<span class="sd">        Usually, this value needs to be relatively small, just to be conservative,</span>
+<span class="sd">        so that there won&#39;t be falsely merged seeds. Default is 0.2.</span>
+<span class="sd">    seed_bw_th: float</span>
+<span class="sd">        an empirically determined cutoff value to binarize the prediction from</span>
+<span class="sd">        dna seed model. The binary result after cutted by binarized membrane will be</span>
+<span class="sd">        used as the seed for running watershed. Usually, this value needs to be</span>
+<span class="sd">        relatively large, just to be conservative, so that seeds are less likely to</span>
+<span class="sd">        be falsely merged. Default is 0.90.</span>
+<span class="sd">    dna_mask_bw_th: float</span>
+<span class="sd">        an empirically determined cutoff value to binarize the prediction from</span>
+<span class="sd">        dna mask model. Default is 0.5.</span>
+<span class="sd">    min_seed_size: float</span>
+<span class="sd">        an empirically determined size threshold to prune the seeds before running</span>
+<span class="sd">        watershed. Any connected component (except those torching the image border)</span>
+<span class="sd">        with less than min_seed_size voxels will not be removed from seeds. Default</span>
+<span class="sd">        is 6000.</span>
+
+<span class="sd">    Return:</span>
+<span class="sd">    ------------</span>
+<span class="sd">        two numpy arrays: cell segmentatino and dna segmentation (labeled images) or</span>
+<span class="sd">        together with raw prediction (if return_prediction is True)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># model order: dna_mask, cellmask, dna_seed</span>
+    <span class="k">if</span> <span class="n">img</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># load the image</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">AICSImage</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:]</span>
+    <span class="c1"># make sure the image has 4 dimensions</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span> <span class="ow">and</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;bad data, dimension crashed&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">return_prediction</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="c1">###########################################################</span>
+    <span class="c1"># part 1: prepare data</span>
+    <span class="c1">###########################################################</span>
+
+    <span class="c1"># input channel order:</span>
+    <span class="c1"># first = dna; second = cell mask; third = bf</span>
+
+    <span class="c1"># extract dna channel</span>
+    <span class="n">dna_img</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">dna_img</span><span class="p">[</span><span class="n">dna_img</span> <span class="o">&gt;</span> <span class="mi">60000</span><span class="p">]</span> <span class="o">=</span> <span class="n">dna_img</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">dna_img</span> <span class="o">=</span> <span class="n">background_sub</span><span class="p">(</span><span class="n">dna_img</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+    <span class="n">dna_img</span> <span class="o">=</span> <span class="n">simple_norm</span><span class="p">(</span><span class="n">dna_img</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="c1"># imsave(&#39;dna_norm.tiff&#39;, dna_img)</span>
+
+    <span class="c1"># extra cellmask channel</span>
+    <span class="n">mem_img</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">mem_img</span><span class="p">[</span><span class="n">mem_img</span> <span class="o">&gt;</span> <span class="mi">60000</span><span class="p">]</span> <span class="o">=</span> <span class="n">mem_img</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">mem_img</span> <span class="o">=</span> <span class="n">background_sub</span><span class="p">(</span><span class="n">mem_img</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+    <span class="n">mem_img</span> <span class="o">=</span> <span class="n">simple_norm</span><span class="p">(</span><span class="n">mem_img</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+    <span class="c1"># imsave(&#39;cell_norm.tiff&#39;, mem_img)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;image normalization is done&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;applying all DL models ... ...&quot;</span><span class="p">)</span>
+
+    <span class="c1">###########################################################</span>
+    <span class="c1"># part 2: run predictions</span>
+    <span class="c1">###########################################################</span>
+
+    <span class="c1"># model 1: dna_mask</span>
+    <span class="n">dna_mask_pred</span> <span class="o">=</span> <span class="n">model_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">apply_on_single_zstack</span><span class="p">(</span>
+        <span class="n">dna_img</span><span class="p">,</span> <span class="n">already_normalized</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=-</span><span class="mi">1</span>
+    <span class="p">)</span>
+    <span class="n">dna_mask_bw</span> <span class="o">=</span> <span class="n">dna_mask_pred</span> <span class="o">&gt;</span> <span class="n">dna_mask_bw_th</span>
+    <span class="c1"># imsave(&#39;pred_dna.tiff&#39;, dna_mask_pred)</span>
+
+    <span class="c1"># model 2: cell edge</span>
+    <span class="n">mem_pred</span> <span class="o">=</span> <span class="n">model_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">apply_on_single_zstack</span><span class="p">(</span>
+        <span class="n">mem_img</span><span class="p">,</span> <span class="n">already_normalized</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=-</span><span class="mi">1</span>
+    <span class="p">)</span>
+    <span class="c1"># imsave(&#39;pred_cell.tiff&#39;, mem_pred)</span>
+
+    <span class="c1"># model 3: dna_seed</span>
+    <span class="n">seed_pred</span> <span class="o">=</span> <span class="n">model_list</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">apply_on_single_zstack</span><span class="p">(</span>
+        <span class="n">dna_img</span><span class="p">,</span> <span class="n">already_normalized</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=-</span><span class="mi">1</span>
+    <span class="p">)</span>
+    <span class="n">seed_bw</span> <span class="o">=</span> <span class="n">seed_pred</span> <span class="o">&gt;</span> <span class="n">seed_bw_th</span>
+    <span class="c1"># imsave(&#39;pred_seed.tiff&#39;, seed_pred)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;predictions are done.&quot;</span><span class="p">)</span>
+
+    <span class="c1">#############################################################</span>
+    <span class="c1"># part 3: prepare seed</span>
+    <span class="c1">#############################################################</span>
+    <span class="c1"># prepare separation boundary first</span>
+    <span class="n">tmp_mem</span> <span class="o">=</span> <span class="n">mem_pred</span> <span class="o">&gt;</span> <span class="n">mem_pre_cut_th</span>
+    <span class="k">for</span> <span class="n">zz</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tmp_mem</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">tmp_mem</span><span class="p">[</span><span class="n">zz</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]):</span>
+            <span class="n">tmp_mem</span><span class="p">[</span><span class="n">zz</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">dilation</span><span class="p">(</span><span class="n">tmp_mem</span><span class="p">[</span><span class="n">zz</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">selem</span><span class="o">=</span><span class="n">disk</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># cut seed</span>
+    <span class="n">seed_bw</span><span class="p">[</span><span class="n">tmp_mem</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># prune the seed</span>
+    <span class="n">seed_bw</span> <span class="o">=</span> <span class="n">remove_small_objects</span><span class="p">(</span><span class="n">seed_bw</span><span class="p">,</span> <span class="n">min_size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">seed_label</span> <span class="o">=</span> <span class="n">label</span><span class="p">(</span><span class="n">seed_bw</span><span class="p">,</span> <span class="n">connectivity</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># save the seeds that are touching boundary</span>
+    <span class="n">boundary_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">seed_bw</span><span class="p">)</span>
+    <span class="n">boundary_mask</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">boundary_mask</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">4</span><span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">boundary_mask</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">boundary_mask</span><span class="p">[:,</span> <span class="p">:,</span> <span class="o">-</span><span class="mi">4</span><span class="p">:]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">bd_seed_on_hold</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">seed_bw</span><span class="p">)</span>
+    <span class="n">bd_idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">seed_label</span><span class="p">[</span><span class="n">boundary_mask</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]))</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">cid</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bd_idx</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cid</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">bd_seed_on_hold</span><span class="p">[</span><span class="n">seed_label</span> <span class="o">==</span> <span class="n">cid</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">seed_bw</span> <span class="o">=</span> <span class="n">remove_small_objects</span><span class="p">(</span><span class="n">seed_bw</span><span class="p">,</span> <span class="n">min_size</span><span class="o">=</span><span class="n">min_seed_size</span><span class="p">,</span> <span class="n">connectivity</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># finalize seed (add back the seeds on hold)</span>
+    <span class="n">seed_bw</span><span class="p">[</span><span class="n">bd_seed_on_hold</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="c1">###########################################################</span>
+    <span class="c1"># part 4: prepare for watershed image</span>
+    <span class="c1">###########################################################</span>
+
+    <span class="c1"># find the stack bottom</span>
+    <span class="n">stack_bottom</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">zz</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">tmp_mem</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">tmp_mem</span><span class="p">[</span><span class="n">zz</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">tmp_mem</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">tmp_mem</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="n">stack_bottom</span> <span class="o">=</span> <span class="n">zz</span>
+            <span class="k">break</span>
+
+    <span class="c1"># find the stack top</span>
+    <span class="n">stack_top</span> <span class="o">=</span> <span class="n">mem_pred</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">zz</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">mem_pred</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mem_pred</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">tmp_mem</span><span class="p">[</span><span class="n">zz</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">64</span><span class="p">:</span>
+            <span class="n">stack_top</span> <span class="o">=</span> <span class="n">zz</span>
+            <span class="k">break</span>
+
+    <span class="c1"># prune mem_pred</span>
+    <span class="k">if</span> <span class="n">stack_bottom</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">mem_pred</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mf">0.0000001</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mem_pred</span><span class="p">[:</span><span class="n">stack_bottom</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mf">0.0000001</span>
+    <span class="n">mem_pred</span><span class="p">[</span><span class="n">stack_top</span><span class="p">:,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mf">0.0000001</span>
+
+    <span class="c1">#############################################################</span>
+    <span class="c1"># part 5: prepare for watershed seed</span>
+    <span class="c1">#############################################################</span>
+    <span class="n">seed_label</span><span class="p">,</span> <span class="n">seed_num</span> <span class="o">=</span> <span class="n">label</span><span class="p">(</span><span class="n">seed_bw</span><span class="p">,</span> <span class="n">return_num</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">connectivity</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">stack_bottom</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">seed_label</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">seed_num</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">seed_label</span><span class="p">[:</span><span class="n">stack_bottom</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">seed_num</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">seed_label</span><span class="p">[</span><span class="n">stack_top</span><span class="p">:,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">seed_num</span> <span class="o">+</span> <span class="mi">2</span>
+
+    <span class="c1">################################################################</span>
+    <span class="c1"># part 6: get cell instance segmentation</span>
+    <span class="c1">################################################################</span>
+    <span class="c1"># cell_seg = watershed(mem_pred, seed_label, watershed_line=True)</span>
+    <span class="n">raw0</span> <span class="o">=</span> <span class="n">mem_pred</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">raw_itk</span> <span class="o">=</span> <span class="n">itk</span><span class="o">.</span><span class="n">GetImageFromArray</span><span class="p">(</span><span class="n">raw0</span><span class="p">)</span>
+    <span class="n">seed_itk</span> <span class="o">=</span> <span class="n">itk</span><span class="o">.</span><span class="n">GetImageFromArray</span><span class="p">(</span><span class="n">seed_label</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">))</span>
+    <span class="n">seg_itk</span> <span class="o">=</span> <span class="n">itk</span><span class="o">.</span><span class="n">morphological_watershed_from_markers_image_filter</span><span class="p">(</span>
+        <span class="n">raw_itk</span><span class="p">,</span> <span class="n">marker_image</span><span class="o">=</span><span class="n">seed_itk</span><span class="p">,</span> <span class="n">fully_connected</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mark_watershed_line</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">cell_seg</span> <span class="o">=</span> <span class="n">itk</span><span class="o">.</span><span class="n">GetArrayFromImage</span><span class="p">(</span><span class="n">seg_itk</span><span class="p">)</span>
+
+    <span class="n">cell_seg</span><span class="p">[</span><span class="n">cell_seg</span> <span class="o">==</span> <span class="n">seed_num</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">cell_seg</span><span class="p">[</span><span class="n">cell_seg</span> <span class="o">==</span> <span class="n">seed_num</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;watershed based cell segmentation is done.&quot;</span><span class="p">)</span>
+
+    <span class="c1">################################################################</span>
+    <span class="c1"># part 7: refine cell segmentation near bottom</span>
+    <span class="c1">################################################################</span>
+    <span class="c1"># estimate colony coverage size</span>
+    <span class="n">colony_coverage</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">tmp_mem</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">colony_coverage_size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">colony_coverage</span><span class="o">.</span><span class="n">flat</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">step_down_z</span> <span class="o">=</span> <span class="n">stack_bottom</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">zz</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">stack_bottom</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">cell_seg</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">cell_seg</span><span class="p">[</span><span class="n">zz</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.8</span> <span class="o">*</span> <span class="n">colony_coverage_size</span><span class="p">:</span>
+            <span class="n">step_down_z</span> <span class="o">=</span> <span class="n">zz</span>
+            <span class="k">break</span>
+
+    <span class="k">for</span> <span class="n">zz</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">stack_bottom</span><span class="p">,</span> <span class="n">step_down_z</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">cell_seg</span><span class="p">[</span><span class="n">zz</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">cell_seg</span><span class="p">[</span><span class="n">step_down_z</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;stack bottom has been properly updated.&quot;</span><span class="p">)</span>
+
+    <span class="c1">################################################################</span>
+    <span class="c1"># part 8: QC by size</span>
+    <span class="c1">################################################################</span>
+    <span class="c1"># remove small cells due to failure / noise</span>
+    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">cell_seg</span><span class="p">[</span><span class="n">cell_seg</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]):</span>
+        <span class="n">this_one_cell</span> <span class="o">=</span> <span class="n">cell_seg</span> <span class="o">==</span> <span class="n">ii</span>
+        <span class="n">this_dna</span> <span class="o">=</span> <span class="n">dna_mask_bw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">this_dna</span><span class="p">[</span><span class="n">this_one_cell</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># small &quot;cell&quot; or &quot;dna&quot;</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">this_one_cell</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">70000</span>
+            <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">this_dna</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1000</span>
+            <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">getLargestCC</span><span class="p">(</span><span class="n">this_dna</span><span class="p">,</span> <span class="n">is_label</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">10000</span>
+        <span class="p">):</span>
+            <span class="n">cell_seg</span><span class="p">[</span><span class="n">this_one_cell</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># false clip check (mem channel)</span>
+    <span class="c1"># i.e. the segmentation should not appear in first of last z-slice</span>
+    <span class="n">z_range_mem</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">cell_seg</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+    <span class="n">z_range_mem</span> <span class="o">=</span> <span class="n">z_range_mem</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">z_range_mem</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="ow">or</span> <span class="n">z_range_mem</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="ow">or</span> <span class="n">z_range_mem</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">cell_seg</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;exit because false clip or bad floaty is detected in mem channel&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">return_prediction</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="n">dna_mask_pred</span><span class="p">,</span> <span class="n">mem_pred</span><span class="p">,</span> <span class="n">seed_pred</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;size based QC is done&quot;</span><span class="p">)</span>
+
+    <span class="c1"># relabel the index in case altered when dumping the bottom</span>
+    <span class="n">cell_seg</span><span class="p">,</span> <span class="n">_tmp</span><span class="p">,</span> <span class="n">_tmp2</span> <span class="o">=</span> <span class="n">relabel_sequential</span><span class="p">(</span><span class="n">cell_seg</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">))</span>
+
+    <span class="c1">################################################################</span>
+    <span class="c1"># get dna instance segmentation</span>
+    <span class="c1">################################################################</span>
+    <span class="c1"># make sure dna is not out of membrane</span>
+    <span class="n">dna_mask_bw</span><span class="p">[</span><span class="n">cell_seg</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># propagate the cell index to dna</span>
+    <span class="n">dna_mask_label</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">cell_seg</span><span class="p">)</span>
+    <span class="n">dna_mask_label</span><span class="p">[</span><span class="n">dna_mask_bw</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">dna_mask_label</span> <span class="o">=</span> <span class="n">dna_mask_label</span> <span class="o">*</span> <span class="n">cell_seg</span>
+
+    <span class="c1">###################################</span>
+    <span class="c1"># false clip check (dna channel)</span>
+    <span class="c1"># i.e., the segmentation should not appear in first of last z-slice</span>
+    <span class="n">z_range_dna</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">dna_mask_label</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+    <span class="n">z_range_dna</span> <span class="o">=</span> <span class="n">z_range_dna</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">z_range_dna</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="ow">or</span> <span class="n">z_range_dna</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="ow">or</span> <span class="n">z_range_dna</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">dna_mask_label</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;exit because false clip or bad floaty is detected in dna channel&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">return_prediction</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="n">dna_mask_pred</span><span class="p">,</span> <span class="n">mem_pred</span><span class="p">,</span> <span class="n">seed_pred</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">dna_mask_label</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>  <span class="c1"># if only a few cells left, just throw it away</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;exit because only very few cells are segmented, maybe a bad image&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">return_prediction</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="n">dna_mask_pred</span><span class="p">,</span> <span class="n">mem_pred</span><span class="p">,</span> <span class="n">seed_pred</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;refining dna masks ... ...&quot;</span><span class="p">)</span>
+
+    <span class="c1"># get the index touching border</span>
+    <span class="n">bd_idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">cell_seg</span><span class="p">[</span><span class="n">boundary_mask</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]))</span>
+
+    <span class="c1"># refine dna</span>
+    <span class="n">num_cell</span> <span class="o">=</span> <span class="n">cell_seg</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">cell_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_cell</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">cell_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">in</span> <span class="n">bd_idx</span><span class="p">:</span>
+            <span class="c1"># no need to refine, because this will be ignored in the real analysis</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># empty dna should have been removed</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">dna_mask_label</span> <span class="o">==</span> <span class="p">(</span><span class="n">cell_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;bug, empty dna is found, but should not&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">return_prediction</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="n">dna_mask_pred</span><span class="p">,</span> <span class="n">mem_pred</span><span class="p">,</span> <span class="n">seed_pred</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># extract the largest component from the dna segmentation within this cell</span>
+        <span class="n">single_dna</span> <span class="o">=</span> <span class="n">dna_mask_label</span> <span class="o">==</span> <span class="p">(</span><span class="n">cell_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">single_dna_label</span><span class="p">,</span> <span class="n">num_obj</span> <span class="o">=</span> <span class="n">label</span><span class="p">(</span><span class="n">single_dna</span><span class="p">,</span> <span class="n">return_num</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">connectivity</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">num_obj</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">largest_label</span> <span class="o">=</span> <span class="n">single_dna_label</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="n">num_obj</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">largest_label</span> <span class="o">=</span> <span class="n">getLargestCC</span><span class="p">(</span><span class="n">single_dna_label</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;bug occurs in processing the pair ... &quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">return_prediction</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="n">dna_mask_pred</span><span class="p">,</span> <span class="n">mem_pred</span><span class="p">,</span> <span class="n">seed_pred</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># ######################################################################</span>
+        <span class="c1"># choose different pruning method based on morphology</span>
+        <span class="c1">#   - option 1: not melt (interphase or early/late mitosis)</span>
+        <span class="c1">#               keep the largest connected component after</span>
+        <span class="c1">#               filling holes and removing small objects</span>
+        <span class="c1">#   - option 2: if melted (mitosis)</span>
+        <span class="c1">#               only clean up small objects near the cutting boundary</span>
+        <span class="c1">#               with neighbor cells (very like a not-precise cut)</span>
+        <span class="c1"># to decide which one to use, we compare the ratio between the dna mask</span>
+        <span class="c1"># and dna seed within this cell, because dna seed will be much smaller</span>
+        <span class="c1"># than dna mask if a mitotic cell has not started to &quot;melt&quot;</span>
+        <span class="c1"># ######################################################################</span>
+        <span class="n">mask_size_in_this_cell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">largest_label</span><span class="p">)</span>
+        <span class="n">seed_size_in_this_cell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">seed_label</span> <span class="o">==</span> <span class="p">(</span><span class="n">cell_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">ratio_check</span> <span class="o">=</span> <span class="n">seed_size_in_this_cell</span> <span class="o">/</span> <span class="n">mask_size_in_this_cell</span>
+        <span class="k">if</span> <span class="n">ratio_check</span> <span class="o">&lt;</span> <span class="mf">0.75</span><span class="p">:</span>  <span class="c1"># interphase</span>
+            <span class="c1"># prune dna mask</span>
+            <span class="k">for</span> <span class="n">zz</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">single_dna</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">single_dna</span><span class="p">[</span><span class="n">zz</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]):</span>
+                    <span class="n">single_dna</span><span class="p">[</span><span class="n">zz</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">binary_fill_holes</span><span class="p">(</span><span class="n">single_dna</span><span class="p">[</span><span class="n">zz</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:])</span>
+                    <span class="n">single_dna</span><span class="p">[</span><span class="n">zz</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">remove_small_objects</span><span class="p">(</span>
+                        <span class="n">single_dna</span><span class="p">[</span><span class="n">zz</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">min_size</span><span class="o">=</span><span class="mi">100</span>
+                    <span class="p">)</span>
+            <span class="n">single_dna</span> <span class="o">=</span> <span class="n">remove_small_objects</span><span class="p">(</span><span class="n">single_dna</span><span class="p">,</span> <span class="n">min_size</span><span class="o">=</span><span class="mi">2500</span><span class="p">)</span>
+            <span class="n">dna_mask_label</span><span class="p">[</span><span class="n">dna_mask_label</span> <span class="o">==</span> <span class="p">(</span><span class="n">cell_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">dna_mask_label</span><span class="p">[</span><span class="n">single_dna</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">cell_idx</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># refine in each cell by removing small parts touching seperatinon bounary</span>
+            <span class="n">single_mem_bd</span> <span class="o">=</span> <span class="n">find_boundaries</span><span class="p">(</span><span class="n">cell_seg</span> <span class="o">==</span> <span class="p">(</span><span class="n">cell_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span><span class="p">)</span>
+            <span class="n">bd_idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">single_dna_label</span><span class="p">[</span><span class="n">single_mem_bd</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">bd_idx</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">list_idx</span><span class="p">,</span> <span class="n">dna_bd_idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bd_idx</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">single_dna_label</span> <span class="o">==</span> <span class="n">dna_bd_idx</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">600</span><span class="p">:</span>
+                        <span class="n">dna_mask_label</span><span class="p">[</span><span class="n">single_dna_label</span> <span class="o">==</span> <span class="n">dna_bd_idx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;refinement is done.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">return_prediction</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">cell_seg</span><span class="p">,</span> <span class="n">dna_mask_label</span><span class="p">,</span> <span class="p">[</span><span class="n">dna_mask_pred</span><span class="p">,</span> <span class="n">mem_pred</span><span class="p">,</span> <span class="n">seed_pred</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">cell_seg</span><span class="p">,</span> <span class="n">dna_mask_label</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;cell_segmentation&quot;</span><span class="p">,</span> <span class="s2">&quot;dna_segmentation&quot;</span><span class="p">]</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, Jianxu Chen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
