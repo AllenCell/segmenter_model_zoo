@@ -44,6 +44,7 @@ requirements = [
     'aicsmlsegment>0.0.5'
     'scikit-image',
     "quilt3",
+    "itk",
 ]
 
 extra_requirements = {
