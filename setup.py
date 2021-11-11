@@ -41,7 +41,7 @@ dev_requirements = [
 requirements = [
     'PyYAML',
     'aicsimageio>3.3.0',
-    'aicsmlsegment>0.0.5'
+    'aicsmlsegment>0.0.6'
     'scikit-image',
     "quilt3",
 ]
@@ -89,6 +89,6 @@ setup(
     url="https://github.com/AllenCell/segmenter_model_zoo",
     # Do not edit this string manually, always use bumpversion
     # Details in CONTRIBUTING.rst
-    version="0.0.5",
+    version="0.0.6",
     zip_safe=False,
 )
