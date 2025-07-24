@@ -1,8 +1,8 @@
 import os
 import numpy as np
-from typing import List, Union
+from typing import List, Union, Optional
 from pathlib import Path
-from aicsimageio import AICSImage
+from bioio import BioImage
 from scipy.ndimage.morphology import binary_fill_holes
 from skimage.morphology import ball, dilation, disk, binary_closing
 from skimage.morphology import remove_small_objects
@@ -35,10 +35,10 @@ flat_se[2, :, :] = 1
 
 
 def SegModule(
-    img: np.ndarray = None,
-    model_list: List = None,
-    filename: Union[str, Path] = None,
-    index: List[int] = None,
+    img: Optional[np.ndarray] = None,
+    model_list: Optional[List] = None,
+    filename: Optional[Union[str, Path]] = None,
+    index: Optional[List[int]] = None,
     return_prediction: bool = False,
     mem_bf_cut: float = 0.25,
     dna_bf_cutoff: float = 1.5,
@@ -112,14 +112,14 @@ def SegModule(
 
     Return:
     ------------
-        two numpy arrays: cell segmentatino and dna segmentation (labeled images) or
+        two numpy arrays: cell segmentation and dna segmentation (labeled images) or
         together with raw prediction (if return_prediction is True)
     """
 
     # check image data
     if img is None:
         # load the image
-        reader = AICSImage(filename)
+        reader = BioImage(filename)
         img = reader.data[0, index, :, :, :]
 
     # make sure the image has 4 dimensions

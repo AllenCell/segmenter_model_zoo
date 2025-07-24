@@ -1,5 +1,5 @@
 import sys
-from typing import List, Union
+from typing import List, Union, Optional
 from pathlib import Path
 from scipy.ndimage.morphology import binary_fill_holes
 from scipy.ndimage import gaussian_filter
@@ -9,7 +9,7 @@ from skimage.morphology import remove_small_objects
 from skimage.measure import label
 from skimage.segmentation import find_boundaries
 from aicsmlsegment.utils import background_sub, simple_norm
-from aicsimageio import AICSImage
+from bioio import BioImage
 
 mitosis_cutoff = 0.5  # 0.3
 core_cutoff = 0.5
@@ -20,10 +20,10 @@ mem_bf_cut = 0.25
 
 
 def SegModule(
-    img: np.ndarray = None,
-    model_list: List = None,
-    filename: Union[str, Path] = None,
-    index: List[int] = None,
+    img: Optional[np.ndarray] = None,
+    model_list: Optional[List] = None,
+    filename: Optional[Union[str, Path]] = None,
+    index: Optional[List[int]] = None,
     return_prediction: bool = False,
     output_type: str = "production",
 ):
@@ -68,7 +68,7 @@ def SegModule(
     # model order: mitosis, fill, core, mem_edge_lf
     if img is None:
         # load the image
-        reader = AICSImage(filename)
+        reader = BioImage(filename)
         img = reader.data[0, index, :, :, :]
 
     # make sure the image has 4 dimensions

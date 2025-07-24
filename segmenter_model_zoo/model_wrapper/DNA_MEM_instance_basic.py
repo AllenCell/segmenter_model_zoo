@@ -1,7 +1,7 @@
+from typing import Optional, Union, List
 import numpy as np
-from typing import List, Union
 from pathlib import Path
-from aicsimageio import AICSImage
+from bioio import BioImage
 from scipy.ndimage.morphology import binary_fill_holes
 from skimage.morphology import dilation, disk
 from skimage.morphology import remove_small_objects
@@ -14,10 +14,10 @@ from segmenter_model_zoo.utils import getLargestCC
 
 
 def SegModule(
-    img: np.ndarray = None,
-    model_list: List = None,
-    filename: Union[str, Path] = None,
-    index: List[int] = None,
+    img: Optional[np.ndarray] = None,  # Fixed type annotation
+    model_list: Optional[List] = None,  # Also fix this one
+    filename: Optional[Union[str, Path]] = None,
+    index: Optional[List[int]] = None,
     return_prediction: bool = False,
     mem_pre_cut_th: float = 0.2,
     seed_bw_th: float = 0.90,
@@ -75,7 +75,14 @@ def SegModule(
     # model order: dna_mask, cellmask, dna_seed
     if img is None:
         # load the image
-        reader = AICSImage(filename)
+        reader = BioImage(filename)
+        if reader.data is None:
+            raise ValueError(f"Failed to load image from {filename}")
+        
+        # Additional validation
+        if len(reader.data.shape) < 5:
+            raise ValueError(f"Expected 5D image data, got {len(reader.data.shape)}D from {filename}")
+        
         img = reader.data[0, index, :, :, :]
     # make sure the image has 4 dimensions
     if not (len(img.shape) == 4 and img.shape[0] == 2):
@@ -85,6 +92,9 @@ def SegModule(
         else:
             return None
 
+    if not model_list or len(model_list) != 3:
+        raise ValueError("model_list must contain exactly 3 models: dna_mask, cellmask, dna_seed")
+    
     ###########################################################
     # part 1: prepare data
     ###########################################################
@@ -158,12 +168,12 @@ def SegModule(
     boundary_mask[:, :, -4:] = 1
 
     bd_seed_on_hold = np.zeros_like(seed_bw)
-    bd_idx = list(np.unique(seed_label[boundary_mask > 0]))
+    bd_idx = list(np.unique(seed_label[np.array(boundary_mask) > 0]))
     for index, cid in enumerate(bd_idx):
         if cid > 0:
             bd_seed_on_hold[seed_label == cid] = 1
 
-    seed_bw = remove_small_objects(seed_bw, min_size=min_seed_size, connectivity=1)
+    seed_bw = remove_small_objects(seed_bw, min_size=int(min_seed_size), connectivity=1)
 
     # finalize seed (add back the seeds on hold)
     seed_bw[bd_seed_on_hold > 0] = 1

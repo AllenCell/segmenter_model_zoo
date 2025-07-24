@@ -1,8 +1,8 @@
 import os
 import numpy as np
-from typing import List, Union
+from typing import List, Union, Optional
 from pathlib import Path
-from aicsimageio import AICSImage
+from bioio import BioImage
 from scipy.ndimage.morphology import binary_fill_holes
 from skimage.morphology import ball, dilation, disk, binary_closing
 from skimage.morphology import remove_small_objects
@@ -35,10 +35,10 @@ flat_se[2, :, :] = 1
 
 
 def SegModule(
-    img: np.ndarray = None,
-    model_list: List = None,
-    filename: Union[str, Path] = None,
-    index: List[int] = None,
+    img: Optional[np.ndarray] = None,
+    model_list: Optional[List] = None,
+    filename: Optional[Union[str, Path]] = None,
+    index: Optional[List[int]] = None,
     return_prediction: bool = False,
     mem_bf_cut: float = 0.25,
     dna_bf_cutoff: float = 1.5,
