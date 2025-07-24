@@ -1,0 +1,36 @@
+
+# EASY-INSTALL-ENTRY-SCRIPT: 'segmenter-model-zoo','console_scripts','run_model_zoo'
+import re
+import sys
+import importlib.metadata
+
+# for compatibility with easy_install; see #2198
+__requires__ = 'segmenter-model-zoo'
+
+try:
+    from importlib.metadata import distribution
+except ImportError:
+    try:
+        from importlib_metadata import distribution
+    except ImportError:
+        from pkg_resources import load_entry_point
+
+
+def importlib_load_entry_point(spec, group, name):
+    dist_name, _, _ = spec.partition('==')
+    try:
+        from importlib.metadata import distribution
+    except ImportError:
+        raise ImportError("Neither importlib.metadata nor pkg_resources is available.")
+        exit(10)
+    matches = (
+        entry_point
+        for entry_point in distribution(dist_name).entry_points
+        if entry_point.group == group and entry_point.name == name
+    )
+    return next(matches).load()
+
+
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
+    sys.exit(importlib_load_entry_point('segmenter-model-zoo', 'console_scripts', 'run_model_zoo')())

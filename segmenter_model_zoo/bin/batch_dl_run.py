@@ -2,6 +2,7 @@
 This sample script will get deployed in the bin directory of the
 users' virtualenv when the parent module is installed using pip.
 """
+
 import os
 import argparse
 import logging
@@ -121,7 +122,9 @@ class Seg3DStacks(object):
 def main():
     try:
         args = Args()
-        dbg = args.debug
+        dbg = False
+        if hasattr(args, "debug"):
+            dbg = args.debug
         print(args.config)
         config = yaml.load(open(args.config, "r"))
         all_files, timelapse_flag = load_filenames(config["Data"])
