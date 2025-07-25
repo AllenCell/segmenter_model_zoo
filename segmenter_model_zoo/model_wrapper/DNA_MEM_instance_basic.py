@@ -79,10 +79,12 @@ def SegModule(
         if reader.data is None:
             raise ValueError(f"Failed to load image from {filename}")
 
-    # Additional validation
+        # Additional validation
         if len(reader.data.shape) < 5:
-            raise ValueError("Expected 5D image data, got "
-                             f"{len(reader.data.shape)}D from {filename}")
+            raise ValueError(
+                "Expected 5D image data, got "
+                f"{len(reader.data.shape)}D from {filename}"
+            )
 
         img = reader.data[0, index, :, :, :]
     # make sure the image has 4 dimensions
@@ -95,7 +97,8 @@ def SegModule(
 
     if not model_list or len(model_list) != 3:
         raise ValueError(
-            "model_list must contain exactly 3 models: dna_mask, cellmask, dna_seed")
+            "model_list must contain exactly 3 models: dna_mask, cellmask, dna_seed"
+        )
 
     ###########################################################
     # part 1: prepare data

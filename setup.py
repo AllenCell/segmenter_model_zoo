@@ -39,10 +39,10 @@ dev_requirements = [
 ]
 
 requirements = [
-    'PyYAML',
-    'aicsimageio>3.3.0',
-    'aicsmlsegment>=0.0.7',
-    'scikit-image',
+    "PyYAML",
+    "aicsimageio>3.3.0",
+    "aicsmlsegment>=0.0.7",
+    "scikit-image",
     "quilt3",
     "itk",
 ]
@@ -54,7 +54,7 @@ extra_requirements = {
     "all": [
         *requirements,
         *dev_requirements,
-    ]
+    ],
 }
 
 setup(
@@ -70,9 +70,7 @@ setup(
     ],
     description="scripts and API for running Deep Learning models from segmenter",
     entry_points={
-        "console_scripts": [
-            "run_model_zoo=segmenter_model_zoo.bin.batch_dl_run:main"
-        ],
+        "console_scripts": ["run_model_zoo=segmenter_model_zoo.bin.batch_dl_run:main"],
     },
     install_requires=requirements,
     license="Allen Institute Software License",
