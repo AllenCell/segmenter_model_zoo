@@ -119,7 +119,7 @@ def SegModule(
     # check image data
     if img is None:
         # load the image
-        reader = AICSImage(filename)
+        reader = BioImage(filename)
         img = reader.data[0, index, :, :, :]
 
     # make sure the image has 4 dimensions
