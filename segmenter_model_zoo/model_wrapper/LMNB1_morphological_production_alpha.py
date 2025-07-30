@@ -68,7 +68,10 @@ def SegModule(
     # model order: mitosis, fill, core, mem_edge
     if img is None:
         # load the image
-        reader = AICSImage(filename)
+        try:
+            reader = AICSImage(filename)
+        except:
+            print(f'Problem loading {filename}, skipping ...')
         img = reader.data[0, index, :, :, :]
 
     # make sure the image has 4 dimensions
@@ -160,7 +163,8 @@ def SegModule(
         )
         if overlap_ratio < min_overlap:
             filled[single_fill > 0] = 0
-
+            
+    return filled
     # get two versions of segmentation
     shell = find_boundaries(filled, mode="outer")
     merged = np.logical_or(shell > 0, mitosis_pred > mitosis_cutoff)

@@ -214,7 +214,7 @@ class SegModel:
 
         else:
             model_type = CHECKPOINT_PATH_MAPPING[checkpoint_name]["model_type"]
-
+            
             # load default model parameters or from model_param
             if "size_in" in model_param:
                 self.size_in = model_param["size_in"]
@@ -272,7 +272,15 @@ class SegModel:
                 model_path = CHECKPOINT_PATH_MAPPING[checkpoint_name]["path"]
 
             state = torch.load(model_path, map_location=torch.device("cpu"))
-            if "model_state_dict" in state:
+
+            if 'state_dict' in state:
+                # load models from new segmenter version
+                new_state_dict = {}
+                for key in state["state_dict"]:
+                    new_state_dict[ key.replace('model.', '')] = state["state_dict"][key]
+
+                self.model.load_state_dict(new_state_dict)
+            elif "model_state_dict" in state:
                 self.model.load_state_dict(state["model_state_dict"])
             else:
                 self.model.load_state_dict(state)
@@ -360,7 +368,9 @@ class SegModel:
             # make sure the image has a C dimension
             if not (len(input_img.shape) == 4 and input_img.shape[0] == 1):
                 input_img = np.expand_dims(input_img, axis=0)
-
+        print('INPUT IMAGE CHARACTERISTICS')
+        print(input_img.shape)
+        print(input_img.min(), input_img.mean(), input_img.max())
         if not already_normalized:
             # TODO: this can be implemented in a more elegant way after improving
             # aicsmlsegment API.
@@ -370,7 +380,12 @@ class SegModel:
             else:
                 args_norm.Normalization = self.normalization
 
+            print('NORMALIZE WITH RECIPE', args_norm.Normalization)
+
             input_img = input_normalization(input_img, args_norm)
+        print('POSTNORM CHARACTERISTICS')
+        print(input_img.shape)
+        print(input_img.min(), input_img.mean(), input_img.max())
 
         if "ResizeRatio" in inference_param:
             ResizeRatio = inference_param["ResizeRatio"]
@@ -571,9 +586,12 @@ class SuperModel:
         if input_img is None:
             assert os.path.exists(filename), f"{filename} does not exist"
             assert inputCh is not None, "input channel must be provided"
-
-            reader = AICSImage(filename)
-            input_img = reader.get_image_data("CZYX", S=0, T=0, C=inputCh)
+            try:
+                reader = AICSImage(filename)
+                input_img = reader.get_image_data("CZYX", S=0, T=0, C=inputCh)
+            except:
+                print('skipping', filename)
+                return None
 
         # make sure it is float32
         input_img = input_img.astype(np.float32)

@@ -8,7 +8,9 @@ from skimage.morphology import remove_small_objects
 from skimage.measure import label
 from skimage.segmentation import relabel_sequential, find_boundaries
 from aicsmlsegment.utils import background_sub, simple_norm
-import itk
+import itk    
+from skimage.io import imsave
+
 
 from segmenter_model_zoo.utils import getLargestCC
 
@@ -21,9 +23,10 @@ def SegModule(
     return_prediction: bool = False,
     mem_pre_cut_th: float = 0.2,
     seed_bw_th: float = 0.90,
-    dna_mask_bw_th: float = 0.5,
+    dna_mask_bw_th: float =  0.5, 
     min_seed_size: float = 6000,
 ):
+    print('USING THRESH', dna_mask_bw_th)
     """
     Segmentation function for cells and nuclei segmentaiton without label-free
     and mitotic pair correction.
@@ -75,8 +78,12 @@ def SegModule(
     # model order: dna_mask, cellmask, dna_seed
     if img is None:
         # load the image
-        reader = AICSImage(filename)
+        try:
+            reader = AICSImage(filename)
+        except:
+            print(f'Problem loading {filename}, skipping ...')
         img = reader.data[0, index, :, :, :]
+
     # make sure the image has 4 dimensions
     if not (len(img.shape) == 4 and img.shape[0] == 2):
         print("bad data, dimension crashed")
@@ -97,14 +104,13 @@ def SegModule(
     dna_img[dna_img > 60000] = dna_img.min()
     dna_img = background_sub(dna_img, 50)
     dna_img = simple_norm(dna_img, 2.5, 10)
-    # imsave('dna_norm.tiff', dna_img)
+    # imsave('normed_img.tif', dna_img)
 
     # extra cellmask channel
     mem_img = img[1, :, :, :].copy()
     mem_img[mem_img > 60000] = mem_img.min()
     mem_img = background_sub(mem_img, 50)
     mem_img = simple_norm(mem_img, 2, 11)
-    # imsave('cell_norm.tiff', mem_img)
 
     print("image normalization is done")
     print("applying all DL models ... ...")
@@ -117,21 +123,21 @@ def SegModule(
     dna_mask_pred = model_list[0].apply_on_single_zstack(
         dna_img, already_normalized=True, cutoff=-1
     )
+    # imsave('dna_mask_pred.tif', dna_mask_pred, check_contrast=False)
+
     dna_mask_bw = dna_mask_pred > dna_mask_bw_th
-    # imsave('pred_dna.tiff', dna_mask_pred)
+    # imsave('dna_mask_pred_thresh.tif', dna_mask_bw, check_contrast=False)
 
     # model 2: cell edge
     mem_pred = model_list[1].apply_on_single_zstack(
         mem_img, already_normalized=True, cutoff=-1
     )
-    # imsave('pred_cell.tiff', mem_pred)
 
     # model 3: dna_seed
     seed_pred = model_list[2].apply_on_single_zstack(
         dna_img, already_normalized=True, cutoff=-1
     )
     seed_bw = seed_pred > seed_bw_th
-    # imsave('pred_seed.tiff', seed_pred)
     print("predictions are done.")
 
     #############################################################
@@ -311,15 +317,27 @@ def SegModule(
         else:
             return None
 
+
+    # imsave('cell_seg.tiff', cell_seg)
+    # imsave('dna_mask_label.tiff', dna_mask_label)
+    # imsave('boundary_mask.tiff', boundary_mask)
+    # imsave('seed_label.tiff', seed_label)
+
+    # cell_seg = AICSImage('cell_seg.tiff').get_image_data('ZYX',C=0,S=0,T=0)
+    # dna_mask_label = AICSImage('dna_mask_label.tiff').get_image_data('ZYX',C=0,S=0,T=0)
+    # boundary_mask = AICSImage('boundary_mask.tiff').get_image_data('ZYX',C=0,S=0,T=0)
     print("refining dna masks ... ...")
 
     # get the index touching border
     bd_idx = list(np.unique(cell_seg[boundary_mask > 0]))
-
+    # imsave('bd_mask.tif', cell_seg[boundary_mask > 0], check_contrast=False)
+    print("border indices:", bd_idx)
     # refine dna
     num_cell = cell_seg.max()
+    print('Num cells: ', num_cell)
     for cell_idx in range(num_cell):
         if (cell_idx + 1) in bd_idx:
+            print('SKIPPING', cell_idx+1, 'because its in', bd_idx, (cell_idx +1) in bd_idx)
             # no need to refine, because this will be ignored in the real analysis
             continue
 
@@ -343,7 +361,7 @@ def SegModule(
             if return_prediction:
                 return None, [dna_mask_pred, mem_pred, seed_pred]
             else:
-                return None
+                return None 
 
         # ######################################################################
         # choose different pruning method based on morphology
@@ -358,9 +376,12 @@ def SegModule(
         # than dna mask if a mitotic cell has not started to "melt"
         # ######################################################################
         mask_size_in_this_cell = np.count_nonzero(largest_label)
+        single_dna = largest_label.copy()
+        # imsave(f'og_{cell_idx+1}_single_dna.tif', single_dna.astype(np.uint8), check_contrast=False)
         seed_size_in_this_cell = np.count_nonzero(seed_label == (cell_idx + 1))
         ratio_check = seed_size_in_this_cell / mask_size_in_this_cell
-        if ratio_check < 0.75:  # interphase
+        print('CEll',cell_idx+1, 'ratio', ratio_check)
+        if ratio_check < 0.85:  # interphase
             # prune dna mask
             for zz in range(single_dna.shape[0]):
                 if np.any(single_dna[zz, :, :]):
@@ -369,19 +390,30 @@ def SegModule(
                         single_dna[zz, :, :], min_size=100
                     )
             single_dna = remove_small_objects(single_dna, min_size=2500)
+            # imsave(f'preprocessed_{cell_idx+1}_single_dna.tif', single_dna.astype(np.uint8), check_contrast=False)
             dna_mask_label[dna_mask_label == (cell_idx + 1)] = 0
+            # imsave(f'pre_{cell_idx+1}.tiff', dna_mask_label, check_contrast=False)
             dna_mask_label[single_dna > 0] = cell_idx + 1
+            # imsave(f'post_{cell_idx+1}.tiff', dna_mask_label, check_contrast=False)
         else:
             # refine in each cell by removing small parts touching seperatinon bounary
+            # imsave(f'pre_{cell_idx+1}.tiff', dna_mask_label, check_contrast=False)
+
             single_mem_bd = find_boundaries(cell_seg == (cell_idx + 1), mode="inner")
-            bd_idx = list(np.unique(single_dna_label[single_mem_bd > 0]))
-            if len(bd_idx) > 0:
-                for list_idx, dna_bd_idx in enumerate(bd_idx):
+            # imsave(f'{cell_idx+1}_boundary.tiff', single_mem_bd, check_contrast=False)
+
+            mitotic_bd_idx = list(np.unique(single_dna_label[single_mem_bd > 0]))
+            print('Mitotic bd idx:', mitotic_bd_idx)
+            if len(mitotic_bd_idx) > 0:
+                for list_idx, dna_bd_idx in enumerate(mitotic_bd_idx):
                     if np.count_nonzero(single_dna_label == dna_bd_idx) < 600:
                         dna_mask_label[single_dna_label == dna_bd_idx] = 0
+                        print('Removing idx', dna_bd_idx)
+            # imsave(f'post_{cell_idx+1}.tiff', dna_mask_label, check_contrast=False)
+
 
     print("refinement is done.")
-
+    # imsave('singlelabel.tif', dna_mask_label, check_contrast=False)
     if return_prediction:
         return cell_seg, dna_mask_label, [dna_mask_pred, mem_pred, seed_pred]
     else:

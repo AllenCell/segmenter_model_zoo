@@ -131,8 +131,12 @@ def main():
         args = Args()
         dbg = args.debug
         print(args.config)
+        log.warning("changed apply")
+        log.warning(f"args.config: {args.config}")
         config = yaml.load(open(args.config, "r"))
+        log.warning(f"config: {config}")
         all_files, timelapse_flag = load_filenames(config["Data"])
+        log.warning("second line")
         all_files = np.unique(all_files)
         # Do your work here - preferably in a class or function,
         # passing in your args. E.g.

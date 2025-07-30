@@ -136,7 +136,7 @@ def load_filenames(data_config):
             for _index, row in df.iterrows():
                 fn = row[col]
                 print(40*"-")
-                print(f"filename = {fn}")
+                print(f"filename = {fm")
                 print(40*"-")
                 assert os.path.exists(fn)
                 all_stacks.extend([fn])
